@@ -1,13 +1,16 @@
-let width;
-let height;
+var width;
+var height;
 
-let score1 = 0;
-let score2 = 0;
-let scoreText;
+var score1 = 0;
+var score2 = 0;
+var scoreText;
 
-let time = 10.0;
-let timeText;
+var time = 10.0;
+var timeText;
 
+var level;
+
+// Make JogoPvE globally accessible
 window.JogoPvE = class JogoPvE extends Phaser.Scene {
     constructor() {
         super('JogoPvE');
@@ -30,8 +33,8 @@ window.JogoPvE = class JogoPvE extends Phaser.Scene {
     }
 
     create() {
-        width = game.config.width;
-        height = game.config.height;
+        let width = this.game.config.width;
+        let height = this.game.config.height;
 
         this.background = this.add.sprite(0.5 * width, 0.5 * height,'background');     
         this.background.setScale(1.5);
@@ -61,7 +64,7 @@ window.JogoPvE = class JogoPvE extends Phaser.Scene {
             fontFamily: 'Arial'
         }).setOrigin(0.5);
 
-        let numerosColuna = gerarNumerosUnicos(5, 1, 9);
+        let numerosColuna = this.gerarNumerosUnicos(5, 1, 9);
 
         // Criar lista de produtos únicos entre dois números distintos da coluna
         let produtos = [];
@@ -117,21 +120,13 @@ window.JogoPvE = class JogoPvE extends Phaser.Scene {
             for (let j = 0; j < 5; j++) {
                 let quad = this.add.sprite((0.4 + j * 0.07) * width, (0.38 + i * 0.12) * height, 'quadrado');
                 quad.setScale(1.1);
-                if (i == 2 && j == 2) {
-                    // Adiciona um retângulo azul em cima do sprite
-                    const overlay = this.add.rectangle( quad.x, quad.y, quad.width, quad.height, 0x56C8D7);
-                    overlay.setScale(1.1);
-                    overlay.setDepth(1);
-                }
-                else {
-                    quad.setInteractive({useHandCursor: true});
-                    if (matriz[i][j] !== null) {
-                        this.add.text(quad.x, quad.y, matriz[i][j], {
-                            fontSize: '64px',
-                            color: '#000',
-                            fontFamily: 'Arial'
-                        }).setOrigin(0.5);
-                    }
+                quad.setInteractive({useHandCursor: true});
+                if (matriz[i][j] !== null) {
+                    this.add.text(quad.x, quad.y, matriz[i][j], {
+                        fontSize: '64px',
+                        color: '#000',
+                        fontFamily: 'Arial'
+                    }).setOrigin(0.5);
                 }
             }
         }
@@ -152,6 +147,10 @@ window.JogoPvE = class JogoPvE extends Phaser.Scene {
         this.input.on('gameobjectdown', function(pointer, gameObject) {
             switch (gameObject) {
                 case this.btHome:
+                    console.log("Home button clicked");
+                    if (this.temporizador) {
+                        this.temporizador.remove();
+                    }
                     this.scene.start('Menu');
                     break;
                 default:
@@ -169,7 +168,6 @@ window.JogoPvE = class JogoPvE extends Phaser.Scene {
                 if (this.tempoRestante <= 0) {
                     this.temporizador.remove();
                     this.contadorAtivo = false;
-                    // Aqui pode adicionar uma ação ao terminar o tempo
                     console.log('Tempo esgotado!');
                 }
             },
@@ -178,13 +176,13 @@ window.JogoPvE = class JogoPvE extends Phaser.Scene {
         });
     }
     
-    //update(){}
-}
-
-function gerarNumerosUnicos(qtd, min, max) {
-    let numeros = new Set();
-    while (numeros.size < qtd) {
-        numeros.add(Phaser.Math.Between(min, max));
+    gerarNumerosUnicos(qtd, min, max) {
+        let numeros = new Set();
+        while (numeros.size < qtd) {
+            numeros.add(Phaser.Math.Between(min, max));
+        }
+        return Array.from(numeros);
     }
-    return Array.from(numeros);
-}
+
+    //update(){}
+};

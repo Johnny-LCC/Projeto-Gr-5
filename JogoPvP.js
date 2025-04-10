@@ -1,13 +1,10 @@
 // Global variables
 var width;
 var height;
-
 var score1 = 0;
 var score2 = 0;
 var scoreText;
-
 var timeText;
-
 var selectedProduct = null;
 var selectedNumbers = [];
 var selectedProductPos = null;
@@ -371,6 +368,7 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
     // Handle number selection
     selectNumber(index) {
         const number = this.numerosColuna[index];
+
         if (selectedNumbers.length === 2) {
             selectedNumbers = [];
             this.quadradosNumeros.forEach(num => {
