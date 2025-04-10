@@ -75,16 +75,16 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
         this.btPVP = this.add.sprite(0.135 * width, 0.18 * height, 'btPVP').setScale(1);
 
         // Timer setup
-        this.ampulheta = this.add.sprite(0.21 * width, 0.45 * height, 'ampTempo').setScale(0.8);
-        timeText = this.add.text(0.21 * width, 0.45 * height, 10, {
-            fontSize: '48px',
-            fill: '#000',
+        this.ampTempo = this.add.sprite(0.135 * width, 0.4 * height, 'ampTempo').setScale(1);
+        timeText = this.add.text(0.135 * width, 0.4 * height, 10, {
+            fontSize: '64px',
+            color: '#ffffff',
             fontFamily: 'Arial'
         }).setOrigin(0.5);
 
         // Player turn indicator
-        this.playerTurnText = this.add.text(0.21 * width, 0.35 * height, 'Jogador 1', {
-            fontSize: '32px',
+        this.playerTurnText = this.add.text(0.285 * width, 0.4 * height, 'Jogador 1', {
+            fontSize: '48px',
             fill: '#FF0000',
             fontFamily: 'Arial'
         }).setOrigin(0.5);
@@ -115,10 +115,10 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
                         sprite: this.add.rectangle(
                             (0.4 + midCol * 0.07) * width,
                             (0.38 + midRow * 0.12) * height,
-                            64,
-                            64,
-                            0x000000
-                        ).setOrigin(0.5),
+                            1,
+                            1,
+                            0x56C8D7
+                        ).setOrigin(0.5).setScale(1.1),
                         marked: true,
                         value: null,
                         marker: null
@@ -129,7 +129,7 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
                 this.matriz[i][j] = produtos[prodIndex++];
                 let quad = this.add.sprite((0.4 + j * 0.07) * width, (0.38 + i * 0.12) * height, 'quadrado').setScale(1.1).setInteractive({ useHandCursor: true });
                 let prodText = this.add.text(quad.x, quad.y, this.matriz[i][j], {
-                    fontSize: '36px',
+                    fontSize: '64px',
                     color: '#000',
                     fontFamily: 'Arial'
                 }).setOrigin(0.5);
@@ -168,7 +168,7 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
     setupUIElements() {
         score1 = 0;
         score2 = 0;
-        scoreText = this.add.text(180, 290, `${score1}-${score2}`, { fontSize: '64px', fill: '#049' });
+        scoreText = this.add.text(180, 290, `${score1}-${score2}`, { fontSize: '100px', fill: '#049' });
         this.lapis = this.add.sprite(0.305 * width, 0.68 * height, 'lapis').setScale(1.2);
     }
 
@@ -233,16 +233,22 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
 
     // Mark a grid position
     markGridPosition(row, col, player) {
+        const newBox = this.add.sprite(
+            this.quadradosGrid[row][col].sprite.x,
+            this.quadradosGrid[row][col].sprite.y,
+            'quadrado'
+        ).setScale(1.1).setDepth(1);
+
         const marker = this.add.text(
             this.quadradosGrid[row][col].sprite.x,
             this.quadradosGrid[row][col].sprite.y,
             player === 1 ? 'X' : 'O',
             {
-                fontSize: '48px',
+                fontSize: '64px',
                 color: player === 1 ? '#FF0000' : '#0000FF',
                 fontFamily: 'Arial'
             }
-        ).setOrigin(0.5);
+        ).setOrigin(0.5).setDepth(1);
 
         this.quadradosGrid[row][col].marked = true;
         this.quadradosGrid[row][col].marker = marker;
@@ -286,49 +292,25 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
             resultText = "Empate!";
         }
 
-        const overlay = this.add.rectangle(
-            width * 0.5,
-            height * 0.5,
-            width,
-            height,
-            0x000000,
-            0.7
-        );
+        const overlay = this.background.setDepth(2);
+        const title = this.titulo.setDepth(2);
 
+        //const rect = this.add.rectangle(0.5 * width, 0.6 * height, 0.45 * width, 0.25 * height, 0x4270FE).setOrigin(0.5).setDepth(1);
+        
         const gameOverText = this.add.text(
             width * 0.5,
             height * 0.5,
             resultText,
             {
-                fontSize: '64px',
-                fontFamily: 'Arial',
-                color: '#000000',
-                backgroundColor: '#FFFFFF',
-                padding: { x: 20, y: 10 }
-            }
-        ).setOrigin(0.5).setDepth(1);
-
-        const menuButtonBg = this.add.rectangle(
-            width * 0.5,
-            height * 0.6,
-            200,
-            50,
-            0x000000
-        ).setOrigin(0.5).setInteractive({ useHandCursor: true }).setDepth(1);
-
-        const menuButton = this.add.text(
-            width * 0.5,
-            height * 0.6,
-            "Voltar ao Menu",
-            {
-                fontSize: '32px',
+                fontSize: '100px',
                 fontFamily: 'Arial',
                 color: '#FFFFFF',
-                padding: { x: 15, y: 8 }
             }
         ).setOrigin(0.5).setDepth(2);
 
-        menuButtonBg.on('pointerdown', () => {
+        let newMenuButton = this.add.sprite(width * 0.5, height * 0.65, 'home').setScale(1.2).setInteractive({ useHandCursor: true }).setDepth(2);
+
+        newMenuButton.on('pointerdown', () => {
             this.cleanupGameObjects();
             this.scene.start('Menu');
         });
