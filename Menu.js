@@ -1,6 +1,15 @@
 var width;
 var height;
+var callOnce = 0;
 
+var score1 = 0;
+var score2 = 0;
+var scoreText;
+var time = 10.0;
+var timeText;
+var level = 1;
+
+// Make Menu globally accessible
 window.Menu = class Menu extends Phaser.Scene {
 
     constructor() {
@@ -106,6 +115,7 @@ window.Menu = class Menu extends Phaser.Scene {
             switch(gameObject) {
                 case this.btPVP:
                     this.scene.transition({ target: 'JogoPvP', duration: 10 });
+                    console.log('PVP entrado');
                     break;
                 case this.btLvl1:
                     this.scene.transition({ target: 'JogoPvE', duration: 10, data: {level: 1} });

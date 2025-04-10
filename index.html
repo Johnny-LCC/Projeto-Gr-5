@@ -25,34 +25,54 @@
     <link rel="shortcut icon" type="image/x-icon" href="https://www.hypatiamat.com/images/favicon.ico">
 </head>
 <body>
-    <div id = 'divId'>
-        <script src="phaser.min.js"></script>
-        <script src="Menu.js"></script>
-        <script src="JogoPvP.js"></script>
-    </div>
+    <div id='divId'></div>
+    
+    <!-- Load Phaser library first -->
+    <script src="phaser.min.js"></script>
+    
+    <!-- Load game scenes -->
+    <script src="Menu.js"></script>
+    <script src="JogoPvP.js"></script>
+    <script src="JogoPVE.js"></script>
+    
+    <!-- Initialize the game -->
+    <script>
+        // Wait for everything to be fully loaded
+        window.addEventListener('load', function() {
+            // Make sure the classes are properly exposed to the global scope
+            if (window.Menu && window.JogoPvP && window.JogoPvE) {
+                console.log("All game scenes are loaded successfully!");
+                
+                // Configure and create the game instance
+                var config = {
+                    type: Phaser.CANVAS,
+                    width: window.innerWidth * window.devicePixelRatio,
+                    height: window.innerHeight * window.devicePixelRatio,
+                    scale: {
+                        mode: Phaser.Scale.FIT,
+                        autoCenter: Phaser.Scale.CENTER_BOTH,
+                        width: 2048,
+                        height: 1200,
+                    },
+                    render: {
+                        pixelArt: false
+                    },
+                    dom: {
+                        createContainer: true
+                    },
+                    backgroundColor: "#ffffff",
+                    scene: [window.Menu, window.JogoPvP, window.JogoPvE]
+                };
+                
+                window.game = new Phaser.Game(config);
+                console.log("Iniciando o jogo da velha");
+            } else {
+                console.error("Failed to load one or more game scenes!");
+                if (!window.Menu) console.error("Menu class not loaded");
+                if (!window.JogoPvP) console.error("JogoPvP class not loaded");
+                if (!window.JogoPvE) console.error("JogoPvE class not loaded");
+            }
+        });
+    </script>
 </body>
 </html>
-<script>
-    var config = {
-        type: Phaser.CANVAS,
-        width: window.innerWidth * window.devicePixelRatio,
-        height: window.innerHeight * window.devicePixelRatio,
-        scale: {
-            mode: Phaser.Scale.FIT,
-            autoCenter: Phaser.Scale.CENTER_BOTH,
-            width: 2048,
-            height: 1200,
-        },
-        render: {
-            pixelArt: false
-        },
-        dom: {
-            createContainer: true
-        },
-        backgroundColor: "#ffffff",
-        scene: [Menu,JogoPvP],
-    };
-
-    var game = new Phaser.Game(config);
-    game.scene.start('Menu');
-</script>
