@@ -30,8 +30,8 @@ window.JogoPvE = class JogoPvE extends Phaser.Scene {
     }
 
     create() {
-        width = this.game.config.width;
-        height = this.game.config.height;
+        width = game.config.width;
+        height = game.config.height;
 
         this.background = this.add.sprite(0.5 * width, 0.5 * height,'background');     
         this.background.setScale(1.5);
