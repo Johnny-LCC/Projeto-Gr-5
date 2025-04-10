@@ -43,7 +43,7 @@ class JogoPvP extends Phaser.Scene {
         this.btPVP.setScale(1);
         //this.btPVP.setInteractive({useHandCursor: true});
 
-        let numerosColuna = this.gerarNumerosUnicos(5, 1, 9);
+        let numerosColuna = gerarNumerosUnicos(5, 1, 9);
 
         // Criar lista de produtos únicos entre dois números distintos da coluna
         let produtos = [];
@@ -131,13 +131,14 @@ class JogoPvP extends Phaser.Scene {
             }
         }, this);
     }
-    gerarNumerosUnicos(qtd, min, max) {
-        let numeros = new Set();
-        while (numeros.size < qtd) {
-            numeros.add(Phaser.Math.Between(min, max));
-        }
-        return Array.from(numeros);
-    }
 
     //update(){}
+}
+
+function gerarNumerosUnicos(qtd, min, max) {
+    let numeros = new Set();
+    while (numeros.size < qtd) {
+        numeros.add(Phaser.Math.Between(min, max));
+    }
+    return Array.from(numeros);
 }
