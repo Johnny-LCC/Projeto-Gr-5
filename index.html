@@ -28,7 +28,7 @@
     <div id = 'divId'>
         <script src="phaser.min.js"></script>
         <script src="Menu.js"></script>
-        
+        <script src="JogoPvP.js"></script>
     </div>
 </body>
 </html>
@@ -50,7 +50,7 @@
             createContainer: true
         },
         backgroundColor: "#ffffff",
-        scene: [Menu,JogoPvP,JogoPvE]
+        scene: [Menu,JogoPvP],
     };
 
     var game = new Phaser.Game(config);
