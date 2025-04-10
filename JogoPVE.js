@@ -119,13 +119,21 @@ class JogoPvE extends Phaser.Scene {
             for (let j = 0; j < 5; j++) {
                 let quad = this.add.sprite((0.4 + j * 0.07) * width, (0.38 + i * 0.12) * height, 'quadrado');
                 quad.setScale(1.1);
-                quad.setInteractive({useHandCursor: true});
-                if (matriz[i][j] !== null) {
-                    this.add.text(quad.x, quad.y, matriz[i][j], {
-                        fontSize: '64px',
-                        color: '#000',
-                        fontFamily: 'Arial'
-                    }).setOrigin(0.5);
+                if (i == 2 && j == 2) {
+                    // Adiciona um retângulo azul em cima do sprite
+                    const overlay = this.add.rectangle( quad.x, quad.y, quad.width, quad.height, 0x56C8D7);
+                    overlay.setScale(1.1);
+                    overlay.setDepth(1);
+                }
+                else {
+                    quad.setInteractive({useHandCursor: true});
+                    if (matriz[i][j] !== null) {
+                        this.add.text(quad.x, quad.y, matriz[i][j], {
+                            fontSize: '64px',
+                            color: '#000',
+                            fontFamily: 'Arial'
+                        }).setOrigin(0.5);
+                    }
                 }
             }
         }

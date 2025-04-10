@@ -207,7 +207,7 @@ class JogoPvP extends Phaser.Scene {
         this.btPVP.setScale(1);
         //this.btPVP.setInteractive({useHandCursor: true});
 
-        let numerosColuna = this.gerarNumerosUnicos(5, 1, 9);
+        let numerosColuna = gerarNumerosUnicos(5, 1, 9);
 
         // Criar lista de produtos únicos entre dois números distintos da coluna
         let produtos = [];
@@ -257,17 +257,24 @@ class JogoPvP extends Phaser.Scene {
             for (let j = 0; j < 5; j++) {
                 let quad = this.add.sprite((0.4 + j * 0.07) * width, (0.38 + i * 0.12) * height, 'quadrado');
                 quad.setScale(1.1);
-                quad.setInteractive({useHandCursor: true});
-                if (matriz[i][j] !== null) {
-                    this.add.text(quad.x, quad.y, matriz[i][j], {
-                        fontSize: '64px',
-                        color: '#000',
-                        fontFamily: 'Arial'
-                    }).setOrigin(0.5);
+                if (i == 2 && j == 2) {
+                    // Adiciona um retângulo azul em cima do sprite
+                    const overlay = this.add.rectangle( quad.x, quad.y, quad.width, quad.height, 0x56C8D7);
+                    overlay.setScale(1.1);
+                    overlay.setDepth(1);
+                }
+                else {
+                    quad.setInteractive({useHandCursor: true});
+                    if (matriz[i][j] !== null) {
+                        this.add.text(quad.x, quad.y, matriz[i][j], {
+                            fontSize: '64px',
+                            color: '#000',
+                            fontFamily: 'Arial'
+                        }).setOrigin(0.5);
+                    }
                 }
             }
         }
-
 
         //Lapis
         this.lapis = this.add.sprite(0.305 * width, 0.68 * height, 'lapis');
@@ -359,7 +366,7 @@ class JogoPvE extends Phaser.Scene {
             fontFamily: 'Arial'
         }).setOrigin(0.5);
 
-        let numerosColuna = this.gerarNumerosUnicos(5, 1, 9);
+        let numerosColuna = gerarNumerosUnicos(5, 1, 9);
 
         // Criar lista de produtos únicos entre dois números distintos da coluna
         let produtos = [];
@@ -415,13 +422,21 @@ class JogoPvE extends Phaser.Scene {
             for (let j = 0; j < 5; j++) {
                 let quad = this.add.sprite((0.4 + j * 0.07) * width, (0.38 + i * 0.12) * height, 'quadrado');
                 quad.setScale(1.1);
-                quad.setInteractive({useHandCursor: true});
-                if (matriz[i][j] !== null) {
-                    this.add.text(quad.x, quad.y, matriz[i][j], {
-                        fontSize: '64px',
-                        color: '#000',
-                        fontFamily: 'Arial'
-                    }).setOrigin(0.5);
+                if (i == 2 && j == 2) {
+                    // Adiciona um retângulo azul em cima do sprite
+                    const overlay = this.add.rectangle( quad.x, quad.y, quad.width, quad.height, 0x56C8D7);
+                    overlay.setScale(1.1);
+                    overlay.setDepth(1);
+                }
+                else {
+                    quad.setInteractive({useHandCursor: true});
+                    if (matriz[i][j] !== null) {
+                        this.add.text(quad.x, quad.y, matriz[i][j], {
+                            fontSize: '64px',
+                            color: '#000',
+                            fontFamily: 'Arial'
+                        }).setOrigin(0.5);
+                    }
                 }
             }
         }
@@ -467,14 +482,14 @@ class JogoPvE extends Phaser.Scene {
             loop: true
         });
     }
-    
-    gerarNumerosUnicos(qtd, min, max) {
-        let numeros = new Set();
-        while (numeros.size < qtd) {
-            numeros.add(Phaser.Math.Between(min, max));
-        }
-        return Array.from(numeros);
-    }
 
     //update(){}
 }   
+
+function gerarNumerosUnicos(qtd, min, max) {
+    let numeros = new Set();
+    while (numeros.size < qtd) {
+        numeros.add(Phaser.Math.Between(min, max));
+    }
+    return Array.from(numeros);
+}
