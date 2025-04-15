@@ -157,7 +157,7 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
             this.quadradosNumeros.push({
                 sprite: quad,
                 text: numText,
-                value: this.numerosColuna[i]
+                value: this.numerosColuna[i],
             });
 
             quad.on('pointerdown', () => this.selectNumber(i));
@@ -168,7 +168,7 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
     setupUIElements() {
         score1 = 0;
         score2 = 0;
-        scoreText = this.add.text(180, 290, `${score1}-${score2}`, { fontSize: '100px', fill: '#049' });
+        scoreText = this.add.text(180, 290, `${score1} - ${score2}`, { fontSize: '64px', fill: '#049' });
         this.lapis = this.add.sprite(0.305 * width, 0.68 * height, 'lapis').setScale(1.2);
     }
 
@@ -261,7 +261,7 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
         } else {
             score2++;
         }
-        scoreText.setText(`${score1}-${score2}`);
+        scoreText.setText(`${score1} - ${score2}`);
     }
 
     // Check if the game is over
@@ -295,7 +295,7 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
         const overlay = this.background.setDepth(2);
         const title = this.titulo.setDepth(2);
 
-        //const rect = this.add.rectangle(0.5 * width, 0.6 * height, 0.45 * width, 0.25 * height, 0x4270FE).setOrigin(0.5).setDepth(1);
+        const rect = this.add.rectangle(0.5 * width, 0.6 * height, 0.45 * width, 0.3 * height, 0x4270FE).setOrigin(0.5).setDepth(2);
         
         const gameOverText = this.add.text(
             width * 0.5,
@@ -353,20 +353,20 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
 
         if (selectedNumbers.length === 2) {
             selectedNumbers = [];
-            this.quadradosNumeros.forEach(num => {
-                num.sprite.setTint(0xffffff);
-            });
+            //this.quadradosNumeros.forEach(num => { num.sprite.setTint(0xffffff); });
         }
-
+        
         selectedNumbers.push({
             index,
             value: number
         });
-
-        this.quadradosNumeros[index].sprite.setTint(0xffff00);
-
+        
+        this.quadradosNumeros[index].sprite.setTintFill(0x56C8D7);
+        
         if (selectedProduct !== null && selectedNumbers.length === 2) {
             this.validateMultiplication();
+            //remove Tint
+            this.quadradosNumeros[index].sprite.clearTint();
         }
     }
 
