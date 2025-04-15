@@ -1,9 +1,17 @@
-// Refactored and improved implementation of the PvP mode for the children's game.
+// Global variables
+var width;
+var height;
+var score1 = 0;
+var score2 = 0;
+var selectedProduct = null;
+var selectedNumbers = [];
+var selectedProductPos = null;
+var level;
 
-// Extend JogoPvP functionality
-window.JogoPvP = class JogoPvP extends Phaser.Scene {
+// Extend JogoPvE functionality
+window.JogoPvE = class JogoPvE extends Phaser.Scene {
     constructor() {
-        super('JogoPvP');
+        super('JogoPvE');
         this.width = null;
         this.height = null;
         this.score1 = 0;
@@ -11,18 +19,25 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
         this.selectedProduct = null;
         this.selectedNumbers = [];
         this.selectedProductPos = null;
+        this.level = null;
         this.turnTime = { value: 10 };
-        this.currentPlayer = { value: 1 };
+        this.isPlayerTurn = true;
+    }
+
+    init(data) {
+        this.level = data.level;
     }
 
     preload() {
         this.load.image('background', 'assets/background.png');
         this.load.image('titulo', 'assets/titulo.png');
+        this.load.image('btPVE1', 'assets/bt-level1.png');
+        this.load.image('btPVE2', 'assets/bt-level2.png');
+        this.load.image('btPVE3', 'assets/bt-level3.png');
+        this.load.image('ampTempo', 'assets/ampulhetaTempo.png');
         this.load.image('home', 'assets/bt_home.png');
         this.load.image('quadrado', 'assets/quadrado-recebenumeros.png');
         this.load.image('lapis', 'assets/lapis.png');
-        this.load.image('ampTempo', 'assets/ampulhetaTempo.png');
-        this.load.image('btPVP', 'assets/bt-level0.png');
     }
 
     create() {
@@ -32,8 +47,8 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
         this.setupGameBoard();
         this.setupUIElements();
 
-        // Start the first player's turn
-        this.startPlayerTurn();
+        // Start the player's turn
+        this.startTurn(true);
 
         // Button interaction logic
         this.input.on('gameobjectover', (pointer, gameObject) => {
@@ -59,8 +74,9 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
         // Home button
         this.btHome = this.add.sprite(0.07 * this.width, 0.89 * this.height, 'home').setScale(1.2).setInteractive({ useHandCursor: true });
 
-        // PVP button
-        this.btPVP = this.add.sprite(0.135 * this.width, 0.18 * this.height, 'btPVP').setScale(1);
+        // PVE button based on level
+        const pveButtonAsset = `btPVE${this.level}`;
+        this.btPVP = this.add.sprite(0.135 * this.width, 0.18 * this.height, pveButtonAsset).setScale(1);
 
         // Timer setup
         this.ampulheta = this.add.sprite(0.21 * this.width, 0.45 * this.height, 'ampTempo').setScale(0.8);
@@ -70,10 +86,10 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
             fontFamily: 'Arial'
         }).setOrigin(0.5);
 
-        // Player turn indicator
-        this.playerTurnText = this.add.text(0.21 * this.width, 0.35 * this.height, 'Jogador 1', {
+        // Turn indicator setup
+        this.turnIndicator = this.add.text(0.21 * this.width, 0.35 * this.height, '', {
             fontSize: '32px',
-            fill: '#FF0000',
+            fill: '#fff',
             fontFamily: 'Arial'
         }).setOrigin(0.5);
 
@@ -131,7 +147,7 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
                 };
 
                 quad.on('pointerdown', () => {
-                    if (this.turnTime.value > 0) {
+                    if (this.isPlayerTurn) {
                         this.selectProduct(i, j);
                     }
                 });
@@ -153,7 +169,7 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
             });
 
             quad.on('pointerdown', () => {
-                if (this.turnTime.value > 0) {
+                if (this.isPlayerTurn) {
                     this.selectNumber(i);
                 }
             });
@@ -167,9 +183,11 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
         this.lapis = this.add.sprite(0.305 * this.width, 0.68 * this.height, 'lapis').setScale(1.2);
     }
 
-    startPlayerTurn() {
-        this.playerTurnText.setText(`Jogador ${this.currentPlayer.value}`);
-        this.playerTurnText.setColor(this.currentPlayer.value === 1 ? '#FF0000' : '#0000FF');
+    startTurn(isPlayer) {
+        this.isPlayerTurn = isPlayer;
+        this.turnIndicator.setText(isPlayer ? 'Jogador' : 'Máquina');
+        this.turnIndicator.setColor(isPlayer ? '#0000FF' : '#FF0000');
+
         this.turnTime.value = 10;
         this.timeText.setText(this.turnTime.value);
 
@@ -188,17 +206,72 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
                 this.timeText.setText(this.turnTime.value);
 
                 if (this.turnTime.value <= 0) {
-                    this.switchPlayer();
+                    this.time.removeEvent(this.turnTimer);
+                    this.startTurn(!isPlayer);
                 }
             },
             callbackScope: this,
             loop: true
         });
+
+        if (!isPlayer) {
+            this.time.delayedCall(3000, () => {
+                this.machineTurn();
+            });
+        }
     }
 
-    switchPlayer() {
-        this.currentPlayer.value = this.currentPlayer.value === 1 ? 2 : 1;
-        this.startPlayerTurn();
+    machineTurn() {
+        const unmarkedProducts = [];
+        for (let i = 0; i < 5; i++) {
+            for (let j = 0; j < 5; j++) {
+                if (!this.quadradosGrid[i][j].marked) {
+                    unmarkedProducts.push({ row: i, col: j, value: this.matriz[i][j] });
+                }
+            }
+        }
+
+        if (unmarkedProducts.length === 0) {
+            this.endGame();
+            return;
+        }
+
+        const randomProduct = Phaser.Utils.Array.GetRandom(unmarkedProducts);
+        const { row, col, value } = randomProduct;
+
+        let accuracy = 0.5;
+        if (this.level === 2) accuracy = 0.75;
+        else if (this.level === 3) accuracy = 0.9;
+
+        const factors = this.findFactors(value);
+        const isCorrect = Math.random() < accuracy;
+
+        if (isCorrect && factors.length >= 2) {
+            this.markGridPosition(row, col, false);
+            this.updateScore(false);
+        } else {
+            this.markGridPosition(row, col, true);
+            this.updateScore(true);
+        }
+
+        if (this.checkGameOver()) {
+            this.endGame();
+        } else {
+            this.startTurn(true);
+        }
+    }
+
+    findFactors(product) {
+        let factors = [];
+        for (let i = 0; i < this.numerosColuna.length; i++) {
+            for (let j = 0; j < this.numerosColuna.length; j++) {
+                if (this.numerosColuna[i] * this.numerosColuna[j] === product) {
+                    factors.push(this.numerosColuna[i], this.numerosColuna[j]);
+                    return factors;
+                }
+            }
+        }
+        return factors;
     }
 
     validateMultiplication() {
@@ -211,36 +284,39 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
         const product = this.selectedProduct;
 
         const isCorrect = (num1 * num2 === product);
-        const scoringPlayer = isCorrect ? this.currentPlayer.value : (this.currentPlayer.value === 1 ? 2 : 1);
-
-        this.markGridPosition(this.selectedProductPos.row, this.selectedProductPos.col, scoringPlayer);
-        this.updateScore(scoringPlayer);
+        if (isCorrect) {
+            this.markGridPosition(this.selectedProductPos.row, this.selectedProductPos.col, true);
+            this.updateScore(true);
+        } else {
+            this.markGridPosition(this.selectedProductPos.row, this.selectedProductPos.col, false);
+            this.updateScore(false);
+        }
 
         if (this.checkGameOver()) {
             this.endGame();
         } else {
-            this.switchPlayer();
+            this.startTurn(false);
         }
     }
 
-    updateScore(scoringPlayer) {
-        if (scoringPlayer === 1) {
+    updateScore(isPlayer) {
+        if (isPlayer) {
             this.score1++;
         } else {
             this.score2++;
         }
-        this.scoreText.setText(`${this.score1}-${this.score2}`);
+        this.scoreText.setText(`${this.score1} - ${this.score2}`);
     }
 
-    markGridPosition(row, col, player) {
+    markGridPosition(row, col, isPlayer) {
         const marker = this.add.text(
             this.quadradosGrid[row][col].sprite.x,
             this.quadradosGrid[row][col].sprite.y,
-            player === 1 ? 'X' : 'O',
+            isPlayer ? 'X' : 'O',
             {
                 fontSize: '48px',
                 fontFamily: 'Arial',
-                color: player === 1 ? '#FF0000' : '#0000FF'
+                color: isPlayer ? '#0000FF' : '#FF0000' // Blue for X, Red for O
             }
         ).setOrigin(0.5);
 
@@ -269,7 +345,7 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
         if (this.score1 > this.score2) {
             resultText = "Jogador 1 venceu!";
         } else if (this.score2 > this.score1) {
-            resultText = "Jogador 2 venceu!";
+            resultText = "Maquina venceu!";
         } else {
             resultText = "Empate!";
         }
@@ -367,7 +443,6 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
 
     handleButtonClick(gameObject) {
         if (gameObject === this.btHome) {
-            this.cleanupGameObjects();
             this.scene.start('Menu');
         }
     }
