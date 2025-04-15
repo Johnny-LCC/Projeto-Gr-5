@@ -1,38 +1,44 @@
-// Refactored and improved implementation of the PvP mode for the children's game.
+// Global variables
+var width;
+var height;
+var score1 = 0;
+var score2 = 0;
+var scoreText;
+var timeText;
+var selectedProduct = null;
+var selectedNumbers = [];
+var selectedProductPos = null;
 
-// Extend JogoPvP functionality
+// Make JogoPvP globally accessible
 window.JogoPvP = class JogoPvP extends Phaser.Scene {
+
     constructor() {
         super('JogoPvP');
-        this.width = null;
-        this.height = null;
-        this.score1 = 0;
-        this.score2 = 0;
-        this.selectedProduct = null;
-        this.selectedNumbers = [];
-        this.selectedProductPos = null;
-        this.turnTime = { value: 10 };
-        this.currentPlayer = { value: 1 };
     }
 
+    // Preload assets
     preload() {
         this.load.image('background', 'assets/background.png');
         this.load.image('titulo', 'assets/titulo.png');
+        this.load.image('btPVP', 'assets/bt-level0.png');
         this.load.image('home', 'assets/bt_home.png');
         this.load.image('quadrado', 'assets/quadrado-recebenumeros.png');
         this.load.image('lapis', 'assets/lapis.png');
         this.load.image('ampTempo', 'assets/ampulhetaTempo.png');
-        this.load.image('btPVP', 'assets/bt-level0.png');
     }
 
+    // Create the game scene
     create() {
-        this.width = this.game.config.width;
-        this.height = this.game.config.height;
+        width = game.config.width;
+        height = game.config.height;
 
         this.setupGameBoard();
         this.setupUIElements();
 
-        // Start the first player's turn
+        // Start the timer for the first player's turn
+        this.turnTime = { value: 10 };
+        this.currentPlayer = { value: 1 };
+        this.turnTimer = { value: null };
         this.startPlayerTurn();
 
         // Button interaction logic
@@ -49,30 +55,36 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
         });
     }
 
+    // Update the game state
+    update() {
+        // Add per-frame updates if needed
+    }
+
+    // Setup the game board
     setupGameBoard() {
         // Background
-        this.background = this.add.sprite(0.5 * this.width, 0.5 * this.height, 'background').setScale(1.5);
+        this.background = this.add.sprite(0.5 * width, 0.5 * height, 'background').setScale(1.5);
 
         // Title
-        this.titulo = this.add.sprite(0.605 * this.width, 0.16 * this.height, 'titulo').setScale(1.7);
+        this.titulo = this.add.sprite(0.605 * width, 0.16 * height, 'titulo').setScale(1.7);
 
         // Home button
-        this.btHome = this.add.sprite(0.07 * this.width, 0.89 * this.height, 'home').setScale(1.2).setInteractive({ useHandCursor: true });
+        this.btHome = this.add.sprite(0.07 * width, 0.89 * height, 'home').setScale(1.2).setInteractive({ useHandCursor: true });
 
         // PVP button
-        this.btPVP = this.add.sprite(0.135 * this.width, 0.18 * this.height, 'btPVP').setScale(1);
+        this.btPVP = this.add.sprite(0.135 * width, 0.18 * height, 'btPVP').setScale(1);
 
         // Timer setup
-        this.ampulheta = this.add.sprite(0.21 * this.width, 0.45 * this.height, 'ampTempo').setScale(0.8);
-        this.timeText = this.add.text(0.21 * this.width, 0.45 * this.height, this.turnTime.value, {
-            fontSize: '48px',
-            fill: '#000',
+        this.ampTempo = this.add.sprite(0.135 * width, 0.4 * height, 'ampTempo').setScale(1);
+        timeText = this.add.text(0.135 * width, 0.4 * height, 10, {
+            fontSize: '64px',
+            color: '#ffffff',
             fontFamily: 'Arial'
         }).setOrigin(0.5);
 
         // Player turn indicator
-        this.playerTurnText = this.add.text(0.21 * this.width, 0.35 * this.height, 'Jogador 1', {
-            fontSize: '32px',
+        this.playerTurnText = this.add.text(0.285 * width, 0.4 * height, 'Jogador 1', {
+            fontSize: '48px',
             fill: '#FF0000',
             fontFamily: 'Arial'
         }).setOrigin(0.5);
@@ -101,12 +113,12 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
                 if (i === midRow && j === midCol) {
                     this.quadradosGrid[midRow][midCol] = {
                         sprite: this.add.rectangle(
-                            (0.4 + midCol * 0.07) * this.width,
-                            (0.38 + midRow * 0.12) * this.height,
-                            64,
-                            64,
-                            0x000000
-                        ).setOrigin(0.5),
+                            (0.4 + midCol * 0.07) * width,
+                            (0.38 + midRow * 0.12) * height,
+                            1,
+                            1,
+                            0x56C8D7
+                        ).setOrigin(0.5).setScale(1.1),
                         marked: true,
                         value: null,
                         marker: null
@@ -115,9 +127,9 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
                 }
 
                 this.matriz[i][j] = produtos[prodIndex++];
-                const quad = this.add.sprite((0.4 + j * 0.07) * this.width, (0.38 + i * 0.12) * this.height, 'quadrado').setScale(1.1).setInteractive({ useHandCursor: true });
-                const prodText = this.add.text(quad.x, quad.y, this.matriz[i][j], {
-                    fontSize: '36px',
+                let quad = this.add.sprite((0.4 + j * 0.07) * width, (0.38 + i * 0.12) * height, 'quadrado').setScale(1.1).setInteractive({ useHandCursor: true });
+                let prodText = this.add.text(quad.x, quad.y, this.matriz[i][j], {
+                    fontSize: '64px',
                     color: '#000',
                     fontFamily: 'Arial'
                 }).setOrigin(0.5);
@@ -130,17 +142,13 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
                     marker: null
                 };
 
-                quad.on('pointerdown', () => {
-                    if (this.turnTime.value > 0) {
-                        this.selectProduct(i, j);
-                    }
-                });
+                quad.on('pointerdown', () => this.selectProduct(i, j));
             }
         }
 
         for (let i = 0; i < 5; i++) {
-            const quad = this.add.sprite(0.85 * this.width, (0.43 + i * 0.1) * this.height, 'quadrado').setScale(1).setInteractive({ useHandCursor: true });
-            const numText = this.add.text(quad.x, quad.y, this.numerosColuna[i], {
+            let quad = this.add.sprite(0.85 * width, (0.43 + i * 0.1) * height, 'quadrado').setScale(1).setInteractive({ useHandCursor: true });
+            let numText = this.add.text(quad.x, quad.y, this.numerosColuna[i], {
                 fontSize: '64px',
                 color: '#000',
                 fontFamily: 'Arial'
@@ -149,43 +157,41 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
             this.quadradosNumeros.push({
                 sprite: quad,
                 text: numText,
-                value: this.numerosColuna[i]
+                value: this.numerosColuna[i],
             });
 
-            quad.on('pointerdown', () => {
-                if (this.turnTime.value > 0) {
-                    this.selectNumber(i);
-                }
-            });
+            quad.on('pointerdown', () => this.selectNumber(i));
         }
     }
 
+    // Setup UI elements
     setupUIElements() {
-        this.score1 = 0;
-        this.score2 = 0;
-        this.scoreText = this.add.text(180, 290, `${this.score1}-${this.score2}`, { fontSize: '64px', fill: '#049' });
-        this.lapis = this.add.sprite(0.305 * this.width, 0.68 * this.height, 'lapis').setScale(1.2);
+        score1 = 0;
+        score2 = 0;
+        scoreText = this.add.text(180, 290, `${score1} - ${score2}`, { fontSize: '64px', fill: '#049' });
+        this.lapis = this.add.sprite(0.305 * width, 0.68 * height, 'lapis').setScale(1.2);
     }
 
+    // Start a player's turn
     startPlayerTurn() {
         this.playerTurnText.setText(`Jogador ${this.currentPlayer.value}`);
         this.playerTurnText.setColor(this.currentPlayer.value === 1 ? '#FF0000' : '#0000FF');
         this.turnTime.value = 10;
-        this.timeText.setText(this.turnTime.value);
+        timeText.setText(this.turnTime.value);
 
-        this.selectedProduct = null;
-        this.selectedNumbers = [];
-        this.selectedProductPos = null;
+        selectedProduct = null;
+        selectedNumbers = [];
+        selectedProductPos = null;
 
-        if (this.turnTimer) {
-            this.time.removeEvent(this.turnTimer);
+        if (this.turnTimer.value) {
+            this.time.removeEvent(this.turnTimer.value);
         }
 
-        this.turnTimer = this.time.addEvent({
+        this.turnTimer.value = this.time.addEvent({
             delay: 1000,
             callback: () => {
                 this.turnTime.value--;
-                this.timeText.setText(this.turnTime.value);
+                timeText.setText(this.turnTime.value);
 
                 if (this.turnTime.value <= 0) {
                     this.switchPlayer();
@@ -196,24 +202,26 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
         });
     }
 
+    // Switch to the next player
     switchPlayer() {
         this.currentPlayer.value = this.currentPlayer.value === 1 ? 2 : 1;
         this.startPlayerTurn();
     }
 
+    // Validate the selected multiplication
     validateMultiplication() {
-        if (this.selectedProduct === null || this.selectedNumbers.length !== 2) {
+        if (selectedProduct === null || selectedNumbers.length !== 2) {
             return;
         }
 
-        const num1 = this.selectedNumbers[0].value;
-        const num2 = this.selectedNumbers[1].value;
-        const product = this.selectedProduct;
+        const num1 = selectedNumbers[0].value;
+        const num2 = selectedNumbers[1].value;
+        const product = selectedProduct;
 
         const isCorrect = (num1 * num2 === product);
         const scoringPlayer = isCorrect ? this.currentPlayer.value : (this.currentPlayer.value === 1 ? 2 : 1);
 
-        this.markGridPosition(this.selectedProductPos.row, this.selectedProductPos.col, scoringPlayer);
+        this.markGridPosition(selectedProductPos.row, selectedProductPos.col, scoringPlayer);
         this.updateScore(scoringPlayer);
 
         if (this.checkGameOver()) {
@@ -223,31 +231,40 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
         }
     }
 
-    updateScore(scoringPlayer) {
-        if (scoringPlayer === 1) {
-            this.score1++;
-        } else {
-            this.score2++;
-        }
-        this.scoreText.setText(`${this.score1}-${this.score2}`);
-    }
-
+    // Mark a grid position
     markGridPosition(row, col, player) {
+        const newBox = this.add.sprite(
+            this.quadradosGrid[row][col].sprite.x,
+            this.quadradosGrid[row][col].sprite.y,
+            'quadrado'
+        ).setScale(1.1).setDepth(1);
+
         const marker = this.add.text(
             this.quadradosGrid[row][col].sprite.x,
             this.quadradosGrid[row][col].sprite.y,
             player === 1 ? 'X' : 'O',
             {
-                fontSize: '48px',
-                fontFamily: 'Arial',
-                color: player === 1 ? '#FF0000' : '#0000FF'
+                fontSize: '64px',
+                color: player === 1 ? '#FF0000' : '#0000FF',
+                fontFamily: 'Arial'
             }
-        ).setOrigin(0.5);
+        ).setOrigin(0.5).setDepth(1);
 
         this.quadradosGrid[row][col].marked = true;
         this.quadradosGrid[row][col].marker = marker;
     }
 
+    // Update the score
+    updateScore(scoringPlayer) {
+        if (scoringPlayer === 1) {
+            score1++;
+        } else {
+            score2++;
+        }
+        scoreText.setText(`${score1} - ${score2}`);
+    }
+
+    // Check if the game is over
     checkGameOver() {
         for (let i = 0; i < 5; i++) {
             for (let j = 0; j < 5; j++) {
@@ -259,119 +276,47 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
         return true;
     }
 
+    // End the game
     endGame() {
-        if (this.turnTimer) {
-            this.time.removeEvent(this.turnTimer);
-            this.turnTimer = null;
+        if (this.turnTimer.value) {
+            this.time.removeEvent(this.turnTimer.value);
+            this.turnTimer.value = null;
         }
 
         let resultText;
-        if (this.score1 > this.score2) {
+        if (score1 > score2) {
             resultText = "Jogador 1 venceu!";
-        } else if (this.score2 > this.score1) {
+        } else if (score2 > score1) {
             resultText = "Jogador 2 venceu!";
         } else {
             resultText = "Empate!";
         }
 
-        const overlay = this.add.rectangle(
-            this.width * 0.5,
-            this.height * 0.5,
-            this.width,
-            this.height,
-            0x000000,
-            0.7
-        );
+        const overlay = this.background.setDepth(2);
+        const title = this.titulo.setDepth(2);
 
+        const rect = this.add.rectangle(0.5 * width, 0.6 * height, 0.45 * width, 0.3 * height, 0x4270FE).setOrigin(0.5).setDepth(2);
+        
         const gameOverText = this.add.text(
-            this.width * 0.5,
-            this.height * 0.5,
+            width * 0.5,
+            height * 0.5,
             resultText,
             {
-                fontSize: '64px',
-                fontFamily: 'Arial',
-                color: '#000000',
-                backgroundColor: '#FFFFFF',
-                padding: { x: 20, y: 10 }
-            }
-        ).setOrigin(0.5).setDepth(1);
-
-        const menuButtonBg = this.add.rectangle(
-            this.width * 0.5,
-            this.height * 0.6,
-            200,
-            50,
-            0x000000
-        ).setOrigin(0.5).setInteractive({ useHandCursor: true }).setDepth(1);
-
-        const menuButton = this.add.text(
-            this.width * 0.5,
-            this.height * 0.6,
-            "Voltar ao Menu",
-            {
-                fontSize: '32px',
+                fontSize: '100px',
                 fontFamily: 'Arial',
                 color: '#FFFFFF',
-                padding: { x: 15, y: 8 }
             }
         ).setOrigin(0.5).setDepth(2);
 
-        menuButtonBg.on('pointerdown', () => {
+        let newMenuButton = this.add.sprite(width * 0.5, height * 0.65, 'home').setScale(1.2).setInteractive({ useHandCursor: true }).setDepth(2);
+
+        newMenuButton.on('pointerdown', () => {
             this.cleanupGameObjects();
             this.scene.start('Menu');
         });
     }
 
-    selectProduct(row, col) {
-        if (this.quadradosGrid[row][col].marked) {
-            return;
-        }
-
-        if (this.selectedProduct !== null) {
-            const prev = this.selectedProductPos;
-            if (prev) {
-                this.quadradosGrid[prev.row][prev.col].sprite.setTint(0xffffff);
-            }
-        }
-
-        this.selectedProduct = this.matriz[row][col];
-        this.selectedProductPos = { row, col };
-        this.quadradosGrid[row][col].sprite.setTint(0xffff00);
-
-        if (this.selectedNumbers.length === 2) {
-            this.validateMultiplication();
-        }
-    }
-
-    selectNumber(index) {
-        const number = this.numerosColuna[index];
-
-        if (this.selectedNumbers.length === 2) {
-            this.selectedNumbers = [];
-            this.quadradosNumeros.forEach(num => {
-                num.sprite.setTint(0xffffff);
-            });
-        }
-
-        this.selectedNumbers.push({
-            index,
-            value: number
-        });
-
-        this.quadradosNumeros[index].sprite.setTint(0xffff00);
-
-        if (this.selectedProduct !== null && this.selectedNumbers.length === 2) {
-            this.validateMultiplication();
-        }
-    }
-
-    handleButtonClick(gameObject) {
-        if (gameObject === this.btHome) {
-            this.cleanupGameObjects();
-            this.scene.start('Menu');
-        }
-    }
-
+    // Generate unique numbers
     gerarNumerosUnicos(qtd, min, max) {
         let numeros = new Set();
         while (numeros.size < qtd) {
@@ -380,14 +325,68 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
         return Array.from(numeros);
     }
 
-    cleanupGameObjects() {
-        this.selectedProduct = null;
-        this.selectedNumbers = [];
-        this.selectedProductPos = null;
+    // Handle product selection
+    selectProduct(row, col) {
+        if (this.quadradosGrid[row][col].marked) {
+            return;
+        }
 
-        if (this.turnTimer) {
-            this.time.removeEvent(this.turnTimer);
-            this.turnTimer = null;
+        if (selectedProduct !== null) {
+            const prev = selectedProductPos;
+            if (prev) {
+                this.quadradosGrid[prev.row][prev.col].sprite.setTint(0xffffff);
+            }
+        }
+
+        selectedProduct = this.matriz[row][col];
+        selectedProductPos = { row, col };
+        this.quadradosGrid[row][col].sprite.setTint(0xffff00);
+
+        if (selectedNumbers.length === 2) {
+            this.validateMultiplication();
+        }
+    }
+
+    // Handle number selection
+    selectNumber(index) {
+        const number = this.numerosColuna[index];
+
+        if (selectedNumbers.length === 2) {
+            selectedNumbers = [];
+            //this.quadradosNumeros.forEach(num => { num.sprite.setTint(0xffffff); });
+        }
+        
+        selectedNumbers.push({
+            index,
+            value: number
+        });
+        
+        this.quadradosNumeros[index].sprite.setTintFill(0x56C8D7);
+        
+        if (selectedProduct !== null && selectedNumbers.length === 2) {
+            this.validateMultiplication();
+            //remove Tint
+            this.quadradosNumeros[index].sprite.clearTint();
+        }
+    }
+
+    // Handle button clicks
+    handleButtonClick(gameObject) {
+        if (gameObject === this.btHome) {
+            this.cleanupGameObjects();
+            this.scene.start('Menu');
+        }
+    }
+
+    // Clean up objects before transitioning scenes
+    cleanupGameObjects() {
+        selectedProduct = null;
+        selectedNumbers = [];
+        selectedProductPos = null;
+
+        if (this.turnTimer.value) {
+            this.time.removeEvent(this.turnTimer.value);
+            this.turnTimer.value = null;
         }
     }
 };
