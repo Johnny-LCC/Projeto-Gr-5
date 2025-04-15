@@ -86,9 +86,9 @@ window.Menu = class Menu extends Phaser.Scene {
         this.lapis.setScale(1.35);
 
         //Creditos-img
-        this.creditos = this.add.sprite(0.5 * width, 0.5 * height, 'creditos');
-        this.creditos.setScale(1.5);
-        this.creditos.visible = false;
+        this.cerditos = this.add.sprite(0.5*width, 0.5*height, 'creditos');
+        this.cerditos.setScale(1.5);
+        this.cerditos.visible = false;
 
         //Instrucoes-img
         this.instrucoes = this.add.sprite(0.5*width, 0.5*height, 'instrucoes');
@@ -115,6 +115,7 @@ window.Menu = class Menu extends Phaser.Scene {
             switch(gameObject) {
                 case this.btPVP:
                     this.scene.transition({ target: 'JogoPvP', duration: 10 });
+                    console.log('PVP entrado');
                     break;
                 case this.btLvl1:
                     this.scene.transition({ target: 'JogoPvE', duration: 10, data: {level: 1} });
@@ -126,7 +127,7 @@ window.Menu = class Menu extends Phaser.Scene {
                     this.scene.transition({ target: 'JogoPvE', duration: 10, data: {level: 3} });
                     break;
                 case this.btCreditos:
-                    this.creditos.visible = true;
+                    this.cerditos.visible = true;
                     this.instrucoes.visible = false;
                     this.btFechar.visible = true;
                     this.titulo.visible = false;
@@ -137,7 +138,7 @@ window.Menu = class Menu extends Phaser.Scene {
                     this.lapis.visible = false;
                     break;
                 case this.btInstrucoes:
-                    this.creditos.visible = false;
+                    this.cerditos.visible = false;
                     this.instrucoes.visible = true;
                     this.btFechar.visible = true;
                     this.titulo.visible = false;
@@ -148,7 +149,7 @@ window.Menu = class Menu extends Phaser.Scene {
                     this.lapis.visible = false;
                     break;
                 case this.btFechar:
-                    this.creditos.visible = false;
+                    this.cerditos.visible = false;
                     this.instrucoes.visible = false;
                     this.btFechar.visible = false;
                     this.titulo.visible = true;
