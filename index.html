@@ -18,7 +18,8 @@
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0
-                ,minimum-scale=1.0, user-scalable=0, target-densityDpi=device-dpi">
+                ,minimum-scale=1.0, user-scalable=0, target-densityDpi=device-dpi" />
+    <meta name="HandheldFriendly" content="true" />
     <title>Jogo da Velha</title>
 
     <link rel="shortcut icon" type="image/x-icon" href="https://www.hypatiamat.com/images/favicon.ico">
@@ -26,6 +27,16 @@
 <body>
     <div id='divId'></div>
     
+    <script>
+        var PleaseRotateOptions = {
+            onlyMobile: true,
+            forcePortrait: false,
+            message: "Por Favor Rode o Ecrã",
+            subMessage: "(ou clique para continuar)",
+            allowClickBypass: true
+        }
+    </script>
+
     <!-- Load Phaser library first -->
     <script src="phaser.min.js"></script>
     
