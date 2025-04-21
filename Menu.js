@@ -31,6 +31,9 @@ window.Menu = class Menu extends Phaser.Scene {
         this.load.image('creditos', 'assets/creditos-img.png');
         this.load.image('instrucoes', 'assets/instrucoes-img.png');
         this.load.image('btFechar', 'assets/bt-fechar.png');
+
+        this.load.image('fullscreenBT1','assets/fullscreenBT-1.png');
+        this.load.image('fullscreenBT2','assets/fullscreenBT-2.png');
     }
 
     create() {
@@ -99,7 +102,18 @@ window.Menu = class Menu extends Phaser.Scene {
         this.btFechar = this.add.sprite(0.94*width, 0.1*height, 'btFechar');
         this.btFechar.setScale(1.1);
         this.btFechar.setInteractive({useHandCursor: true});
-        this.btFechar.visible = false;        
+        this.btFechar.visible = false;      
+        
+        //FullscreenBT1
+        this.fullscreenBT1 = this.add.sprite(0.07 * width ,0.9 * height,'fullscreenBT1');
+        this.fullscreenBT1.setScale(1.1);
+        this.fullscreenBT1.setInteractive({ useHandCursor: true });
+
+        //FullscreenBT2
+        this.fullscreenBT2 = this.add.sprite(0.07 * width, 0.9 * height,'fullscreenBT2');
+        this.fullscreenBT2.visible = false;
+        this.fullscreenBT2.setScale(1.1);
+        this.fullscreenBT2.setInteractive({ useHandCursor: true });
 
         //BT Logic
         //BT Highlight
@@ -159,6 +173,16 @@ window.Menu = class Menu extends Phaser.Scene {
                     this.btLvl3.visible = true;
                     this.lapis.visible = true;
                     break;
+                case this.fullscreenBT1:
+                    this.scale.startFullscreen();
+                    this.fullscreenBT1.visible = false;
+                    this.fullscreenBT2.visible = true;
+                    break;
+                case this.fullscreenBT2:
+                    this.scale.stopFullscreen();
+                    this.fullscreenBT2.visible = false;
+                    this.fullscreenBT1.visible = true;
+                    break;
                 default:
                     break;
             }    
@@ -168,5 +192,14 @@ window.Menu = class Menu extends Phaser.Scene {
     update() {
         width = game.config.width;
         height = game.config.height;
+
+        if(this.scale.isFullscreen){
+            this.fullscreenBT1.visible = false;
+            this.fullscreenBT2.visible = true;
+        }
+        else{
+            this.fullscreenBT1.visible = true;
+            this.fullscreenBT2.visible = false;
+        }
     }
 }
