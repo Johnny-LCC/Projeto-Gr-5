@@ -40,6 +40,8 @@ window.JogoPvE = class JogoPvE extends Phaser.Scene {
         this.load.image('lapis', 'assets/lapis.png');
         this.load.image('quadrado-azul', 'assets/quadrado-azul.png');
         this.load.image('quadrado-vermelho', 'assets/quadrado-vermelho.png');
+        this.load.image('assinalaazul', 'assets/assinalaazul.png');
+        this.load.image('assinalavermelho', 'assets/assinalavermelho.png');
     }
 
     create() {
@@ -188,7 +190,7 @@ window.JogoPvE = class JogoPvE extends Phaser.Scene {
     startTurn(isPlayer) {
         this.isPlayerTurn = isPlayer;
         this.turnIndicator.setText(isPlayer ? 'Jogador' : 'Máquina');
-        this.turnIndicator.setColor(isPlayer ? '#0000FF' : '#FF0000');
+        this.turnIndicator.setColor(isPlayer ? '#FF0000' : '#0000FF');
 
         this.turnTime.value = 10;
         this.timeText.setText(this.turnTime.value);
@@ -317,15 +319,10 @@ window.JogoPvE = class JogoPvE extends Phaser.Scene {
             'quadrado'
         ).setScale(1.1).setDepth(1);
 
-        const marker = this.add.text(
+        const marker = this.add.sprite(
             this.quadradosGrid[row][col].sprite.x,
             this.quadradosGrid[row][col].sprite.y,
-            isPlayer ? 'X' : 'O',
-            {
-                fontSize: '64px',
-                fontFamily: 'Arial',
-                color: isPlayer ? '#0000FF' : '#FF0000' // Blue for X, Red for O
-            }
+            isPlayer ? 'assinalavermelho' : 'assinalaazul'
         ).setOrigin(0.5).setDepth(1);
 
         this.quadradosGrid[row][col].marked = true;

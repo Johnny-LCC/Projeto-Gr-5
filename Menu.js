@@ -27,14 +27,15 @@ window.Menu = class Menu extends Phaser.Scene {
         this.load.image('btLvl2', 'assets/bt-level2.png');
         this.load.image('btLvl3', 'assets/bt-level3.png');
         this.load.image('lapis', 'assets/lapis.png');
-
         this.load.image('creditos', 'assets/creditos-img.png');
         this.load.image('instrucoes', 'assets/instrucoes-img.png');
         this.load.image('btFechar', 'assets/bt-fechar.png');
-
         this.load.image('fullscreenBT1','assets/fullscreenBT-1.png');
         this.load.image('fullscreenBT2','assets/fullscreenBT-2.png');
-    }
+        this.load.image('btLogin','assets/login-bt.png');
+        this.load.image('btLogout','assets/logout-bt.png');
+        this.load.image('login','assets/login.png'); //
+        }
 
     create() {
         //Variáveis a ser usadas para adicionar os sprites
@@ -50,17 +51,17 @@ window.Menu = class Menu extends Phaser.Scene {
         this.titulo.setScale(1.7);
 
         //Creditos-bt
-        this.btCreditos = this.add.sprite(0.94 * width, 0.90 * height, 'btCreditos');
+        this.btCreditos = this.add.sprite(0.935 * width, 0.90 * height, 'btCreditos');
         this.btCreditos.setScale(1.2);
         this.btCreditos.setInteractive({ useHandCursor: true });
 
         //Instrucoes-bt
-        this.btInstrucoes = this.add.sprite(0.94 * width, 0.74 * height, 'btInstrucoes');
+        this.btInstrucoes = this.add.sprite(0.935 * width, 0.74 * height, 'btInstrucoes');
         this.btInstrucoes.setScale(1.2);
         this.btInstrucoes.setInteractive({ useHandCursor: true });
 
         //Top-bt
-        this.btTop = this.add.sprite(0.94 * width, 0.58 * height, 'btTop');
+        this.btTop = this.add.sprite(0.935 * width, 0.58 * height, 'btTop');
         this.btTop.setScale(1.2);
         this.btTop.setInteractive({useHandCursor: true});
 
@@ -99,7 +100,7 @@ window.Menu = class Menu extends Phaser.Scene {
         this.instrucoes.visible = false;
 
         //bt-fechar
-        this.btFechar = this.add.sprite(0.94*width, 0.1*height, 'btFechar');
+        this.btFechar = this.add.sprite(0.935*width, 0.1*height, 'btFechar');
         this.btFechar.setScale(1.1);
         this.btFechar.setInteractive({useHandCursor: true});
         this.btFechar.visible = false;      
@@ -114,6 +115,22 @@ window.Menu = class Menu extends Phaser.Scene {
         this.fullscreenBT2.visible = false;
         this.fullscreenBT2.setScale(1.1);
         this.fullscreenBT2.setInteractive({ useHandCursor: true });
+
+        //bt-login
+        this.btLogin = this.add.sprite(0.935 * width, 0.42 * height, 'btLogin');
+        this.btLogin.setScale(0.8);
+        this.btLogin.setInteractive({useHandCursor: true});
+
+        //bt-logout
+        this.btLogout = this.add.sprite(0.935 * width, 0.42 * height, 'btLogout');
+        this.btLogout.setScale(0.8);
+        this.btLogout.setInteractive({useHandCursor: true});
+        this.btLogout.visible = false;
+
+        //login
+        this.login = this.add.sprite(0.5 * width, 0.5 * height, 'login');
+        this.login.setScale(1.5);
+        this.login.visible = false;
 
         //BT Logic
         //BT Highlight
@@ -150,6 +167,7 @@ window.Menu = class Menu extends Phaser.Scene {
                     this.btLvl2.visible = false;
                     this.btLvl3.visible = false;
                     this.lapis.visible = false;
+                    this.login.visible = false;
                     break;
                 case this.btInstrucoes:
                     this.cerditos.visible = false;
@@ -161,6 +179,7 @@ window.Menu = class Menu extends Phaser.Scene {
                     this.btLvl2.visible = false;
                     this.btLvl3.visible = false;
                     this.lapis.visible = false;
+                    this.login.visible = false;
                     break;
                 case this.btFechar:
                     this.cerditos.visible = false;
@@ -172,6 +191,7 @@ window.Menu = class Menu extends Phaser.Scene {
                     this.btLvl2.visible = true;
                     this.btLvl3.visible = true;
                     this.lapis.visible = true;
+                    this.login.visible = false;
                     break;
                 case this.fullscreenBT1:
                     this.scale.startFullscreen();
@@ -182,6 +202,24 @@ window.Menu = class Menu extends Phaser.Scene {
                     this.scale.stopFullscreen();
                     this.fullscreenBT2.visible = false;
                     this.fullscreenBT1.visible = true;
+                    break;
+                case this.btLogin:
+                    this.cerditos.visible = false;
+                    this.instrucoes.visible = false;
+                    this.btFechar.visible = true;
+                    this.titulo.visible = false;
+                    this.btPVP.visible = false;
+                    this.btLvl1.visible = false;
+                    this.btLvl2.visible = false;
+                    this.btLvl3.visible = false;
+                    this.lapis.visible = false;
+                    this.login.visible = true;
+                    //this.btLogout.visible = true;
+                    //this.btLogin.visible = false;
+                    break;
+                case this.btLogout:
+                    break;
+                case this.btTop:
                     break;
                 default:
                     break;

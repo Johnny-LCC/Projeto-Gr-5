@@ -25,7 +25,11 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
         this.load.image('quadrado', 'assets/quadrado-recebenumeros.png');
         this.load.image('lapis', 'assets/lapis.png');
         this.load.image('ampTempo', 'assets/ampulhetaTempo.png');
-    }
+        this.load.image('quadrado-azul', 'assets/quadrado-azul.png');
+        this.load.image('quadrado-vermelho', 'assets/quadrado-vermelho.png');
+        this.load.image('assinalaazul', 'assets/assinalaazul.png');
+        this.load.image('assinalavermelho', 'assets/assinalavermelho.png');
+   }
 
     // Create the game scene
     create() {
@@ -239,15 +243,10 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
             'quadrado'
         ).setScale(1.1).setDepth(1);
 
-        const marker = this.add.text(
+        const marker = this.add.sprite(
             this.quadradosGrid[row][col].sprite.x,
             this.quadradosGrid[row][col].sprite.y,
-            player === 1 ? 'X' : 'O',
-            {
-                fontSize: '64px',
-                color: player === 1 ? '#FF0000' : '#0000FF',
-                fontFamily: 'Arial'
-            }
+            player === 1 ? 'assinalavermelho' : 'assinalaazul'
         ).setOrigin(0.5).setDepth(1);
 
         this.quadradosGrid[row][col].marked = true;
@@ -353,20 +352,19 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
 
         if (selectedNumbers.length === 2) {
             selectedNumbers = [];
-            //this.quadradosNumeros.forEach(num => { num.sprite.setTint(0xffffff); });
+            //
         }
         
         selectedNumbers.push({
             index,
             value: number
         });
-        
-        this.quadradosNumeros[index].sprite.setTintFill(0x56C8D7);
+
+        //
         
         if (selectedProduct !== null && selectedNumbers.length === 2) {
             this.validateMultiplication();
-            //remove Tint
-            this.quadradosNumeros[index].sprite.clearTint();
+            //
         }
     }
 
