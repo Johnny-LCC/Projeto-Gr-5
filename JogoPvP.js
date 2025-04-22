@@ -76,7 +76,7 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
 
         // Timer setup
         this.ampTempo = this.add.sprite(0.135 * width, 0.4 * height, 'ampTempo').setScale(1);
-        timeText = this.add.text(0.135 * width, 0.4 * height, 10, {
+        timeText = this.add.text(0.142 * width, 0.4 * height, 10, {
             fontSize: '64px',
             color: '#ffffff',
             fontFamily: 'Arial'

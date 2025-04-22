@@ -80,7 +80,7 @@ window.JogoPvE = class JogoPvE extends Phaser.Scene {
 
         // Timer setup
         this.ampulheta = this.add.sprite(0.135 * this.width, 0.4 * this.height, 'ampTempo').setScale(1);
-        this.timeText = this.add.text(0.135 * this.width, 0.4 * this.height, this.turnTime.value, {
+        this.timeText = this.add.text(0.142 * this.width, 0.4 * this.height, this.turnTime.value, {
             fontSize: '64px',
             fill: '#ffffff',
             fontFamily: 'Arial'
