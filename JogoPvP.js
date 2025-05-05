@@ -209,6 +209,9 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
     // Switch to the next player
     switchPlayer() {
         this.currentPlayer.value = this.currentPlayer.value === 1 ? 2 : 1;
+        this.quadradosNumeros.forEach(num => {
+            num.sprite.setTexture('quadrado');
+        });
         this.startPlayerTurn();
     }
 
@@ -227,6 +230,9 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
 
         this.markGridPosition(selectedProductPos.row, selectedProductPos.col, scoringPlayer);
         this.updateScore(scoringPlayer);
+        this.quadradosNumeros.forEach(num => {
+            num.sprite.setTexture('quadrado');
+        });
 
         if (this.checkGameOver()) {
             this.endGame();
@@ -332,14 +338,10 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
 
         if (selectedProduct !== null) {
             const prev = selectedProductPos;
-            if (prev) {
-                this.quadradosGrid[prev.row][prev.col].sprite.setTint(0xffffff);
-            }
         }
 
         selectedProduct = this.matriz[row][col];
         selectedProductPos = { row, col };
-        this.quadradosGrid[row][col].sprite.setTint(0xffff00);
 
         if (selectedNumbers.length === 2) {
             this.validateMultiplication();
@@ -349,10 +351,13 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
     // Handle number selection
     selectNumber(index) {
         const number = this.numerosColuna[index];
+        var quadrado = this.quadradosNumeros[index]; 
 
         if (selectedNumbers.length === 2) {
             selectedNumbers = [];
-            //
+            this.quadradosNumeros.forEach(num => {
+                num.sprite.setTexture('quadrado');
+            });
         }
         
         selectedNumbers.push({
@@ -360,11 +365,10 @@ window.JogoPvP = class JogoPvP extends Phaser.Scene {
             value: number
         });
 
-        //
+        this.currentPlayer.value === 1 ? quadrado.sprite.setTexture('quadrado-vermelho') : quadrado.sprite.setTexture('quadrado-azul');
         
         if (selectedProduct !== null && selectedNumbers.length === 2) {
             this.validateMultiplication();
-            //
         }
     }
 

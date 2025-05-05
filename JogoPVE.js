@@ -188,6 +188,10 @@ window.JogoPvE = class JogoPvE extends Phaser.Scene {
     }
 
     startTurn(isPlayer) {
+        this.quadradosNumeros.forEach(num => {
+            num.sprite.setTexture('quadrado');
+        });
+        
         this.isPlayerTurn = isPlayer;
         this.turnIndicator.setText(isPlayer ? 'Jogador' : 'Máquina');
         this.turnIndicator.setColor(isPlayer ? '#FF0000' : '#0000FF');
@@ -219,13 +223,13 @@ window.JogoPvE = class JogoPvE extends Phaser.Scene {
         });
 
         if (!isPlayer) {
-            this.time.delayedCall(3000, () => { //2500*this.level
+            this.time.delayedCall(2000*this.level, () => {
                 this.machineTurn();
             });
         }
     }
 
-    machineTurn() {
+    async machineTurn() {
         const unmarkedProducts = [];
         for (let i = 0; i < 5; i++) {
             for (let j = 0; j < 5; j++) {
@@ -247,7 +251,7 @@ window.JogoPvE = class JogoPvE extends Phaser.Scene {
         if (this.level === 2) accuracy = 0.75;
         else if (this.level === 3) accuracy = 0.9;
 
-        const factors = this.findFactors(value);
+        const factors = await this.findFactors(value);
         const isCorrect = Math.random() < accuracy;
 
         if (isCorrect && factors.length >= 2) {
@@ -258,6 +262,10 @@ window.JogoPvE = class JogoPvE extends Phaser.Scene {
             this.updateScore(true);
         }
 
+        this.quadradosNumeros.forEach(num => {
+            num.sprite.setTexture('quadrado');
+        });
+
         if (this.checkGameOver()) {
             this.endGame();
         } else {
@@ -265,12 +273,16 @@ window.JogoPvE = class JogoPvE extends Phaser.Scene {
         }
     }
 
-    findFactors(product) {
+    async findFactors(product) {
         let factors = [];
         for (let i = 0; i < this.numerosColuna.length; i++) {
             for (let j = 0; j < this.numerosColuna.length; j++) {
                 if (this.numerosColuna[i] * this.numerosColuna[j] === product) {
                     factors.push(this.numerosColuna[i], this.numerosColuna[j]);
+                    this.quadradosNumeros[i].sprite.setTexture('quadrado-azul');
+                    await esperar(500);
+                    this.quadradosNumeros[j].sprite.setTexture('quadrado-azul');
+                    await esperar(1500);
                     return factors;
                 }
             }
@@ -291,9 +303,15 @@ window.JogoPvE = class JogoPvE extends Phaser.Scene {
         if (isCorrect) {
             this.markGridPosition(this.selectedProductPos.row, this.selectedProductPos.col, true);
             this.updateScore(true);
+            this.quadradosNumeros.forEach(num => {
+                num.sprite.setTexture('quadrado');
+            });
         } else {
             this.markGridPosition(this.selectedProductPos.row, this.selectedProductPos.col, false);
             this.updateScore(false);
+            this.quadradosNumeros.forEach(num => {
+                num.sprite.setTexture('quadrado');
+            });
         }
 
         if (this.checkGameOver()) {
@@ -387,14 +405,10 @@ window.JogoPvE = class JogoPvE extends Phaser.Scene {
 
         if (this.selectedProduct !== null) {
             const prev = this.selectedProductPos;
-            if (prev) {
-                this.quadradosGrid[prev.row][prev.col].sprite.setTint(0xffffff);
-            }
         }
 
         this.selectedProduct = this.matriz[row][col];
         this.selectedProductPos = { row, col };
-        this.quadradosGrid[row][col].sprite.setTint(0xffff00);
 
         if (this.selectedNumbers.length === 2) {
             this.validateMultiplication();
@@ -403,11 +417,12 @@ window.JogoPvE = class JogoPvE extends Phaser.Scene {
 
     selectNumber(index) {
         const number = this.numerosColuna[index];
+        var quadrado = this.quadradosNumeros[index];
 
         if (this.selectedNumbers.length === 2) {
             this.selectedNumbers = [];
             this.quadradosNumeros.forEach(num => {
-                num.sprite.setTint(0xffffff);
+                num.sprite.setTexture('quadrado');
             });
         }
 
@@ -416,7 +431,7 @@ window.JogoPvE = class JogoPvE extends Phaser.Scene {
             value: number
         });
 
-        this.quadradosNumeros[index].sprite.setTint(0xffff00);
+        quadrado.sprite.setTexture('quadrado-vermelho');
 
         if (this.selectedProduct !== null && this.selectedNumbers.length === 2) {
             this.validateMultiplication();
@@ -448,3 +463,7 @@ window.JogoPvE = class JogoPvE extends Phaser.Scene {
         }
     }
 };
+
+function esperar(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
