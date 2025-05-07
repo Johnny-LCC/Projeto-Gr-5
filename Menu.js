@@ -111,6 +111,7 @@ window.Menu = class Menu extends Phaser.Scene {
         this.fullscreenBT1 = this.add.sprite(0.07 * width ,0.9 * height,'fullscreenBT1');
         this.fullscreenBT1.setScale(1.1);
         this.fullscreenBT1.setInteractive({ useHandCursor: true });
+        if (isIphone()) this.fullscreenBT1.visible = false;
 
         //FullscreenBT2
         this.fullscreenBT2 = this.add.sprite(0.07 * width, 0.9 * height,'fullscreenBT2');
@@ -283,3 +284,7 @@ window.Menu = class Menu extends Phaser.Scene {
         }
     }
 }
+
+function isIphone() {
+    return /iPhone/i.test(navigator.userAgent);
+  }
