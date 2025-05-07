@@ -9,6 +9,8 @@ var time = 10.0;
 var timeText;
 var level = 1;
 
+var nome;
+
 // Make Menu globally accessible
 window.Menu = class Menu extends Phaser.Scene {
 
@@ -131,7 +133,33 @@ window.Menu = class Menu extends Phaser.Scene {
         this.login = this.add.sprite(0.5 * width, 0.5 * height, 'login');
         this.login.setScale(1.5);
         this.login.visible = false;
+        
+        //
+        //olaMSG
+        this.ola = this.add.text(0.38 * game.config.width ,0.25 * game.config.height,"Olá " + nome,{ fontFamily: 'Arial',fontSize: 80,color: '#0D870F',align: 'center'});
+        this.ola.visible = false;
+        
+        //loginErrorMsg
+        this.loginErrorMsg = this.add.text(0.38 * game.config.width, 0.316 * game.config.height,"Utilizador ou Password Errados",{ fontFamily: 'Arial',fontSize: 35,color: '#B40404',align: 'center'});
+        this.loginErrorMsg.visible = false;
 
+        //loginErrorMsg2
+        this.loginErrorMsg2 = this.add.text(0.38 * game.config.width, 0.316 * game.config.height,"Está registado como professor!",{ fontFamily: 'Arial',fontSize: 35,color: '#B40404',align: 'center'});
+        this.loginErrorMsg2.visible = false;
+
+
+        let user = `<input type="text" name="username" style="font-size: 15px;font-family:'Arial';text-align:center;">`;
+        let pass = `<input type="password" name="password" style="font-size: 15px;font-family:'Arial';text-align:center;">`;    
+
+        this.user = this.add.dom(0.5319 * game.config.width, 0.447 * game.config.height).createFromHTML(user);
+        this.user.setScale(2.8);
+        this.user.visible = false;
+
+        this.pass = this.add.dom(0.5319 * game.config.width, 0.6 * game.config.height).createFromHTML(pass);
+        this.pass.setScale(2.8);
+        this.pass.visible = false;
+        //
+        
         //BT Logic
         //BT Highlight
         this.input.on('gameobjectover',function(pointer, gameObject) {
@@ -195,6 +223,7 @@ window.Menu = class Menu extends Phaser.Scene {
                     break;
                 case this.fullscreenBT1:
                     this.scale.startFullscreen();
+                    console.log("Botão fullscreen");
                     this.fullscreenBT1.visible = false;
                     this.fullscreenBT2.visible = true;
                     break;
@@ -214,6 +243,19 @@ window.Menu = class Menu extends Phaser.Scene {
                     this.btLvl3.visible = false;
                     this.lapis.visible = false;
                     this.login.visible = true;
+                    this.user.visible = true;
+                    this.pass.visible = true;
+                    this.loginErrorMsg.visible = false;
+                    this.loginErrorMsg2.visible = false;
+                    /*this.certoLoginBT.on('pointerup', function () {
+                        let user = x.getChildByName("username").value
+                        let password = y.getChildByName("password").value
+                        if (user != '' && password != '') {
+                            let r = login(user, password,this);
+                            x.getChildByName("username").value = '';
+                            y.getChildByName("password").value = '';
+                        }
+                    }, this);*/
                     //this.btLogout.visible = true;
                     //this.btLogin.visible = false;
                     break;
