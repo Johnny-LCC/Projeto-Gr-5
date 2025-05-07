@@ -111,7 +111,12 @@ window.Menu = class Menu extends Phaser.Scene {
         this.fullscreenBT1 = this.add.sprite(0.07 * width ,0.9 * height,'fullscreenBT1');
         this.fullscreenBT1.setScale(1.1);
         this.fullscreenBT1.setInteractive({ useHandCursor: true });
-        if (isIphone()) this.fullscreenBT1.visible = false;
+        if (isIphone()) {
+            console.log("É um iphone");
+            this.fullscreenBT1.visible = false;
+        } else {
+            console.log("Não é um iphone");
+        }
 
         //FullscreenBT2
         this.fullscreenBT2 = this.add.sprite(0.07 * width, 0.9 * height,'fullscreenBT2');
@@ -271,20 +276,21 @@ window.Menu = class Menu extends Phaser.Scene {
     }
 
     update() {
-        width = game.config.width;
-        height = game.config.height;
-
-        if(this.scale.isFullscreen){
-            this.fullscreenBT1.visible = false;
-            this.fullscreenBT2.visible = true;
-        }
-        else{
-            this.fullscreenBT1.visible = true;
-            this.fullscreenBT2.visible = false;
-        }
+        //width = game.config.width;
+        //height = game.config.height;
+        //
+        //if(this.scale.isFullscreen){
+        //    this.fullscreenBT1.visible = false;
+        //    this.fullscreenBT2.visible = true;
+        //}
+        //else{
+        //    this.fullscreenBT1.visible = true;
+        //    this.fullscreenBT2.visible = false;
+        //}
     }
 }
 
 function isIphone() {
+    console.log("Verificando se é um iphone...")
     return /iPhone/i.test(navigator.userAgent);
   }
