@@ -31,7 +31,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="https://www.hypatiamat.com/images/favicon.ico">
 </head>
 <body>
-    <div style="position:absolute; left:-1000px; visibility:hidden;"></div>
+    <div id='divId' style="position:absolute; left:-1000px; visibility:hidden;"></div>
     
     <script>
         var PleaseRotateOptions = {
@@ -79,8 +79,6 @@
                         createContainer: true
                     },
                     backgroundColor: "#ffffff",
-                    parent: 'divId',
-                    fullscreenTarget: 'divId',
                     scene: [window.Menu, window.JogoPvP, window.JogoPvE]
                 };
                 
