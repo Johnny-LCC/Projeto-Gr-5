@@ -276,9 +276,9 @@ window.Menu = class Menu extends Phaser.Scene {
     }
 
     update() {
-        //width = game.config.width;
-        //height = game.config.height;
-        //
+        width = game.config.width;
+        height = game.config.height;
+        
         //if(this.scale.isFullscreen){
         //    this.fullscreenBT1.visible = false;
         //    this.fullscreenBT2.visible = true;
