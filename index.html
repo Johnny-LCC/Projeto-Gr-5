@@ -9,12 +9,21 @@
             margin: 0;
         }
 
-        body {
-            overflow: hidden;
+        body, html {
+            margin: 0;
+            padding: 0;
             height: 100%;
-            width: 100%;
-            margin: 0 auto;
-        }
+            overflow: hidden;
+            }
+
+            #game-container {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #ffffff; /* optional for debugging centering */
+            }
     </style>
 
     <meta charset="UTF-8">
@@ -28,7 +37,7 @@
     <link rel="shortcut icon" type="image/x-icon" href="https://www.hypatiamat.com/images/favicon.ico">
 </head>
 <body>
-    <div id='divId'></div>
+    <div id='game-container'></div>
     
     <script>
         var PleaseRotateOptions = {
@@ -60,12 +69,13 @@
                 // Configure and create the game instance
                 var config = {
                     type: Phaser.CANVAS,
-                    
+                    parent: 'game-container',
                     scale: {
                         mode: Phaser.Scale.FIT,
                         autoCenter: Phaser.Scale.CENTER_BOTH,
                         width: 2048,
                         height: 1200,
+                        fullscreenTarget: 'game-container',
                     },
                     render: {
                         pixelArt: false
@@ -74,6 +84,8 @@
                         createContainer: true
                     },
                     backgroundColor: "#ffffff",
+                    
+                    
                     scene: [window.Menu, window.JogoPvP, window.JogoPvE]
                 };
                 
