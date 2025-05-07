@@ -2,34 +2,36 @@
 <html>
 <head>
     <style>
-    html{
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        width: 100%;
-    }
-
-    body {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    }
-</style>
+        html{
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+        }
+    
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0
                 ,minimum-scale=1.0, user-scalable=0, target-densityDpi=device-dpi" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-capable" content="yes" />
     <meta name="HandheldFriendly" content="true" />
     <title>Jogo da Velha</title>
 
     <link rel="shortcut icon" type="image/x-icon" href="https://www.hypatiamat.com/images/favicon.ico">
 </head>
 <body>
-    <div id='divId'></div>
+    <div id='divId' style="position:absolute; left:-1000px; visibility:hidden;"></div>
     
     <script>
         var PleaseRotateOptions = {
@@ -49,6 +51,7 @@
     <script src="JogoPvP.js"></script>
     <script src="JogoPVE.js"></script>
     <script src="pleaserotate.js"></script> 
+    
     
     <!-- Initialize the game -->
     <script>
@@ -81,6 +84,7 @@
                 
                 window.game = new Phaser.Game(config);
                 console.log("Iniciando o jogo da velha");
+                //var infoUser = new loginInfo();
             } else {
                 console.error("Failed to load one or more game scenes!");
                 if (!window.Menu) console.error("Menu class not loaded");
