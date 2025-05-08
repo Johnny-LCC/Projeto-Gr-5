@@ -258,7 +258,6 @@ window.JogoPvE = class JogoPvE extends Phaser.Scene {
             this.markGridPosition(row, col, false);
             this.updateScore(false);
         } else {
-            // Select a random incorrect product
             const incorrectProduct = Phaser.Utils.Array.GetRandom(
                 unmarkedProducts.filter(p => p.value !== value)
             );
