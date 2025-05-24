@@ -265,7 +265,7 @@ window.JogoPvE = class JogoPvE extends Phaser.Scene {
             if (incorrectProduct) {
                 this.markGridPosition(incorrectProduct.row, incorrectProduct.col, true);
             } else {
-                this.markGridPosition(row, col, true);
+               // this.markGridPosition(row, col, true);
             }
 
             this.updateScore(true);
@@ -316,8 +316,8 @@ window.JogoPvE = class JogoPvE extends Phaser.Scene {
                 num.sprite.setTexture('quadrado');
             });
         } else {
-            this.markGridPosition(this.selectedProductPos.row, this.selectedProductPos.col, false);
-            this.updateScore(false);
+            // this.markGridPosition(this.selectedProductPos.row, this.selectedProductPos.col, false);
+            // this.updateScore(false);
             this.quadradosNumeros.forEach(num => {
                 num.sprite.setTexture('quadrado');
             });
