@@ -21,7 +21,7 @@ var df = y + "-08-31";
 var infoUser = new loginInfo();
 
 // Make Menu globally accessible
-window.Menu = class Menu extends Phaser.Scene {
+class Menu extends Phaser.Scene {
 
     constructor() {
         super('Menu');
