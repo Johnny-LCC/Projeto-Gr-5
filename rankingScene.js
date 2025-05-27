@@ -40,7 +40,7 @@ class rankingScene extends Phaser.Scene {
         this.titulo.setScale(1.7);
 
         //menu
-        this.menuBT = this.add.sprite(0.07 * game.config.width, 0.89 * game.config.height, 'menuBT');
+        this.menuBT = this.add.sprite(0.07 * game.config.width, 0.9 * game.config.height, 'menuBT');
         this.menuBT.setScale(1.2);
         this.menuBT.setInteractive({ useHandCursor: true });
 
@@ -107,7 +107,7 @@ class rankingScene extends Phaser.Scene {
             table: {
                 cellWidth: 50,
                 cellHeight: 50,
-                columns: 6,
+                columns: 7, //6
 
                 mask: {
                     padding: 2,
@@ -118,8 +118,8 @@ class rankingScene extends Phaser.Scene {
             },
 
             slider: {
-                track: this.rexUI.add.roundRectangle(0, 0, 10, 10, 10, 0x0B610B),
-                thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 13, 0x3ADF00),
+                track: this.rexUI.add.roundRectangle(0, 0, 10, 10, 10, 0x2017B3),
+                thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 13, 0x15BBE8),
             },
             space: {
                 left: 10,
@@ -143,18 +143,20 @@ class rankingScene extends Phaser.Scene {
                     newwith = 200;
                 }
                 if (cell.index % 6 == 2) {//pontos
+                    newwith = 800;
+                }
+                if (cell.index % 6 == 3) {//nivel
                     newwith = 830;
                 }
-                if (cell.index % 6 == 3) {//Escola
+                if (cell.index % 6 == 4) {//Escola
                     newwith = 1390;
                 }
-                if (cell.index % 6 == 4) {//turma
+                if (cell.index % 6 == 5) {//turma
                     newwith = 2000;
                 }
-                if (cell.index % 6 == 5) {
+                if (cell.index % 6 == 6) {
                     newwith = 2300;
                 }
-
 
                 var scene = cell.scene,
                     width = newwith,
@@ -167,7 +169,7 @@ class rankingScene extends Phaser.Scene {
                             height: height,
 
                             orientation: 'top-to-bottom',
-                            text: scene.add.text(50, 50, item.name, { fontFamily: "Arial", fontSize: 30, color: '#0B610B', align: 'center' }),
+                            text: scene.add.text(50, 50, item.name, { fontFamily: "Arial", fontSize: 30, color: '#2017B3', align: 'center' }),
                             align: 'center',
                         });
 
@@ -205,11 +207,9 @@ class rankingScene extends Phaser.Scene {
                 reuseCellContainer: true,
             },
 
-
-
             slider: {
-                track: this.rexUI.add.roundRectangle(0, 0, 10, 10, 10, 0x0B610B),
-                thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 13, 0x3ADF00),
+                track: this.rexUI.add.roundRectangle(0, 0, 10, 10, 10, 0x2017B3),
+                thumb: this.rexUI.add.roundRectangle(0, 0, 0, 0, 13, 0x15BBE8),
             },
             space: {
                 left: 20,
@@ -236,13 +236,12 @@ class rankingScene extends Phaser.Scene {
 
                     orientation: 0,
                     icon: scene.add.circle(0,50,10).setFillStyle('0xffffff'),
-                    text: scene.add.text(50, 50, item, { fontFamily: "Arial", fontSize: 30, color: '#0B610B', align: 'center' }),
+                    text: scene.add.text(50, 50, item, { fontFamily: "Arial", fontSize: 30, color: '#2017B3', align: 'center' }),
                     align: 'center',
                     space: {
                         icon: 20,
                     }
                 });
-
 
                 var m = d.getMonth();
                 var n = d.getFullYear();
@@ -263,7 +262,7 @@ class rankingScene extends Phaser.Scene {
                     if (scene.lastclick) {
                         scene.lastclick.setFillStyle('0xffffff');
                     }
-                    scene.lastclick = cellContainer.getElement('icon').setFillStyle('0x088A08');
+                    scene.lastclick = cellContainer.getElement('icon').setFillStyle('0x2017B3');
 
                     if (cellContainer.getElement('text')._text != "Todos") {
                         scene.di = "20" + cellContainer.getElement('text')._text.split('-')[0] + "-9-1";
@@ -284,7 +283,6 @@ class rankingScene extends Phaser.Scene {
 
                 return cellContainer;
 
-
             },
             items: this.selectYear()
         })
@@ -296,16 +294,14 @@ class rankingScene extends Phaser.Scene {
         this.aGrid.placeAtIndex(73, this.ano);
         this.ano.y = 418;
 
-
         //Filtros
         this.filtro = this.add.text(0, 0, 'Filtro', { fontFamily: 'Arial', fontSize: 32, color: '#0A2A0A' });
         this.filtro.setOrigin(1.3, 1);
         this.aGrid.placeAtIndex(163.3, this.filtro);
         this.filtro.y -= 50;
 
-
         //Todos
-        this.todos = this.add.text(0, 0, 'Todos', { fontFamily: "Arial", fontSize: 30, color: '#0B610B', align: 'left' });
+        this.todos = this.add.text(0, 0, 'Todos', { fontFamily: "Arial", fontSize: 30, color: '#2017B3', align: 'left' });
         this.todos.setOrigin(0.8, 1.7);
         this.aGrid.placeAtIndex(178, this.todos);
         this.todos_icon = this.add.circle(0,0,10).setFillStyle('0xffffff');
@@ -314,7 +310,7 @@ class rankingScene extends Phaser.Scene {
         this.todos.setInteractive({ useHandCursor: true });
 
         //Escola
-        this.escola_filtro = this.add.text(0, 0, 'Escola', { fontFamily: "Arial", fontSize: 30, color: '#0B610B', align: 'left' });
+        this.escola_filtro = this.add.text(0, 0, 'Escola', { fontFamily: "Arial", fontSize: 30, color: '#2017B3', align: 'left' });
         this.escola_filtro.setOrigin(0.8, 0.3);
         this.aGrid.placeAtIndex(178, this.escola_filtro);
         this.escola_icon = this.add.circle(0,0,10).setFillStyle('0xffffff');
@@ -323,7 +319,7 @@ class rankingScene extends Phaser.Scene {
         this.escola_filtro.setInteractive({ useHandCursor: true });
 
         //Turma
-        this.turma_filtro = this.add.text(0, 0, 'Turma', { fontFamily: "Arial", fontSize: 30, color: '#0B610B', align: 'left' });
+        this.turma_filtro = this.add.text(0, 0, 'Turma', { fontFamily: "Arial", fontSize: 30, color: '#2017B3', align: 'left' });
         this.turma_filtro.setOrigin(0.8, -1);
         this.aGrid.placeAtIndex(178, this.turma_filtro);
         this.turma_icon = this.add.circle(0,0,10).setFillStyle('0xffffff');
@@ -333,15 +329,15 @@ class rankingScene extends Phaser.Scene {
 
         this.todos.input.hitArea.setTo(-50, -5, this.todos.width + 60, this.todos.height);
 
-        this.todos.y -=50;
+        this.todos.y -= 50;
         this.escola_filtro.y -= 50;
-        this.turma_filtro.y -=50;
-        this.todos_icon.y -=40;
+        this.turma_filtro.y -= 50;
+        this.todos_icon.y -= 40;
         this.turma_icon.y -= 50;
-        this.escola_icon.y -=50;
+        this.escola_icon.y -= 50;
         this.todos.on('pointerdown', () => {
             
-            this.todos_icon.setFillStyle('0x088A08');
+            this.todos_icon.setFillStyle('0x2017B3');
 
             this.escola_icon.setFillStyle('0xffffff');
 
@@ -357,7 +353,7 @@ class rankingScene extends Phaser.Scene {
 
             this.todos_icon.setFillStyle('0xffffff');
 
-            this.escola_icon.setFillStyle('0x088A08');
+            this.escola_icon.setFillStyle('0x2017B3');
 
             this.turma_icon.setFillStyle('0xffffff');
 
@@ -372,7 +368,7 @@ class rankingScene extends Phaser.Scene {
 
             this.escola_icon.setFillStyle('0xffffff');
 
-            this.turma_icon.setFillStyle('0x088A08');
+            this.turma_icon.setFillStyle('0x2017B3');
 
             this.flag = 0;
 
@@ -406,6 +402,9 @@ class rankingScene extends Phaser.Scene {
         this.pontos = this.add.text(0, 0, 'Pontos', { fontFamily: 'Arial', fontSize: 40, color: '#0A2A0A' });
         this.pontos.setOrigin(0,1.5);
 
+        this.level = this.add.text(0, 0, 'Nível', { fontFamily: 'Arial', fontSize: 40, color: '#0A2A0A' });
+        this.level.setOrigin(0, 1.5);
+
         this.escola = this.add.text(0, 0, 'Escola', { fontFamily: 'Arial', fontSize: 40, color: '#0A2A0A' });
         this.escola.setOrigin(0.7,1.5);
 
@@ -416,7 +415,8 @@ class rankingScene extends Phaser.Scene {
         this.data.setOrigin(2.28,1.5);
 
         this.aGrid.placeAtIndex(77, this.jogador);
-        this.aGrid.placeAtIndex(79, this.pontos);
+        this.aGrid.placeAtIndex(78.8, this.pontos);
+        this.aGrid.placeAtIndex(80, this.level);
         this.aGrid.placeAtIndex(82, this.escola);
         this.aGrid.placeAtIndex(85, this.turma);
         this.aGrid.placeAtIndex(87, this.data);
