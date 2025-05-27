@@ -153,7 +153,7 @@ class Menu extends Phaser.Scene {
         this.btLogin2.visible = false;
         
         //olaMSG
-        this.ola = this.add.text(0.38 * game.config.width ,0.25 * game.config.height,"Olá " + nome,{ fontFamily: 'Arial',fontSize: 80,color: '#0D870F',align: 'center'});
+        this.ola = this.add.text(0.07 * game.config.width ,0.35 * game.config.height,"Olá " + nome,{ fontFamily: 'Arial',fontSize: 80,color: '#FFC90E',align: 'center'});
         this.ola.visible = false;
         
         //loginErrorMsg
@@ -310,7 +310,6 @@ class Menu extends Phaser.Scene {
         width = game.config.width;
         height = game.config.height;
 
-        //
         if(infoUser.user!='' && infoUser.user != 'prof') {
             nome = infoUser.firstName.split(" ");
             nome2 = nome[0];
@@ -328,8 +327,9 @@ class Menu extends Phaser.Scene {
             this.btLvl1.visible = true;
             this.btLvl2.visible = true;
             this.btLvl3.visible = true;
+            this.titulo.visible = true;
+            this.lapis.visible = true;
         }
-        //
         
         if(this.scale.isFullscreen){
             this.fullscreenBT1.visible = false;
