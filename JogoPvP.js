@@ -179,11 +179,10 @@ class JogoPvP extends Phaser.Scene {
         timeText.setText(this.turnTime.value);
 
         selectedProduct = null;
-        selectedNumbers = [];
-        selectedProductPos = null;
+        selectedNumbers = [];        selectedProductPos = null;
 
         if (this.turnTimer.value) {
-            this.time.removeEvent(this.turnTimer.value);
+            this.turnTimer.value.remove();
         }
 
         this.turnTimer.value = this.time.addEvent({
@@ -276,10 +275,10 @@ class JogoPvP extends Phaser.Scene {
         return true;
     }
 
-    // End the game
+    // End the game    
     endGame() {
         if (this.turnTimer.value) {
-            this.time.removeEvent(this.turnTimer.value);
+            this.turnTimer.value.remove(); 
             this.turnTimer.value = null;
         }
 
@@ -379,10 +378,8 @@ class JogoPvP extends Phaser.Scene {
     cleanupGameObjects() {
         selectedProduct = null;
         selectedNumbers = [];
-        selectedProductPos = null;
-
-        if (this.turnTimer.value) {
-            this.time.removeEvent(this.turnTimer.value);
+        selectedProductPos = null;        if (this.turnTimer.value) {
+            this.turnTimer.value.remove();
             this.turnTimer.value = null;
         }
     }

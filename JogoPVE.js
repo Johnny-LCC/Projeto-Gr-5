@@ -93,7 +93,7 @@ class JogoPvE extends Phaser.Scene {
         // Turn indicator setup
         this.turnIndicator = this.add.text(0.285 * this.width, 0.4 * this.height, '', {
             fontSize: '48px',
-            fill: '#fff', /////
+            fill: '#fff', 
             fontFamily: 'Arial'
         }).setOrigin(0.5);
 
@@ -184,7 +184,7 @@ class JogoPvE extends Phaser.Scene {
     setupUIElements() {
         this.score1 = 0;
         this.score2 = 0;
-        this.scoreText = this.add.text(180, 290, `${this.score1} - ${this.score2}`, { fontSize: '64px', fill: '#049' }); /////
+        this.scoreText = this.add.text(180, 290, `${this.score1} - ${this.score2}`, { fontSize: '64px', fill: '#049' }); 
         this.lapis = this.add.sprite(0.305 * this.width, 0.68 * this.height, 'lapis').setScale(1.2);
     }
 
@@ -205,7 +205,7 @@ class JogoPvE extends Phaser.Scene {
         this.selectedProductPos = null;
 
         if (this.turnTimer) {
-            this.time.removeEvent(this.turnTimer);
+            this.turnTimer.remove();
         }
 
         this.turnTimer = this.time.addEvent({
@@ -215,7 +215,7 @@ class JogoPvE extends Phaser.Scene {
                 this.timeText.setText(this.turnTime.value);
 
                 if (this.turnTime.value <= 0) {
-                    this.time.removeEvent(this.turnTimer);
+                    this.turnTimer.remove(); 
                     this.startTurn(!isPlayer);
                 }
             },
@@ -243,10 +243,8 @@ class JogoPvE extends Phaser.Scene {
         if (unmarkedProducts.length === 0) {
             this.endGame();
             return;
-        }
-
-        //const randomProduct = Phaser.Utils.Array.GetRandom(unmarkedProducts);
-        const randomProduct = getRandomElement(unmarkedProducts);
+        }        
+        const randomProduct = Phaser.Utils.Array.GetRandom(unmarkedProducts);
         const { row, col, value } = randomProduct;
 
         let accuracy = 0.5;
@@ -254,25 +252,14 @@ class JogoPvE extends Phaser.Scene {
         else if (this.level === 3) accuracy = 0.9;
 
         const factors = await this.findFactors(value);
+        console.log(`Fatores encontrados para ${value}: ${factors.join(', ')}`);     
         const isCorrect = Math.random() < accuracy;
+        console.log(`Máquina escolheu ${value} e acertou: ${isCorrect}`);
 
-        if (isCorrect && factors.length >= 2) {
+        if (isCorrect && factors.length >= 2 || unmarkedProducts.length === 1 && factors.length >= 2) {
             this.markGridPosition(row, col, false);
             this.updateScore(false);
-        } else {
-            const incorrectProduct = Phaser.Utils.Array.GetRandom(
-                unmarkedProducts.filter(p => p.value !== value)
-            );
-
-            if (incorrectProduct) {
-                this.markGridPosition(incorrectProduct.row, incorrectProduct.col, true);
-            } else {
-                //this.markGridPosition(row, col, true);
-            }
-
-            this.updateScore(true);
-        }
-
+        } 
         this.quadradosNumeros.forEach(num => {
             num.sprite.setTexture('quadrado');
         });
@@ -371,7 +358,7 @@ class JogoPvE extends Phaser.Scene {
 
     endGame() {
         if (this.turnTimer) {
-            this.time.removeEvent(this.turnTimer);
+            this.turnTimer.remove(); 
             this.turnTimer = null;
         }
 
@@ -397,7 +384,7 @@ class JogoPvE extends Phaser.Scene {
                 fontSize: '100px',
                 fontFamily: 'Arial',
                 color: '#FFFFFF',
-                //padding: { x: 20, y: 10 }
+
             }
         ).setOrigin(0.5).setDepth(2);
 
@@ -469,7 +456,7 @@ class JogoPvE extends Phaser.Scene {
         this.selectedProductPos = null;
 
         if (this.turnTimer) {
-            this.time.removeEvent(this.turnTimer);
+            this.turnTimer.remove(); 
             this.turnTimer = null;
         }
     }
@@ -485,11 +472,7 @@ function shuffleArray(array) {
         randomIndex = Math.floor(Math.random() * currentIndex);
         currentIndex--;
         [array[currentIndex], array[randomIndex]] = [
-            array[randomIndex], array[currentIndex]];
+            array[randomIndex], array[currentIndex]]; 
     }
     return array;
-}
-
-function getRandomElement(array) {
-    return array[Math.floor(Math.random() * array.length)];
 }
