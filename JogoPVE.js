@@ -9,7 +9,7 @@ var selectedProductPos = null;
 var level;
 
 // Extend JogoPvE functionality
-window.JogoPvE = class JogoPvE extends Phaser.Scene {
+class JogoPvE extends Phaser.Scene {
     constructor() {
         super('JogoPvE');
         this.width = null;
