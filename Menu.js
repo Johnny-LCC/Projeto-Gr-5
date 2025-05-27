@@ -9,7 +9,16 @@ var time = 10.0;
 var timeText;
 var level = 1;
 
-var nome;
+var nome = "";
+var nome2 = "";
+var please = "";
+
+var x;
+var y;
+var di = x + "-09-01";
+var df = y + "-08-31";
+
+var infoUser = new loginInfo();
 
 // Make Menu globally accessible
 window.Menu = class Menu extends Phaser.Scene {
@@ -92,9 +101,9 @@ window.Menu = class Menu extends Phaser.Scene {
         this.lapis.setScale(1.35);
 
         //Creditos-img
-        this.cerditos = this.add.sprite(0.5*width, 0.5*height, 'creditos');
-        this.cerditos.setScale(1.5);
-        this.cerditos.visible = false;
+        this.creditos = this.add.sprite(0.5*width, 0.5*height, 'creditos');
+        this.creditos.setScale(1.5);
+        this.creditos.visible = false;
 
         //Instrucoes-img
         this.instrucoes = this.add.sprite(0.5*width, 0.5*height, 'instrucoes');
@@ -128,19 +137,23 @@ window.Menu = class Menu extends Phaser.Scene {
         this.btLogin = this.add.sprite(0.935 * width, 0.42 * height, 'btLogin');
         this.btLogin.setScale(0.8);
         this.btLogin.setInteractive({useHandCursor: true});
-
+        
         //bt-logout
         this.btLogout = this.add.sprite(0.935 * width, 0.42 * height, 'btLogout');
         this.btLogout.setScale(0.8);
         this.btLogout.setInteractive({useHandCursor: true});
         this.btLogout.visible = false;
-
+        
         //login
         this.login = this.add.sprite(0.5 * width, 0.5 * height, 'login');
         this.login.setScale(1.5);
         this.login.visible = false;
         
-        //
+        this.btLogin2 = this.add.sprite(0.5 * width, 0.7 * height, 'btLogin');
+        this.btLogin2.setScale(0.8);
+        this.btLogin2.setInteractive({useHandCursor: true});
+        this.btLogin2.visible = false;
+        
         //olaMSG
         this.ola = this.add.text(0.38 * game.config.width ,0.25 * game.config.height,"Olá " + nome,{ fontFamily: 'Arial',fontSize: 80,color: '#0D870F',align: 'center'});
         this.ola.visible = false;
@@ -153,19 +166,16 @@ window.Menu = class Menu extends Phaser.Scene {
         this.loginErrorMsg2 = this.add.text(0.38 * game.config.width, 0.316 * game.config.height,"Está registado como professor!",{ fontFamily: 'Arial',fontSize: 35,color: '#B40404',align: 'center'});
         this.loginErrorMsg2.visible = false;
 
+        let userH = `<input type="text" name="username" style="font-size: 15px;font-family:'Arial';text-align:center;">`;
+        let passH = `<input type="password" name="password" style="font-size: 15px;font-family:'Arial';text-align:center;">`;
 
-        let user = `<input type="text" name="username" style="font-size: 15px;font-family:'Arial';text-align:center;">`;
-        let pass = `<input type="password" name="password" style="font-size: 15px;font-family:'Arial';text-align:center;">`;    
+        x = this.add.dom(0.52 * width, 0.4 * height).createFromHTML(userH);
+        x.setScale(2.7);
+        x.visible = false;
 
-        this.user = this.add.dom(0.5319 * game.config.width, 0.447 * game.config.height).createFromHTML(user);
-        this.user.setScale(2.8);
-        this.user.visible = false;
+        y = this.add.dom(0.52 * width, 0.52 * height).createFromHTML(passH);
+        y.setScale(2.7);
 
-        this.pass = this.add.dom(0.5319 * game.config.width, 0.6 * game.config.height).createFromHTML(pass);
-        this.pass.setScale(2.8);
-        this.pass.visible = false;
-        //
-        
         //BT Logic
         //BT Highlight
         this.input.on('gameobjectover',function(pointer, gameObject) {
@@ -192,7 +202,7 @@ window.Menu = class Menu extends Phaser.Scene {
                     this.scene.transition({ target: 'JogoPvE', duration: 10, data: {level: 3} });
                     break;
                 case this.btCreditos:
-                    this.cerditos.visible = true;
+                    this.creditos.visible = true;
                     this.instrucoes.visible = false;
                     this.btFechar.visible = true;
                     this.titulo.visible = false;
@@ -202,9 +212,13 @@ window.Menu = class Menu extends Phaser.Scene {
                     this.btLvl3.visible = false;
                     this.lapis.visible = false;
                     this.login.visible = false;
+                    this.btLogin.visible = true;
+                    this.btLogin2.visible = false;
+                    x.visible = false;
+                    y.visible = false;
                     break;
                 case this.btInstrucoes:
-                    this.cerditos.visible = false;
+                    this.creditos.visible = false;
                     this.instrucoes.visible = true;
                     this.btFechar.visible = true;
                     this.titulo.visible = false;
@@ -214,9 +228,13 @@ window.Menu = class Menu extends Phaser.Scene {
                     this.btLvl3.visible = false;
                     this.lapis.visible = false;
                     this.login.visible = false;
+                    this.btLogin.visible = true;
+                    this.btLogin2.visible = false;
+                    x.visible = false;
+                    y.visible = false;
                     break;
                 case this.btFechar:
-                    this.cerditos.visible = false;
+                    this.creditos.visible = false;
                     this.instrucoes.visible = false;
                     this.btFechar.visible = false;
                     this.titulo.visible = true;
@@ -225,7 +243,11 @@ window.Menu = class Menu extends Phaser.Scene {
                     this.btLvl2.visible = true;
                     this.btLvl3.visible = true;
                     this.lapis.visible = true;
+                    this.btLogin.visible = true;
+                    this.btLogin2.visible = false;
                     this.login.visible = false;
+                    x.visible = false;
+                    y.visible = false;
                     break;
                 case this.fullscreenBT1:
                     this.scale.startFullscreen();
@@ -239,7 +261,7 @@ window.Menu = class Menu extends Phaser.Scene {
                     this.fullscreenBT1.visible = true;
                     break;
                 case this.btLogin:
-                    this.cerditos.visible = false;
+                    this.creditos.visible = false;
                     this.instrucoes.visible = false;
                     this.btFechar.visible = true;
                     this.titulo.visible = false;
@@ -248,26 +270,52 @@ window.Menu = class Menu extends Phaser.Scene {
                     this.btLvl2.visible = false;
                     this.btLvl3.visible = false;
                     this.lapis.visible = false;
+                    this.btLogin.visible = false;
+                    this.btLogin2.visible = true;
                     this.login.visible = true;
-                    this.user.visible = true;
-                    this.pass.visible = true;
                     this.loginErrorMsg.visible = false;
                     this.loginErrorMsg2.visible = false;
-                    /*this.certoLoginBT.on('pointerup', function () {
-                        let user = x.getChildByName("username").value
+                    x.visible = true;
+                    y.visible = true;
+                    this.btLogin2.on('pointerup', function () {
+                        let username = x.getChildByName("username").value //node.value
                         let password = y.getChildByName("password").value
-                        if (user != '' && password != '') {
-                            let r = login(user, password,this);
+                        if (username != '' && password != '') {
+                            let r = login(username, password, this);
                             x.getChildByName("username").value = '';
                             y.getChildByName("password").value = '';
                         }
-                    }, this);*/
-                    //this.btLogout.visible = true;
-                    //this.btLogin.visible = false;
+                    }, this);
+                    //
+                    if(infoUser.user!='' && infoUser.user != 'prof') {
+                        nome = infoUser.firstName.split(" ");
+                        nome2 = nome[0];
+                        this.ola.setText(['Olá ' + nome2]);
+                        this.ola.visible = true;
+                        this.btLogout.visible = true;
+                        this.btLogin.visible = false;
+                        this.btLogin2.visible = false;
+                        this.loginErrorMsg.visible = false;
+                        x.visible = false;
+                        y.visible = false;
+                        this.btFechar.visible = false;
+                        this.login.visible = false;
+                        this.btPVP.visible = true;
+                        this.btLvl1.visible = true;
+                        this.btLvl2.visible = true;
+                        this.btLvl3.visible = true;
+                    }
+                    //
                     break;
                 case this.btLogout:
+                    this.btLogout.visible = false;
+                    this.btLogin.visible = true;
+                    this.ola.visible = false;
+                    infoUser.logout();
                     break;
                 case this.btTop:
+                    getTOP(di, df, "", "", this);
+                    flag = true;
                     break;
                 default:
                     break;
@@ -276,21 +324,26 @@ window.Menu = class Menu extends Phaser.Scene {
     }
 
     update() {
+        if (callOnce == 0) {
+            //sessionVerify();
+            callOnce = 1000;
+        }
+
         width = game.config.width;
         height = game.config.height;
         
-        //if(this.scale.isFullscreen){
-        //    this.fullscreenBT1.visible = false;
-        //    this.fullscreenBT2.visible = true;
-        //}
-        //else{
-        //    this.fullscreenBT1.visible = true;
-        //    this.fullscreenBT2.visible = false;
-        //}
+        if(this.scale.isFullscreen){
+            this.fullscreenBT1.visible = false;
+            this.fullscreenBT2.visible = true;
+        }
+        else{
+            this.fullscreenBT1.visible = true;
+            this.fullscreenBT2.visible = false;
+        }
     }
 }
 
 function isIphone() {
     console.log("Verificando se é um iphone...")
     return /iPhone/i.test(navigator.userAgent);
-  }
+}

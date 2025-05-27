@@ -1,94 +1,103 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            overflow: hidden;
-        }
-
-        #game-container {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-    </style>
-
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0
-                ,minimum-scale=1.0, user-scalable=0, target-densityDpi=device-dpi" />
-    <meta name="HandheldFriendly" content="true" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="mobile-web-app-capable" content="yes" />
-    <title>Jogo da Velha</title>
-
-    <link rel="shortcut icon" type="image/x-icon" href="https://www.hypatiamat.com/images/favicon.ico">
-</head>
-<body>
-    <div id='game-container'></div>
-    
-    <script>
-        var PleaseRotateOptions = {
-            onlyMobile: true,
-            forcePortrait: false,
-            message: "Por Favor Rode o Ecrã",
-            subMessage: "(ou clique para continuar)",
-            allowClickBypass: true
-        }
-    </script>
-
-    <!-- Load Phaser library first -->
-    <script src="phaser.min.js"></script>
-    
-    <!-- Load game scenes -->
-    <script src="Menu.js"></script>
-    <script src="JogoPvP.js"></script>
-    <script src="JogoPVE.js"></script>
-    <script src="pleaserotate.js"></script> 
-    
-    <!-- Initialize the game -->
-    <script>
-        // Wait for everything to be fully loaded
-        window.addEventListener('load', function() {
-            // Make sure the classes are properly exposed to the global scope
-            if (window.Menu && window.JogoPvP && window.JogoPvE) {
-                console.log("All game scenes are loaded successfully!");
-                
-                // Configure and create the game instance
-                var config = {
-                    type: Phaser.CANVAS,
-                    parent: 'game-container',
-                    scale: {
-                        mode: Phaser.Scale.FIT,
-                        autoCenter: Phaser.Scale.CENTER_BOTH,
-                        width: 2048,
-                        height: 1200,
-                        fullscreenTarget: 'game-container',
-                    },
-                    render: {
-                        pixelArt: false
-                    },
-                    dom: {
-                        createContainer: true
-                    },
-                    backgroundColor: "#ffffff",
-                    
-                    
-                    scene: [window.Menu, window.JogoPvP, window.JogoPvE]
-                };
-                
-                window.game = new Phaser.Game(config);
-                console.log("Iniciando o jogo da velha");
-                //var infoUser = new loginInfo();
-            } else {
-                console.error("Failed to load one or more game scenes!");
-                if (!window.Menu) console.error("Menu class not loaded");
-                if (!window.JogoPvP) console.error("JogoPvP class not loaded");
-                if (!window.JogoPvE) console.error("JogoPvE class not loaded");
+    <head>
+        <style>
+            body, html {
+                margin: 0;
+                padding: 0;
+                height: 100%;
+                overflow: hidden;
             }
-        });
-    </script>
-</body>
+
+            #game-container {
+                position: absolute;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+        </style>
+
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0
+                    ,minimum-scale=1.0, user-scalable=0, target-densityDpi=device-dpi" />
+        <meta name="HandheldFriendly" content="true" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <title>Jogo da Velha</title>
+
+        <link rel="shortcut icon" type="image/x-icon" href="https://www.hypatiamat.com/images/favicon.ico">
+    </head>
+    <body>
+        <div id='game-container'></div>
+        
+        <script>
+            var PleaseRotateOptions = {
+                onlyMobile: true,
+                forcePortrait: false,
+                message: "Por Favor Rode o Ecrã",
+                subMessage: "(ou clique para continuar)",
+                allowClickBypass: true
+            }
+        </script>
+
+        <script src="jquery.js"></script>
+        <script src="backEndconnector.js"></script>
+        <script src="loginInfo.js"></script>
+        <script src="phaser.min.js"></script>
+        <script src="pleaserotate.js"></script>
+        <script src="Menu.js"></script>
+        <script src="JogoPvP.js"></script>
+        <script src="JogoPVE.js"></script>
+        <script src="rankingScene.js"></script>
+        <script src="AlignGrid.js"></script>
+        <script src="gridTable.min.js"></script>
+    </body>
 </html>
+
+<script>
+    // Wait for everything to be fully loaded
+    window.addEventListener('load', function() {
+        // Make sure the classes are properly exposed to the global scope
+        if (window.Menu && window.JogoPvP && window.JogoPvE && window.rankingScene) {
+            console.log("All game scenes are loaded successfully!");
+            
+            // Configure and create the game instance
+            var config = {
+                type: Phaser.CANVAS,
+                width: window.innerWidth * window.devicePixelRatio,
+                height: window.innerHeight * window.devicePixelRatio,
+                parent: 'game-container',
+                scale: {
+                    mode: Phaser.Scale.FIT,
+                    autoCenter: Phaser.Scale.CENTER_BOTH,
+                    
+                    width: 2048,
+                    height: 1200,
+                    fullscreenTarget: 'game-container',
+                },
+                render: {
+                    pixelArt: false
+                },
+                dom: {
+                    createContainer: true,
+                },
+                backgroundColor: "#ffffff",
+                scene: [window.Menu, window.JogoPvP, window.JogoPvE, window.rankingScene]
+            };
+            
+            window.game = new Phaser.Game(config);
+            var infoUser = new loginInfo();
+            var stop = false; 
+            var flag = false; 
+            var please = ""; 
+            console.log("Iniciando o jogo da velha");
+        }
+        else {
+            console.error("Failed to load one or more game scenes!");
+            if (!window.Menu) console.error("Menu class not loaded");
+            if (!window.JogoPvP) console.error("JogoPvP class not loaded");
+            if (!window.JogoPvE) console.error("JogoPvE class not loaded");
+            if (!window.rankingScene) console.error("rankingScene class not loaded");
+        }
+    });
+</script>
