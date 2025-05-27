@@ -68,7 +68,6 @@ function sessionVerify() {
                 infoUser.setLocalData();
 	    }
             else {
-                
                 infoUser.user = "";
                 return;
 

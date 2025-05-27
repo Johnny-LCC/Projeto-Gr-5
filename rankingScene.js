@@ -1,7 +1,7 @@
 /**
  * Class of Scene that shows ranking between players
  */
-window.rankingScene = class rankingScene extends Phaser.Scene {
+class rankingScene extends Phaser.Scene {
     /**
      * Create new empty scene
      */
@@ -167,7 +167,7 @@ window.rankingScene = class rankingScene extends Phaser.Scene {
                             height: height,
 
                             orientation: 'top-to-bottom',
-                            text: scene.add.text(50, 50, item.name, { fontFamily: "font1", fontSize: 30, color: '#0B610B', align: 'center' }),
+                            text: scene.add.text(50, 50, item.name, { fontFamily: "Arial", fontSize: 30, color: '#0B610B', align: 'center' }),
                             align: 'center',
                         });
 
@@ -236,7 +236,7 @@ window.rankingScene = class rankingScene extends Phaser.Scene {
 
                     orientation: 0,
                     icon: scene.add.circle(0,50,10).setFillStyle('0xffffff'),
-                    text: scene.add.text(50, 50, item, { fontFamily: "font1", fontSize: 30, color: '#0B610B', align: 'center' }),
+                    text: scene.add.text(50, 50, item, { fontFamily: "Arial", fontSize: 30, color: '#0B610B', align: 'center' }),
                     align: 'center',
                     space: {
                         icon: 20,
@@ -291,21 +291,21 @@ window.rankingScene = class rankingScene extends Phaser.Scene {
             .layout()
 
 
-        this.ano = this.add.text(0, 0, 'Ano letivo', { fontFamily: 'font1', fontSize: 32, color: '#0A2A0A' });
+        this.ano = this.add.text(0, 0, 'Ano letivo', { fontFamily: 'Arial', fontSize: 32, color: '#0A2A0A' });
         this.ano.setOrigin(0.65, 1.1);
         this.aGrid.placeAtIndex(73, this.ano);
         this.ano.y = 418;
 
 
         //Filtros
-        this.filtro = this.add.text(0, 0, 'Filtro', { fontFamily: 'font1', fontSize: 32, color: '#0A2A0A' });
+        this.filtro = this.add.text(0, 0, 'Filtro', { fontFamily: 'Arial', fontSize: 32, color: '#0A2A0A' });
         this.filtro.setOrigin(1.3, 1);
         this.aGrid.placeAtIndex(163.3, this.filtro);
         this.filtro.y -= 50;
 
 
         //Todos
-        this.todos = this.add.text(0, 0, 'Todos', { fontFamily: "font1", fontSize: 30, color: '#0B610B', align: 'left' });
+        this.todos = this.add.text(0, 0, 'Todos', { fontFamily: "Arial", fontSize: 30, color: '#0B610B', align: 'left' });
         this.todos.setOrigin(0.8, 1.7);
         this.aGrid.placeAtIndex(178, this.todos);
         this.todos_icon = this.add.circle(0,0,10).setFillStyle('0xffffff');
@@ -314,7 +314,7 @@ window.rankingScene = class rankingScene extends Phaser.Scene {
         this.todos.setInteractive({ useHandCursor: true });
 
         //Escola
-        this.escola_filtro = this.add.text(0, 0, 'Escola', { fontFamily: "font1", fontSize: 30, color: '#0B610B', align: 'left' });
+        this.escola_filtro = this.add.text(0, 0, 'Escola', { fontFamily: "Arial", fontSize: 30, color: '#0B610B', align: 'left' });
         this.escola_filtro.setOrigin(0.8, 0.3);
         this.aGrid.placeAtIndex(178, this.escola_filtro);
         this.escola_icon = this.add.circle(0,0,10).setFillStyle('0xffffff');
@@ -323,7 +323,7 @@ window.rankingScene = class rankingScene extends Phaser.Scene {
         this.escola_filtro.setInteractive({ useHandCursor: true });
 
         //Turma
-        this.turma_filtro = this.add.text(0, 0, 'Turma', { fontFamily: "font1", fontSize: 30, color: '#0B610B', align: 'left' });
+        this.turma_filtro = this.add.text(0, 0, 'Turma', { fontFamily: "Arial", fontSize: 30, color: '#0B610B', align: 'left' });
         this.turma_filtro.setOrigin(0.8, -1);
         this.aGrid.placeAtIndex(178, this.turma_filtro);
         this.turma_icon = this.add.circle(0,0,10).setFillStyle('0xffffff');
@@ -400,19 +400,19 @@ window.rankingScene = class rankingScene extends Phaser.Scene {
 
         }
 
-        this.jogador = this.add.text(0, 0, 'Jogador', { fontFamily: 'font1', fontSize: 40, color: '#0A2A0A' });
+        this.jogador = this.add.text(0, 0, 'Jogador', { fontFamily: 'Arial', fontSize: 40, color: '#0A2A0A' });
         this.jogador.setOrigin(0.3,1.5);
 
-        this.pontos = this.add.text(0, 0, 'Pontos', { fontFamily: 'font1', fontSize: 40, color: '#0A2A0A' });
+        this.pontos = this.add.text(0, 0, 'Pontos', { fontFamily: 'Arial', fontSize: 40, color: '#0A2A0A' });
         this.pontos.setOrigin(0,1.5);
 
-        this.escola = this.add.text(0, 0, 'Escola', { fontFamily: 'font1', fontSize: 40, color: '#0A2A0A' });
+        this.escola = this.add.text(0, 0, 'Escola', { fontFamily: 'Arial', fontSize: 40, color: '#0A2A0A' });
         this.escola.setOrigin(0.7,1.5);
 
-        this.turma = this.add.text(0, 0, 'Turma', { fontFamily: 'font1', fontSize: 40, color: '#0A2A0A' });
+        this.turma = this.add.text(0, 0, 'Turma', { fontFamily: 'Arial', fontSize: 40, color: '#0A2A0A' });
         this.turma.setOrigin(1.146,1.5);
 
-        this.data = this.add.text(0, 0, 'Data', { fontFamily: 'font1', fontSize: 40, color: '#0A2A0A' });
+        this.data = this.add.text(0, 0, 'Data', { fontFamily: 'Arial', fontSize: 40, color: '#0A2A0A' });
         this.data.setOrigin(2.28,1.5);
 
         this.aGrid.placeAtIndex(77, this.jogador);

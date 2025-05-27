@@ -18,8 +18,6 @@ var y;
 var di = x + "-09-01";
 var df = y + "-08-31";
 
-var infoUser = new loginInfo();
-
 // Make Menu globally accessible
 class Menu extends Phaser.Scene {
 
@@ -166,16 +164,15 @@ class Menu extends Phaser.Scene {
         this.loginErrorMsg2 = this.add.text(0.38 * game.config.width, 0.316 * game.config.height,"Está registado como professor!",{ fontFamily: 'Arial',fontSize: 35,color: '#B40404',align: 'center'});
         this.loginErrorMsg2.visible = false;
 
-        let userH = `<input type="text" name="username" style="font-size: 15px;font-family:'Arial';text-align:center;">`;
-        let passH = `<input type="password" name="password" style="font-size: 15px;font-family:'Arial';text-align:center;">`;
+        let userH = `<input type="text" name="username" style="font-size:25px; font-family:'Arial'; width:435px; height:57px; text-align:center;">`;
+        let passH = `<input type="password" name="password" style="font-size:25px; font-family:'Arial'; width:435px; height:57px; text-align:center;">`;
 
-        x = this.add.dom(0.52 * width, 0.4 * height).createFromHTML(userH);
-        x.setScale(2.7);
+        x = this.add.dom(0.531 * width, 0.376 * height).createFromHTML(userH);
         x.visible = false;
 
-        y = this.add.dom(0.52 * width, 0.52 * height).createFromHTML(passH);
-        y.setScale(2.7);
-
+        y = this.add.dom(0.5285 * width, 0.53 * height).createFromHTML(passH);
+        y.visible = false;
+        
         //BT Logic
         //BT Highlight
         this.input.on('gameobjectover',function(pointer, gameObject) {
@@ -278,7 +275,7 @@ class Menu extends Phaser.Scene {
                     x.visible = true;
                     y.visible = true;
                     this.btLogin2.on('pointerup', function () {
-                        let username = x.getChildByName("username").value //node.value
+                        let username = x.getChildByName("username").value
                         let password = y.getChildByName("password").value
                         if (username != '' && password != '') {
                             let r = login(username, password, this);
@@ -286,26 +283,7 @@ class Menu extends Phaser.Scene {
                             y.getChildByName("password").value = '';
                         }
                     }, this);
-                    //
-                    if(infoUser.user!='' && infoUser.user != 'prof') {
-                        nome = infoUser.firstName.split(" ");
-                        nome2 = nome[0];
-                        this.ola.setText(['Olá ' + nome2]);
-                        this.ola.visible = true;
-                        this.btLogout.visible = true;
-                        this.btLogin.visible = false;
-                        this.btLogin2.visible = false;
-                        this.loginErrorMsg.visible = false;
-                        x.visible = false;
-                        y.visible = false;
-                        this.btFechar.visible = false;
-                        this.login.visible = false;
-                        this.btPVP.visible = true;
-                        this.btLvl1.visible = true;
-                        this.btLvl2.visible = true;
-                        this.btLvl3.visible = true;
-                    }
-                    //
+                    
                     break;
                 case this.btLogout:
                     this.btLogout.visible = false;
@@ -325,12 +303,33 @@ class Menu extends Phaser.Scene {
 
     update() {
         if (callOnce == 0) {
-            //sessionVerify();
+            sessionVerify();
             callOnce = 1000;
         }
 
         width = game.config.width;
         height = game.config.height;
+
+        //
+        if(infoUser.user!='' && infoUser.user != 'prof') {
+            nome = infoUser.firstName.split(" ");
+            nome2 = nome[0];
+            this.ola.setText(['Olá ' + nome2]);
+            this.ola.visible = true;
+            this.btLogout.visible = true;
+            this.btLogin.visible = false;
+            this.btLogin2.visible = false;
+            this.loginErrorMsg.visible = false;
+            x.visible = false;
+            y.visible = false;
+            this.btFechar.visible = false;
+            this.login.visible = false;
+            this.btPVP.visible = true;
+            this.btLvl1.visible = true;
+            this.btLvl2.visible = true;
+            this.btLvl3.visible = true;
+        }
+        //
         
         if(this.scale.isFullscreen){
             this.fullscreenBT1.visible = false;

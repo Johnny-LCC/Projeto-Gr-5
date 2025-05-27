@@ -110,7 +110,8 @@ class JogoPvE extends Phaser.Scene {
             }
         }
 
-        Phaser.Utils.Array.Shuffle(produtos);
+        //Phaser.Utils.Array.Shuffle(produtos);
+        shuffleArray(produtos);
         produtos = produtos.slice(0, 24);
 
         const midRow = Math.floor(5 / 2);
@@ -244,7 +245,8 @@ class JogoPvE extends Phaser.Scene {
             return;
         }
 
-        const randomProduct = Phaser.Utils.Array.GetRandom(unmarkedProducts);
+        //const randomProduct = Phaser.Utils.Array.GetRandom(unmarkedProducts);
+        const randomProduct = getRandomElement(unmarkedProducts);
         const { row, col, value } = randomProduct;
 
         let accuracy = 0.5;
@@ -265,7 +267,7 @@ class JogoPvE extends Phaser.Scene {
             if (incorrectProduct) {
                 this.markGridPosition(incorrectProduct.row, incorrectProduct.col, true);
             } else {
-               // this.markGridPosition(row, col, true);
+                //this.markGridPosition(row, col, true);
             }
 
             this.updateScore(true);
@@ -316,8 +318,8 @@ class JogoPvE extends Phaser.Scene {
                 num.sprite.setTexture('quadrado');
             });
         } else {
-            // this.markGridPosition(this.selectedProductPos.row, this.selectedProductPos.col, false);
-            // this.updateScore(false);
+            //this.markGridPosition(this.selectedProductPos.row, this.selectedProductPos.col, false);
+            //this.updateScore(false);
             this.quadradosNumeros.forEach(num => {
                 num.sprite.setTexture('quadrado');
             });
@@ -471,8 +473,23 @@ class JogoPvE extends Phaser.Scene {
             this.turnTimer = null;
         }
     }
-};
+}
 
 function esperar(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function shuffleArray(array) {
+    let currentIndex = array.length, randomIndex;
+    while (currentIndex !== 0) {
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex--;
+        [array[currentIndex], array[randomIndex]] = [
+            array[randomIndex], array[currentIndex]];
+    }
+    return array;
+}
+
+function getRandomElement(array) {
+    return array[Math.floor(Math.random() * array.length)];
 }

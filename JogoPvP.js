@@ -16,7 +16,6 @@ class JogoPvP extends Phaser.Scene {
         super('JogoPvP');
     }
 
-    // Preload assets
     preload() {
         this.load.image('background', 'assets/background.png');
         this.load.image('titulo', 'assets/titulo.png');
@@ -31,7 +30,6 @@ class JogoPvP extends Phaser.Scene {
         this.load.image('assinalavermelho', 'assets/assinalavermelho.png');
    }
 
-    // Create the game scene
     create() {
         width = game.config.width;
         height = game.config.height;
@@ -59,10 +57,7 @@ class JogoPvP extends Phaser.Scene {
         });
     }
 
-    // Update the game state
-    update() {
-        // Add per-frame updates if needed
-    }
+    update() {}
 
     // Setup the game board
     setupGameBoard() {
