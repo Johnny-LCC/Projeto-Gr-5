@@ -10,7 +10,7 @@ var selectedNumbers = [];
 var selectedProductPos = null;
 
 // Make JogoPvP globally accessible
-window.JogoPvP = class JogoPvP extends Phaser.Scene {
+class JogoPvP extends Phaser.Scene {
 
     constructor() {
         super('JogoPvP');
