@@ -290,6 +290,8 @@ class JogoPvP extends Phaser.Scene {
         } else {
             resultText = "Empate!";
         }
+        
+        updateRecords();
 
         const overlay = this.background.setDepth(2);
         const title = this.titulo.setDepth(2);
@@ -307,11 +309,21 @@ class JogoPvP extends Phaser.Scene {
             }
         ).setOrigin(0.5).setDepth(2);
 
+        const backendText = this.add.text(
+            width * 0.5,
+            height * 0.75,
+            please,
+            {
+                fontSize: '50px',
+                fontFamily: 'Arial',
+                color: '#FFFFFF',
+            }
+        ).setOrigin(0.5).setDepth(2);
+
         let newMenuButton = this.add.sprite(width * 0.5, height * 0.65, 'home').setScale(1.2).setInteractive({ useHandCursor: true }).setDepth(2);
 
         newMenuButton.on('pointerdown', () => {
             this.cleanupGameObjects();
-            updateRecords();
             this.scene.start('Menu');
         });
     }
@@ -387,6 +399,6 @@ class JogoPvP extends Phaser.Scene {
 }
 
 function updateRecords() {
-    verificaRecords(infoUser.user, infoUser.turma, infoUser.escola, score1, 'PvP', this);
-    gravaRecords(infoUser.user, infoUser.turma, infoUser.escola, score1, 'PvP');
+    verificaRecords(infoUser.user, infoUser.turma, infoUser.escola, score1, 0, this);
+    gravaRecords(infoUser.user, infoUser.turma, infoUser.escola, score1, 0);
 }

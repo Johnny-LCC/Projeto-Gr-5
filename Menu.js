@@ -121,11 +121,12 @@ class Menu extends Phaser.Scene {
         this.fullscreenBT1.setScale(1.1);
         this.fullscreenBT1.setInteractive({ useHandCursor: true });
         if (isIphone()) {
-            console.log("É um iphone");
+           // console.log("É um iphone");
             this.fullscreenBT1.visible = false;
-        } else {
-            console.log("Não é um iphone");
-        }
+        } 
+        //else {
+            //console.log("Não é um iphone");
+        //}
 
         //FullscreenBT2
         this.fullscreenBT2 = this.add.sprite(0.07 * width, 0.9 * height,'fullscreenBT2');
@@ -189,7 +190,7 @@ class Menu extends Phaser.Scene {
             switch(gameObject) {
                 case this.btPVP:
                     this.scene.transition({ target: 'JogoPvP', duration: 10 });
-                    console.log('PVP entrado');
+                    //console.log('PVP entrado');
                     break;
                 case this.btLvl1:
                     this.scene.transition({ target: 'JogoPvE', duration: 10, data: {level: 1} });
@@ -256,7 +257,7 @@ class Menu extends Phaser.Scene {
                     break;
                 case this.fullscreenBT1:
                     this.scale.startFullscreen();
-                    console.log("Botão fullscreen");
+                    //console.log("Botão fullscreen");
                     this.fullscreenBT1.visible = false;
                     this.fullscreenBT2.visible = true;
                     break;
@@ -298,6 +299,7 @@ class Menu extends Phaser.Scene {
                     this.btLogin.visible = true;
                     this.ola.visible = false;
                     infoUser.logout();
+                    aux = 1;
                     break;
                 case this.btTop:
                     getTOP(di, df, "", "", "", this); //
@@ -356,6 +358,6 @@ class Menu extends Phaser.Scene {
 }
 
 function isIphone() {
-    console.log("Verificando se é um iphone...")
+    //console.log("Verificando se é um iphone...");
     return /iPhone/i.test(navigator.userAgent);
 }

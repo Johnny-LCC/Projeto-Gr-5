@@ -158,16 +158,17 @@ function getTOP(di, df, globalCodTurma, globalCodEscola, lvl, scene) {
 }
 
 
-function updateTOP(di, df, globalCodTurma, globalCodEscola, flag, lvl, scene) { /////
+function updateTOP(di, df, globalCodTurma, globalCodEscola, flag, lvl, scene) {
     var data;
     $.ajax
     ({
         type: "POST",
         url: "https://www.hypatiamat.com/newHRecords.php",
-        data: "action=mostraNew&anoLi=" + di + "&anoLf=" + df + "&mturma=" + globalCodTurma + "&mescola=" + globalCodEscola + "&flag=" + flag  + "&tip=" + lvl + "&tC=velhaTOP",
+        data: "action=mostraNew&anoLi=" + di + "&anoLf=" + df + "&mturma=" + globalCodTurma + "&mescola=" + globalCodEscola + "&flag=" + flag + "&tip=" + lvl  + "&tC=velhaTOP",
         crossDomain: true,
         cache: false,
         success: function (response) {
+            console.log(response);
             data = [];
             let j = 0;
             response = response.split('&');
@@ -261,10 +262,10 @@ function verificaRecords(username, globalCodTurma, globalCodEscola, pontuacao, l
         },
         error: function (XMLHttpRequest, textStatus, errorThrown) {
             if(scene.ended == 1){
-                scene.endText = scene.add.text(0, 0, 'Erro de ligação', { fontFamily: 'font1', fontSize: 40, color: '#463516' });
+                scene.endText = scene.add.text(0, 0, 'Erro de ligação', { fontFamily: 'Arial', fontSize: 40, color: '#463516' });
                 scene.endText.setOrigin(0.5, 0.5);
                 scene.aGrid.placeAtIndex(157, scene.endText);
-                scene.endText2=scene.add.text(0,0, 'Verifica o estado da ligação á internet', {fontFamily: 'font1', fontSize:40 ,  color: '#463516'});
+                scene.endText2=scene.add.text(0,0, 'Verifica o estado da ligação á internet', {fontFamily: 'Arial', fontSize:40 ,  color: '#463516'});
                 scene.endText2.setOrigin(0.45,0.5);
                 scene.aGrid.placeAtIndex(220,scene.endText2);
             }

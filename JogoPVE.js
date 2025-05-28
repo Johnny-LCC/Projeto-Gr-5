@@ -365,12 +365,14 @@ class JogoPvE extends Phaser.Scene {
 
         let resultText;
         if (this.score1 > this.score2) {
-            resultText = "Jogador 1 venceu!";
+            resultText = "Jogador venceu!";
         } else if (this.score2 > this.score1) {
             resultText = "Maquina venceu!";
         } else {
             resultText = "Empate!";
         }
+
+        updateRecords();
 
         const overlay = this.background.setDepth(2);
         const title = this.titulo.setDepth(2);
@@ -385,7 +387,17 @@ class JogoPvE extends Phaser.Scene {
                 fontSize: '100px',
                 fontFamily: 'Arial',
                 color: '#FFFFFF',
+            }
+        ).setOrigin(0.5).setDepth(2);
 
+        const backendText = this.add.text(
+            this.width * 0.5,
+            this.height * 0.75,
+            please,
+            {
+                fontSize: '50px',
+                fontFamily: 'Arial',
+                color: '#FFFFFF',
             }
         ).setOrigin(0.5).setDepth(2);
 
@@ -393,7 +405,6 @@ class JogoPvE extends Phaser.Scene {
 
         newMenuButton.on('pointerdown', () => {
             this.cleanupGameObjects();
-            updateRecords();
             this.scene.start('Menu');
         });
     }

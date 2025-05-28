@@ -86,7 +86,8 @@ class rankingScene extends Phaser.Scene {
 
         this.di = x + "-09-01";
         this.df = y + "-08-31";
-        this.dificulty = 1; //////////
+        this.flag = 2;
+        this.lvl = -1;
 
         //TABLE
         var scrollMode = 0; // 0:vertical, 1:horizontal
@@ -104,7 +105,7 @@ class rankingScene extends Phaser.Scene {
             table: {
                 cellWidth: 50,
                 cellHeight: 50,
-                columns: 7,
+                columns: 6,
 
                 mask: {
                     padding: 2,
@@ -140,18 +141,18 @@ class rankingScene extends Phaser.Scene {
                     newwith = 200;
                 }
                 if (cell.index % 6 == 2) {//pontos
-                    newwith = 800;
-                }
-                if (cell.index % 6 == 3) {//nivel
                     newwith = 830;
                 }
-                if (cell.index % 6 == 4) {//Escola
+                //if (cell.index % 7 == 3) {//nivel
+                //    newwith = 830;
+                //}
+                if (cell.index % 6 == 3) {//Escola
                     newwith = 1390;
                 }
-                if (cell.index % 6 == 5) {//turma
+                if (cell.index % 6 == 4) {//turma
                     newwith = 2000;
                 }
-                if (cell.index % 6 == 6) {
+                if (cell.index % 6 == 5) {
                     newwith = 2300;
                 }
 
@@ -166,13 +167,13 @@ class rankingScene extends Phaser.Scene {
                             height: height,
 
                             orientation: 'top-to-bottom',
-                            text: scene.add.text(50, 50, item.name, { fontFamily: "Arial", fontSize: 30, color: '#2017B3', align: 'center' }),
+                            text: scene.add.text(50, 50, item.name, { fontFamily: "Arial", fontSize: 30, color: '#ffffff', align: 'center' }),
                             align: 'center',
                         });
 
                 return cellContainer;
             },
-            items: this.CreateItems(700) //
+            items: this.CreateItems(600)
         }).layout();
 
         this.aGrid.placeAt(6.3535, 7.87, this.table);
@@ -183,11 +184,80 @@ class rankingScene extends Phaser.Scene {
 
         this.lastclick;
 
+        //Niveis
+        this.nivel = this.add.text(1830, 415, 'Nivel', { fontFamily: 'Arial', fontSize: 32, color: '#2017B3' });
+        this.nivel.setOrigin(0.65, 1.1);
+
+        //PvP
+        this.lvl0 = this.add.text(1820, 460, 'PvP', { fontFamily: "Arial", fontSize: 30, color: '#ffffff', align: 'left' });
+        this.lvl0.setOrigin(0.65, 1.1);
+        this.lvl0_icon = this.add.circle(1755, 455, 10).setFillStyle('0xffffff');
+        this.lvl0_icon.setOrigin(0.65, 1.1);
+        this.lvl0.setInteractive({ useHandCursor: true });
+        
+        this.lvl1 = this.add.text(1840, 500, 'Nível 1', { fontFamily: "Arial", fontSize: 30, color: '#ffffff', align: 'left' });
+        this.lvl1.setOrigin(0.65, 1.1);
+        this.lvl1_icon = this.add.circle(1755, 495, 10).setFillStyle('0xffffff');
+        this.lvl1_icon.setOrigin(0.65, 1.1);
+        this.lvl1.setInteractive({ useHandCursor: true });
+
+        this.lvl2 = this.add.text(1840, 540, 'Nível 2', { fontFamily: "Arial", fontSize: 30, color: '#ffffff', align: 'left' });
+        this.lvl2.setOrigin(0.65, 1.1);
+        this.lvl2_icon = this.add.circle(1755, 535, 10).setFillStyle('0xffffff');
+        this.lvl2_icon.setOrigin(0.65, 1.1);
+        this.lvl2.setInteractive({ useHandCursor: true });
+
+        this.lvl3 = this.add.text(1840, 580, 'Nível 3', { fontFamily: "Arial", fontSize: 30, color: '#ffffff', align: 'left' });
+        this.lvl3.setOrigin(0.65, 1.1);
+        this.lvl3_icon = this.add.circle(1755, 575, 10).setFillStyle('0xffffff');
+        this.lvl3_icon.setOrigin(0.65, 1.1);
+        this.lvl3.setInteractive({ useHandCursor: true });
+
+        this.lvl0.input.hitArea.setTo(-50, -5, this.lvl0.width + 60, this.lvl0.height);
+        this.lvl0.on('pointerdown', () => {
+            this.lvl0_icon.setFillStyle('0x2017B3');
+            this.lvl1_icon.setFillStyle('0xffffff');
+            this.lvl2_icon.setFillStyle('0xffffff');
+            this.lvl3_icon.setFillStyle('0xffffff');
+            this.lvl = 0;
+            updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, this.lvl, this);
+        });
+        
+        this.lvl1.input.hitArea.setTo(-50, -5, this.lvl1.width + 60, this.lvl1.height);
+        this.lvl1.on('pointerdown', () => {
+            this.lvl0_icon.setFillStyle('0xffffff');
+            this.lvl1_icon.setFillStyle('0x2017B3');
+            this.lvl2_icon.setFillStyle('0xffffff');
+            this.lvl3_icon.setFillStyle('0xffffff');
+            this.lvl = 1;
+            updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, this.lvl, this);
+        });
+       
+        this.lvl2.input.hitArea.setTo(-50, -5, this.lvl2.width + 60, this.lvl2.height);
+        this.lvl2.on('pointerdown', () => {
+            this.lvl0_icon.setFillStyle('0xffffff');
+            this.lvl1_icon.setFillStyle('0xffffff');
+            this.lvl2_icon.setFillStyle('0x2017B3');
+            this.lvl3_icon.setFillStyle('0xffffff');
+            this.lvl = 2;
+            updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, this.lvl, this);
+        });
+        
+        this.lvl3.input.hitArea.setTo(-50, -5, this.lvl3.width + 60, this.lvl3.height);
+        this.lvl3.on('pointerdown', () => {
+            this.lvl0_icon.setFillStyle('0xffffff');
+            this.lvl1_icon.setFillStyle('0xffffff');
+            this.lvl2_icon.setFillStyle('0xffffff');
+            this.lvl3_icon.setFillStyle('0x2017B3');
+            this.lvl = 3;
+            updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, this.lvl, this);
+        });
+
         this.dropdown = this.rexUI.add.gridTable({
             x: 1800,
-            y: 585,
+            y: 680,
             width: 160,
-            height: 280,
+            height: 180,
 
             scrollMode: scrollMode,
 
@@ -233,7 +303,7 @@ class rankingScene extends Phaser.Scene {
 
                     orientation: 0,
                     icon: scene.add.circle(0,50,10).setFillStyle('0xffffff'),
-                    text: scene.add.text(50, 50, item, { fontFamily: "Arial", fontSize: 30, color: '#2017B3', align: 'center' }),
+                    text: scene.add.text(50, 50, item, { fontFamily: "Arial", fontSize: 30, color: '#ffffff', align: 'center' }),
                     align: 'center',
                     space: {
                         icon: 20,
@@ -270,7 +340,7 @@ class rankingScene extends Phaser.Scene {
                         scene.di = "2015-09-01"
                         scene.df = new Date().toISOString().slice(0, 10)
                     }
-                    updateTOP(scene.di, scene.df, infoUser.turma, infoUser.escola, 2, "", scene);
+                    updateTOP(scene.di, scene.df, infoUser.turma, infoUser.escola, this.flag, this.lvl, scene);
                 });
 
                 let tmp = x.slice(2, 4) +"-" +y.slice(2,4);
@@ -282,23 +352,17 @@ class rankingScene extends Phaser.Scene {
 
             },
             items: this.selectYear()
-        })
-            .layout()
+        }).layout()
 
-
-        this.ano = this.add.text(0, 0, 'Ano letivo', { fontFamily: 'Arial', fontSize: 32, color: '#0A2A0A' });
+        this.ano = this.add.text(1840, 630, 'Ano letivo', { fontFamily: 'Arial', fontSize: 32, color: '#2017B3' });
         this.ano.setOrigin(0.65, 1.1);
-        this.aGrid.placeAtIndex(73, this.ano);
-        this.ano.y = 418;
 
         //Filtros
-        this.filtro = this.add.text(0, 0, 'Filtro', { fontFamily: 'Arial', fontSize: 32, color: '#0A2A0A' });
-        this.filtro.setOrigin(1.3, 1);
-        this.aGrid.placeAtIndex(163.3, this.filtro);
-        this.filtro.y -= 50;
+        this.filtro = this.add.text(1820, 810, 'Filtro', { fontFamily: 'Arial', fontSize: 32, color: '#2017B3' });
+        this.filtro.setOrigin(0.65, 1.1);
 
         //Todos
-        this.todos = this.add.text(0, 0, 'Todos', { fontFamily: "Arial", fontSize: 30, color: '#2017B3', align: 'left' });
+        this.todos = this.add.text(0, 0, 'Todos', { fontFamily: "Arial", fontSize: 30, color: '#ffffff', align: 'left' });
         this.todos.setOrigin(0.8, 1.7);
         this.aGrid.placeAtIndex(178, this.todos);
         this.todos_icon = this.add.circle(0,0,10).setFillStyle('0xffffff');
@@ -307,7 +371,7 @@ class rankingScene extends Phaser.Scene {
         this.todos.setInteractive({ useHandCursor: true });
 
         //Escola
-        this.escola_filtro = this.add.text(0, 0, 'Escola', { fontFamily: "Arial", fontSize: 30, color: '#2017B3', align: 'left' });
+        this.escola_filtro = this.add.text(0, 0, 'Escola', { fontFamily: "Arial", fontSize: 30, color: '#ffffff', align: 'left' });
         this.escola_filtro.setOrigin(0.8, 0.3);
         this.aGrid.placeAtIndex(178, this.escola_filtro);
         this.escola_icon = this.add.circle(0,0,10).setFillStyle('0xffffff');
@@ -316,7 +380,7 @@ class rankingScene extends Phaser.Scene {
         this.escola_filtro.setInteractive({ useHandCursor: true });
 
         //Turma
-        this.turma_filtro = this.add.text(0, 0, 'Turma', { fontFamily: "Arial", fontSize: 30, color: '#2017B3', align: 'left' });
+        this.turma_filtro = this.add.text(0, 0, 'Turma', { fontFamily: "Arial", fontSize: 30, color: '#ffffff', align: 'left' });
         this.turma_filtro.setOrigin(0.8, -1);
         this.aGrid.placeAtIndex(178, this.turma_filtro);
         this.turma_icon = this.add.circle(0,0,10).setFillStyle('0xffffff');
@@ -324,53 +388,40 @@ class rankingScene extends Phaser.Scene {
         this.aGrid.placeAtIndex(178, this.turma_icon);
         this.turma_filtro.setInteractive({ useHandCursor: true });
 
-        this.todos.input.hitArea.setTo(-50, -5, this.todos.width + 60, this.todos.height);
-
         this.todos.y -= 50;
         this.escola_filtro.y -= 50;
         this.turma_filtro.y -= 50;
         this.todos_icon.y -= 40;
         this.turma_icon.y -= 50;
         this.escola_icon.y -= 50;
+
+        this.todos.input.hitArea.setTo(-50, -5, this.todos.width + 60, this.todos.height);
         this.todos.on('pointerdown', () => {
-            
             this.todos_icon.setFillStyle('0x2017B3');
-
             this.escola_icon.setFillStyle('0xffffff');
-
             this.turma_icon.setFillStyle('0xffffff');
-
             this.flag = 2;
-            updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, "", this);
-
+            updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, this.lvl, this);
         });
 
         this.escola_filtro.input.hitArea.setTo(-50, -5, this.escola_filtro.width + 60, this.escola_filtro.height);
         this.escola_filtro.on('pointerdown', () => {
-
             this.todos_icon.setFillStyle('0xffffff');
-
             this.escola_icon.setFillStyle('0x2017B3');
-
             this.turma_icon.setFillStyle('0xffffff');
-
             this.flag = 1;
-            updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, "", this);
+            updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, this.lvl, this);
         });
         
         this.turma_filtro.input.hitArea.setTo(-50, -5, this.turma_filtro.width + 60, this.turma_filtro.height);
-
         this.turma_filtro.on('pointerdown', () => {
             this.todos_icon.setFillStyle('0xffffff');
-
             this.escola_icon.setFillStyle('0xffffff');
-
             this.turma_icon.setFillStyle('0x2017B3');
-
             this.flag = 0;
-
-            updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, "", this);
+            updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, this.lvl, this);
         });
+
         this.filtro.visible = false; 
         this.todos.visible = false; 
         this.todos_icon.visible = false;
@@ -378,7 +429,6 @@ class rankingScene extends Phaser.Scene {
         this.escola_filtro.visible = false;
         this.turma_icon.visible = false; 
         this.turma_filtro.visible = false;
-
         if (infoUser.user != '') {
             this.filtro.visible = true; 
             this.todos.visible = true;
@@ -393,27 +443,23 @@ class rankingScene extends Phaser.Scene {
 
         }
 
-        this.jogador = this.add.text(0, 0, 'Jogador', { fontFamily: 'Arial', fontSize: 40, color: '#0A2A0A' });
+        this.jogador = this.add.text(0, 0, 'Jogador', { fontFamily: 'Arial', fontSize: 40, color: '#2017B3' });
         this.jogador.setOrigin(0.3,1.5);
 
-        this.pontos = this.add.text(0, 0, 'Pontos', { fontFamily: 'Arial', fontSize: 40, color: '#0A2A0A' });
+        this.pontos = this.add.text(0, 0, 'Pontos', { fontFamily: 'Arial', fontSize: 40, color: '#2017B3' });
         this.pontos.setOrigin(0,1.5);
 
-        this.level = this.add.text(0, 0, 'Nível', { fontFamily: 'Arial', fontSize: 40, color: '#0A2A0A' });
-        this.level.setOrigin(0, 1.5);
-
-        this.escola = this.add.text(0, 0, 'Escola', { fontFamily: 'Arial', fontSize: 40, color: '#0A2A0A' });
+        this.escola = this.add.text(0, 0, 'Escola', { fontFamily: 'Arial', fontSize: 40, color: '#2017B3' });
         this.escola.setOrigin(0.7,1.5);
 
-        this.turma = this.add.text(0, 0, 'Turma', { fontFamily: 'Arial', fontSize: 40, color: '#0A2A0A' });
+        this.turma = this.add.text(0, 0, 'Turma', { fontFamily: 'Arial', fontSize: 40, color: '#2017B3' });
         this.turma.setOrigin(1.146,1.5);
 
-        this.data = this.add.text(0, 0, 'Data', { fontFamily: 'Arial', fontSize: 40, color: '#0A2A0A' });
+        this.data = this.add.text(0, 0, 'Data', { fontFamily: 'Arial', fontSize: 40, color: '#2017B3' });
         this.data.setOrigin(2.28,1.5);
 
         this.aGrid.placeAtIndex(77, this.jogador);
-        this.aGrid.placeAtIndex(78.8, this.pontos);
-        this.aGrid.placeAtIndex(80, this.level);
+        this.aGrid.placeAtIndex(79, this.pontos);
         this.aGrid.placeAtIndex(82, this.escola);
         this.aGrid.placeAtIndex(85, this.turma);
         this.aGrid.placeAtIndex(87, this.data);
