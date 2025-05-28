@@ -65,15 +65,12 @@ class rankingScene extends Phaser.Scene {
             }
         }, this); 
 
-        //var color1 = '#FFD700';
-        //var color2 = '#FFEBCD';
         var gridConfig = {
             'scene': this,
             'cols': 15,
             'rows': 15
         }
         this.aGrid = new AlignGrid(gridConfig);
-        //this.aGrid.placeAtIndex(37, this.titulo);
 
         var d = new Date();
         var m = d.getMonth();
@@ -107,7 +104,7 @@ class rankingScene extends Phaser.Scene {
             table: {
                 cellWidth: 50,
                 cellHeight: 50,
-                columns: 7, //6
+                columns: 7,
 
                 mask: {
                     padding: 2,
@@ -175,7 +172,7 @@ class rankingScene extends Phaser.Scene {
 
                 return cellContainer;
             },
-            items: this.CreateItems(600)
+            items: this.CreateItems(700) //
         }).layout();
 
         this.aGrid.placeAt(6.3535, 7.87, this.table);
@@ -273,7 +270,7 @@ class rankingScene extends Phaser.Scene {
                         scene.di = "2015-09-01"
                         scene.df = new Date().toISOString().slice(0, 10)
                     }
-                    updateTOP(scene.di, scene.df, infoUser.turma, infoUser.escola, 2, scene);
+                    updateTOP(scene.di, scene.df, infoUser.turma, infoUser.escola, 2, "", scene);
                 });
 
                 let tmp = x.slice(2, 4) +"-" +y.slice(2,4);
@@ -344,7 +341,7 @@ class rankingScene extends Phaser.Scene {
             this.turma_icon.setFillStyle('0xffffff');
 
             this.flag = 2;
-            updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, this);
+            updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, "", this);
 
         });
 
@@ -358,7 +355,7 @@ class rankingScene extends Phaser.Scene {
             this.turma_icon.setFillStyle('0xffffff');
 
             this.flag = 1;
-            updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, this);
+            updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, "", this);
         });
         
         this.turma_filtro.input.hitArea.setTo(-50, -5, this.turma_filtro.width + 60, this.turma_filtro.height);
@@ -372,7 +369,7 @@ class rankingScene extends Phaser.Scene {
 
             this.flag = 0;
 
-            updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, this);
+            updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, "", this);
         });
         this.filtro.visible = false; 
         this.todos.visible = false; 

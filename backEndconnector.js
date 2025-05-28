@@ -68,6 +68,7 @@ function sessionVerify() {
                 infoUser.setLocalData();
 	    }
             else {
+                
                 infoUser.user = "";
                 return;
 
@@ -103,13 +104,13 @@ function destroySession() {
  * @param {string} password Password to try to login with
  * @param {Phaser.Scene} scene scope in with the login is being made
  */
-function getTOP(di, df, globalCodTurma, globalCodEscola, scene) {
+function getTOP(di, df, globalCodTurma, globalCodEscola, lvl, scene) {
     var data;
     $.ajax
     ({
         type: "POST",
         url: "https://www.hypatiamat.com/newHRecords.php",
-        data: "action=mostraNew&anoLi=" + di + "&anoLf=" + df + "&mturma=" + globalCodTurma + "&mescola=" + globalCodEscola + "&flag=2" + "&tip=1"  + "&tC=velhaTOP",
+        data: "action=mostraNew&anoLi=" + di + "&anoLf=" + df + "&mturma=" + globalCodTurma + "&mescola=" + globalCodEscola + "&flag=2" + "&tip=" + lvl + "&tC=velhaTOP",
         crossDomain: true,
         cache: false,
         success: function (response) {
@@ -157,13 +158,13 @@ function getTOP(di, df, globalCodTurma, globalCodEscola, scene) {
 }
 
 
-function updateTOP(di, df, globalCodTurma, globalCodEscola,flag,scene) {
+function updateTOP(di, df, globalCodTurma, globalCodEscola, flag, lvl, scene) { /////
     var data;
     $.ajax
     ({
         type: "POST",
         url: "https://www.hypatiamat.com/newHRecords.php",
-        data: "action=mostraNew&anoLi=" + di + "&anoLf=" + df + "&mturma=" + globalCodTurma + "&mescola=" + globalCodEscola + "&flag="+flag  + "&tip=1"+ "&tC=velhaTOP",
+        data: "action=mostraNew&anoLi=" + di + "&anoLf=" + df + "&mturma=" + globalCodTurma + "&mescola=" + globalCodEscola + "&flag=" + flag  + "&tip=" + lvl + "&tC=velhaTOP",
         crossDomain: true,
         cache: false,
         success: function (response) {
@@ -210,13 +211,12 @@ function updateTOP(di, df, globalCodTurma, globalCodEscola,flag,scene) {
 }
 
 
-function verificaRecords(username, globalCodTurma, globalCodEscola, pontuacao,scene) {
-
+function verificaRecords(username, globalCodTurma, globalCodEscola, pontuacao, lvl, scene) {
     $.ajax
     ({
         type: "POST",
         url: "https://www.hypatiamat.com/newHRecords.php",
-        data: "action=maximoGlobal&codAl=" + username + "&codTurma=" + globalCodTurma + "&codEscola=" + globalCodEscola + "&pont=" + pontuacao  + "&tip=1" + "&t=velhaHypatia&tC=velhaTOP",
+        data: "action=maximoGlobal&codAl=" + username + "&codTurma=" + globalCodTurma + "&codEscola=" + globalCodEscola + "&pont=" + pontuacao  + "&tip=" + lvl + "&t=velhaHypatia&tC=velhaTOP",
         crossDomain: true,
         cache: false,
         success: function (response) {
@@ -275,13 +275,12 @@ function verificaRecords(username, globalCodTurma, globalCodEscola, pontuacao,sc
 }
 
 
-function gravaRecords(username, globalCodTurma, globalCodEscola, pontuacao) {
-
+function gravaRecords(username, globalCodTurma, globalCodEscola, pontuacao, lvl) {
     $.ajax
     ({
         type: "POST",
         url: "https://www.hypatiamat.com/newHRecords.php",
-        data: "action=insere&musername=" + username + "&mturma=" + globalCodTurma + "&mescola=" + globalCodEscola + "&mpontuacao=" + pontuacao + "&mtipo=1" + "&t=velhaHypatia&tC=velhaTOP",
+        data: "action=insere&musername=" + username + "&mturma=" + globalCodTurma + "&mescola=" + globalCodEscola + "&mpontuacao=" + pontuacao + "&mtipo=" + lvl + "&t=velhaHypatia&tC=velhaTOP",
         crossDomain: true,
         cache: false,
         success: function (response) {
@@ -293,13 +292,13 @@ function gravaRecords(username, globalCodTurma, globalCodEscola, pontuacao) {
 }
 
 
-function getRecords(username, globalCodTurma, globalCodEscola, scene) {
+function getRecords(username, globalCodTurma, globalCodEscola, lvl, scene) {
 
     $.ajax
     ({
         type: "POST",
         url: "https://www.hypatiamat.com/newHRecords.php",
-        data: "action=minimoGlobal&codAl=" + username + "&codTurma=" + globalCodTurma + "&codEscola=" + globalCodEscola + "&pont=" + 0 + "&tip=1" + "&t=velhaHypatia&tC=velhaTOP",
+        data: "action=minimoGlobal&codAl=" + username + "&codTurma=" + globalCodTurma + "&codEscola=" + globalCodEscola + "&pont=" + 0 + "&tip=" + lvl + "&t=velhaHypatia&tC=velhaTOP",
         crossDomain: true,
         cache: false,
         success: function (response) {

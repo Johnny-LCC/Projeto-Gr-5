@@ -311,6 +311,7 @@ class JogoPvP extends Phaser.Scene {
 
         newMenuButton.on('pointerdown', () => {
             this.cleanupGameObjects();
+            updateRecords();
             this.scene.start('Menu');
         });
     }
@@ -383,4 +384,9 @@ class JogoPvP extends Phaser.Scene {
             this.turnTimer.value = null;
         }
     }
-};
+}
+
+function updateRecords() {
+    verificaRecords(infoUser.user, infoUser.turma, infoUser.escola, score1, 'PvP', this);
+    gravaRecords(infoUser.user, infoUser.turma, infoUser.escola, score1, 'PvP');
+}

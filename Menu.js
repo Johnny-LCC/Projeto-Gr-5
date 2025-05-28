@@ -18,6 +18,8 @@ var y;
 var di = x + "-09-01";
 var df = y + "-08-31";
 
+var aux = 1;
+
 // Make Menu globally accessible
 class Menu extends Phaser.Scene {
 
@@ -153,15 +155,15 @@ class Menu extends Phaser.Scene {
         this.btLogin2.visible = false;
         
         //olaMSG
-        this.ola = this.add.text(0.07 * game.config.width ,0.35 * game.config.height,"Olá " + nome,{ fontFamily: 'Arial',fontSize: 80,color: '#FFC90E',align: 'center'});
+        this.ola = this.add.text(0.025 * game.config.width ,0.35 * game.config.height,"Olá " + nome,{ fontFamily: 'Arial',fontSize: 80,color: '#FFC90E',align: 'center'});
         this.ola.visible = false;
         
         //loginErrorMsg
-        this.loginErrorMsg = this.add.text(0.38 * game.config.width, 0.316 * game.config.height,"Utilizador ou Password Errados",{ fontFamily: 'Arial',fontSize: 35,color: '#B40404',align: 'center'});
+        this.loginErrorMsg = this.add.text(0.38 * game.config.width, 0.6 * game.config.height,"Utilizador ou Password Errados",{ fontFamily: 'Arial',fontSize: 35,color: '#B40404',align: 'center'});
         this.loginErrorMsg.visible = false;
 
         //loginErrorMsg2
-        this.loginErrorMsg2 = this.add.text(0.38 * game.config.width, 0.316 * game.config.height,"Está registado como professor!",{ fontFamily: 'Arial',fontSize: 35,color: '#B40404',align: 'center'});
+        this.loginErrorMsg2 = this.add.text(0.38 * game.config.width, 0.6 * game.config.height,"Está registado como professor!",{ fontFamily: 'Arial',fontSize: 35,color: '#B40404',align: 'center'});
         this.loginErrorMsg2.visible = false;
 
         let userH = `<input type="text" name="username" style="font-size:25px; font-family:'Arial'; width:435px; height:57px; text-align:center;">`;
@@ -211,6 +213,8 @@ class Menu extends Phaser.Scene {
                     this.login.visible = false;
                     this.btLogin.visible = true;
                     this.btLogin2.visible = false;
+                    this.loginErrorMsg.visible = false;
+                    this.loginErrorMsg2.visible = false;
                     x.visible = false;
                     y.visible = false;
                     break;
@@ -227,6 +231,8 @@ class Menu extends Phaser.Scene {
                     this.login.visible = false;
                     this.btLogin.visible = true;
                     this.btLogin2.visible = false;
+                    this.loginErrorMsg.visible = false;
+                    this.loginErrorMsg2.visible = false;
                     x.visible = false;
                     y.visible = false;
                     break;
@@ -243,6 +249,8 @@ class Menu extends Phaser.Scene {
                     this.btLogin.visible = true;
                     this.btLogin2.visible = false;
                     this.login.visible = false;
+                    this.loginErrorMsg.visible = false;
+                    this.loginErrorMsg2.visible = false;
                     x.visible = false;
                     y.visible = false;
                     break;
@@ -282,8 +290,8 @@ class Menu extends Phaser.Scene {
                             x.getChildByName("username").value = '';
                             y.getChildByName("password").value = '';
                         }
+                        //
                     }, this);
-                    
                     break;
                 case this.btLogout:
                     this.btLogout.visible = false;
@@ -292,7 +300,7 @@ class Menu extends Phaser.Scene {
                     infoUser.logout();
                     break;
                 case this.btTop:
-                    getTOP(di, df, "", "", this);
+                    getTOP(di, df, "", "", "", this); //
                     flag = true;
                     break;
                 default:
@@ -319,16 +327,21 @@ class Menu extends Phaser.Scene {
             this.btLogin.visible = false;
             this.btLogin2.visible = false;
             this.loginErrorMsg.visible = false;
+            this.login.visible = false;
             x.visible = false;
             y.visible = false;
-            this.btFechar.visible = false;
-            this.login.visible = false;
-            this.btPVP.visible = true;
-            this.btLvl1.visible = true;
-            this.btLvl2.visible = true;
-            this.btLvl3.visible = true;
-            this.titulo.visible = true;
-            this.lapis.visible = true;
+            //
+            if(aux){
+                this.btFechar.visible = false;
+                this.btPVP.visible = true;
+                this.btLvl1.visible = true;
+                this.btLvl2.visible = true;
+                this.btLvl3.visible = true;
+                this.titulo.visible = true;
+                this.lapis.visible = true;
+                aux -= 1;
+            }
+            //
         }
         
         if(this.scale.isFullscreen){

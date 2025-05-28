@@ -1,3 +1,4 @@
+
 // Global variables
 var width;
 var height;
@@ -392,6 +393,7 @@ class JogoPvE extends Phaser.Scene {
 
         newMenuButton.on('pointerdown', () => {
             this.cleanupGameObjects();
+            updateRecords();
             this.scene.start('Menu');
         });
     }
@@ -475,4 +477,9 @@ function shuffleArray(array) {
             array[randomIndex], array[currentIndex]]; 
     }
     return array;
+}
+
+function updateRecords() {
+    verificaRecords(infoUser.user, infoUser.turma, infoUser.escola, score1, this.level, this);
+    gravaRecords(infoUser.user, infoUser.turma, infoUser.escola, score1, this.level);
 }
