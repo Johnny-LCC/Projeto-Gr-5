@@ -84,10 +84,10 @@ class rankingScene extends Phaser.Scene {
             var y = n;
         }
 
-        this.di = x + "-09-01";
+        this.di = "2015-09-01";
         this.df = y + "-08-31";
         this.flag = 2;
-        this.lvl = -1;
+        this.lvl = 0;
 
         //TABLE
         var scrollMode = 0; // 0:vertical, 1:horizontal
@@ -143,9 +143,6 @@ class rankingScene extends Phaser.Scene {
                 if (cell.index % 6 == 2) {//pontos
                     newwith = 830;
                 }
-                //if (cell.index % 7 == 3) {//nivel
-                //    newwith = 830;
-                //}
                 if (cell.index % 6 == 3) {//Escola
                     newwith = 1390;
                 }
@@ -191,7 +188,7 @@ class rankingScene extends Phaser.Scene {
         //PvP
         this.lvl0 = this.add.text(1820, 460, 'PvP', { fontFamily: "Arial", fontSize: 30, color: '#ffffff', align: 'left' });
         this.lvl0.setOrigin(0.65, 1.1);
-        this.lvl0_icon = this.add.circle(1755, 455, 10).setFillStyle('0xffffff');
+        this.lvl0_icon = this.add.circle(1755, 455, 10).setFillStyle('0x2017B3');
         this.lvl0_icon.setOrigin(0.65, 1.1);
         this.lvl0.setInteractive({ useHandCursor: true });
         
@@ -220,7 +217,7 @@ class rankingScene extends Phaser.Scene {
             this.lvl2_icon.setFillStyle('0xffffff');
             this.lvl3_icon.setFillStyle('0xffffff');
             this.lvl = 0;
-            updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, this.lvl, this);
+            //updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, this.lvl, this);
         });
         
         this.lvl1.input.hitArea.setTo(-50, -5, this.lvl1.width + 60, this.lvl1.height);
@@ -230,7 +227,7 @@ class rankingScene extends Phaser.Scene {
             this.lvl2_icon.setFillStyle('0xffffff');
             this.lvl3_icon.setFillStyle('0xffffff');
             this.lvl = 1;
-            updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, this.lvl, this);
+            //updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, this.lvl, this);
         });
        
         this.lvl2.input.hitArea.setTo(-50, -5, this.lvl2.width + 60, this.lvl2.height);
@@ -240,7 +237,7 @@ class rankingScene extends Phaser.Scene {
             this.lvl2_icon.setFillStyle('0x2017B3');
             this.lvl3_icon.setFillStyle('0xffffff');
             this.lvl = 2;
-            updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, this.lvl, this);
+            //updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, this.lvl, this);
         });
         
         this.lvl3.input.hitArea.setTo(-50, -5, this.lvl3.width + 60, this.lvl3.height);
@@ -250,7 +247,7 @@ class rankingScene extends Phaser.Scene {
             this.lvl2_icon.setFillStyle('0xffffff');
             this.lvl3_icon.setFillStyle('0x2017B3');
             this.lvl = 3;
-            updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, this.lvl, this);
+            //updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, this.lvl, this);
         });
 
         this.dropdown = this.rexUI.add.gridTable({
@@ -340,12 +337,12 @@ class rankingScene extends Phaser.Scene {
                         scene.di = "2015-09-01"
                         scene.df = new Date().toISOString().slice(0, 10)
                     }
-                    updateTOP(scene.di, scene.df, infoUser.turma, infoUser.escola, this.flag, this.lvl, scene);
+                    this.df = scene.df; this.di = scene,di;
+                    //updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, this.lvl, scene);
                 });
 
-                let tmp = x.slice(2, 4) +"-" +y.slice(2,4);
-                if (cellContainer.getElement('text')._text == tmp) {
-                    scene.lastclick = cellContainer.getElement('icon').setFillStyle('0xffffff');
+                if (cellContainer.getElement('text')._text == 'Todos') {
+                    scene.lastclick = cellContainer.getElement('icon').setFillStyle('0x2017B3');
                 }
 
                 return cellContainer;
@@ -365,7 +362,7 @@ class rankingScene extends Phaser.Scene {
         this.todos = this.add.text(0, 0, 'Todos', { fontFamily: "Arial", fontSize: 30, color: '#ffffff', align: 'left' });
         this.todos.setOrigin(0.8, 1.7);
         this.aGrid.placeAtIndex(178, this.todos);
-        this.todos_icon = this.add.circle(0,0,10).setFillStyle('0xffffff');
+        this.todos_icon = this.add.circle(0,0,10).setFillStyle('0x2017B3');
         this.todos_icon.setOrigin(5.18, 3);
         this.aGrid.placeAtIndex(178, this.todos_icon);
         this.todos.setInteractive({ useHandCursor: true });
@@ -401,7 +398,7 @@ class rankingScene extends Phaser.Scene {
             this.escola_icon.setFillStyle('0xffffff');
             this.turma_icon.setFillStyle('0xffffff');
             this.flag = 2;
-            updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, this.lvl, this);
+            //updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, this.lvl, this);
         });
 
         this.escola_filtro.input.hitArea.setTo(-50, -5, this.escola_filtro.width + 60, this.escola_filtro.height);
@@ -410,7 +407,7 @@ class rankingScene extends Phaser.Scene {
             this.escola_icon.setFillStyle('0x2017B3');
             this.turma_icon.setFillStyle('0xffffff');
             this.flag = 1;
-            updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, this.lvl, this);
+            //updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, this.lvl, this);
         });
         
         this.turma_filtro.input.hitArea.setTo(-50, -5, this.turma_filtro.width + 60, this.turma_filtro.height);
@@ -419,7 +416,7 @@ class rankingScene extends Phaser.Scene {
             this.escola_icon.setFillStyle('0xffffff');
             this.turma_icon.setFillStyle('0x2017B3');
             this.flag = 0;
-            updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, this.lvl, this);
+            //updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, this.lvl, this);
         });
 
         this.filtro.visible = false; 
@@ -463,6 +460,11 @@ class rankingScene extends Phaser.Scene {
         this.aGrid.placeAtIndex(82, this.escola);
         this.aGrid.placeAtIndex(85, this.turma);
         this.aGrid.placeAtIndex(87, this.data);
+
+    }
+
+    update(){
+        updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, this.lvl, this);
     }
 
     /**
