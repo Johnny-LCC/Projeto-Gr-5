@@ -311,7 +311,7 @@ class JogoPvP extends Phaser.Scene {
 
         const backendText = this.add.text(
             width * 0.5,
-            height * 0.75,
+            height * 0.85,
             please,
             {
                 fontSize: '50px',
