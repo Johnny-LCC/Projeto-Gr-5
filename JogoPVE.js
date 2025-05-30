@@ -2,8 +2,8 @@
 // Global variables
 var width;
 var height;
-var score1 = 0;
-var score2 = 0;
+//var score1 = 0;
+//var score2 = 0;
 var selectedProduct = null;
 var selectedNumbers = [];
 var selectedProductPos = null;
@@ -111,6 +111,7 @@ class JogoPvE extends Phaser.Scene {
             }
         }
 
+        //Phaser.Utils.Array.Shuffle(produtos);
         shuffleArray(produtos);
         produtos = produtos.slice(0, 24);
 
@@ -224,7 +225,7 @@ class JogoPvE extends Phaser.Scene {
         });
 
         if (!isPlayer) {
-            this.time.delayedCall(2000, () => {
+            this.time.delayedCall(2000*this.level, () => {
                 this.machineTurn();
             });
         }
@@ -371,7 +372,7 @@ class JogoPvE extends Phaser.Scene {
             resultText = "Empate!";
         }
 
-        updateRecords();
+        updateRecords(this.score1, this.level, this);
 
         const overlay = this.background.setDepth(2);
         const title = this.titulo.setDepth(2);
@@ -489,7 +490,8 @@ function shuffleArray(array) {
     return array;
 }
 
-function updateRecords() {
-    verificaRecords(infoUser.user, infoUser.turma, infoUser.escola, score1, this.level, this);
-    gravaRecords(infoUser.user, infoUser.turma, infoUser.escola, score1, this.level);
+function updateRecords(score, lvl, scene) {
+    console.log("Score: "+score+"\nLevel: "+lvl);
+    verificaRecords(infoUser.user, infoUser.turma, infoUser.escola, score, lvl+1, scene);
+    gravaRecords(infoUser.user, infoUser.turma, infoUser.escola, score, lvl+1);
 }

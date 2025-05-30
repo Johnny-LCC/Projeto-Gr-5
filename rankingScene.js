@@ -87,7 +87,7 @@ class rankingScene extends Phaser.Scene {
         this.di = "2015-09-01";
         this.df = y + "-08-31";
         this.flag = 2;
-        this.lvl = 0;
+        this.lvl = 1;
 
         //TABLE
         var scrollMode = 0; // 0:vertical, 1:horizontal
@@ -182,19 +182,19 @@ class rankingScene extends Phaser.Scene {
         this.lastclick;
 
         //Niveis
-        this.nivel = this.add.text(1830, 415, 'Nivel', { fontFamily: 'Arial', fontSize: 32, color: '#2017B3' });
+        this.nivel = this.add.text(1830, 460, 'Nivel', { fontFamily: 'Arial', fontSize: 32, color: '#2017B3' });
         this.nivel.setOrigin(0.65, 1.1);
 
         //PvP
-        this.lvl0 = this.add.text(1820, 460, 'PvP', { fontFamily: "Arial", fontSize: 30, color: '#ffffff', align: 'left' });
-        this.lvl0.setOrigin(0.65, 1.1);
-        this.lvl0_icon = this.add.circle(1755, 455, 10).setFillStyle('0x2017B3');
-        this.lvl0_icon.setOrigin(0.65, 1.1);
-        this.lvl0.setInteractive({ useHandCursor: true });
+        //this.lvl0 = this.add.text(1820, 460, 'PvP', { fontFamily: "Arial", fontSize: 30, color: '#ffffff', align: 'left' });
+        //this.lvl0.setOrigin(0.65, 1.1);
+        //this.lvl0_icon = this.add.circle(1755, 455, 10).setFillStyle('0x2017B3');
+        //this.lvl0_icon.setOrigin(0.65, 1.1);
+        //this.lvl0.setInteractive({ useHandCursor: true });
         
         this.lvl1 = this.add.text(1840, 500, 'Nível 1', { fontFamily: "Arial", fontSize: 30, color: '#ffffff', align: 'left' });
         this.lvl1.setOrigin(0.65, 1.1);
-        this.lvl1_icon = this.add.circle(1755, 495, 10).setFillStyle('0xffffff');
+        this.lvl1_icon = this.add.circle(1755, 495, 10).setFillStyle('0x2017B3');
         this.lvl1_icon.setOrigin(0.65, 1.1);
         this.lvl1.setInteractive({ useHandCursor: true });
 
@@ -210,19 +210,19 @@ class rankingScene extends Phaser.Scene {
         this.lvl3_icon.setOrigin(0.65, 1.1);
         this.lvl3.setInteractive({ useHandCursor: true });
 
-        this.lvl0.input.hitArea.setTo(-50, -5, this.lvl0.width + 60, this.lvl0.height);
-        this.lvl0.on('pointerdown', () => {
-            this.lvl0_icon.setFillStyle('0x2017B3');
-            this.lvl1_icon.setFillStyle('0xffffff');
-            this.lvl2_icon.setFillStyle('0xffffff');
-            this.lvl3_icon.setFillStyle('0xffffff');
-            this.lvl = 0;
-            //updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, this.lvl, this);
-        });
+        //this.lvl0.input.hitArea.setTo(-50, -5, this.lvl0.width + 60, this.lvl0.height);
+        //this.lvl0.on('pointerdown', () => {
+        //    this.lvl0_icon.setFillStyle('0x2017B3');
+        //    this.lvl1_icon.setFillStyle('0xffffff');
+        //    this.lvl2_icon.setFillStyle('0xffffff');
+        //    this.lvl3_icon.setFillStyle('0xffffff');
+        //    this.lvl = 0;
+        //    //updateTOP(this.di, this.df, infoUser.turma, infoUser.escola, this.flag, this.lvl, this);
+        //});
         
         this.lvl1.input.hitArea.setTo(-50, -5, this.lvl1.width + 60, this.lvl1.height);
         this.lvl1.on('pointerdown', () => {
-            this.lvl0_icon.setFillStyle('0xffffff');
+            //this.lvl0_icon.setFillStyle('0xffffff');
             this.lvl1_icon.setFillStyle('0x2017B3');
             this.lvl2_icon.setFillStyle('0xffffff');
             this.lvl3_icon.setFillStyle('0xffffff');
@@ -232,7 +232,7 @@ class rankingScene extends Phaser.Scene {
        
         this.lvl2.input.hitArea.setTo(-50, -5, this.lvl2.width + 60, this.lvl2.height);
         this.lvl2.on('pointerdown', () => {
-            this.lvl0_icon.setFillStyle('0xffffff');
+            //this.lvl0_icon.setFillStyle('0xffffff');
             this.lvl1_icon.setFillStyle('0xffffff');
             this.lvl2_icon.setFillStyle('0x2017B3');
             this.lvl3_icon.setFillStyle('0xffffff');
@@ -242,7 +242,7 @@ class rankingScene extends Phaser.Scene {
         
         this.lvl3.input.hitArea.setTo(-50, -5, this.lvl3.width + 60, this.lvl3.height);
         this.lvl3.on('pointerdown', () => {
-            this.lvl0_icon.setFillStyle('0xffffff');
+            //this.lvl0_icon.setFillStyle('0xffffff');
             this.lvl1_icon.setFillStyle('0xffffff');
             this.lvl2_icon.setFillStyle('0xffffff');
             this.lvl3_icon.setFillStyle('0x2017B3');
