@@ -291,7 +291,7 @@ class JogoPvP extends Phaser.Scene {
             resultText = "Empate!";
         }
         
-        updateRecords();
+        //updateRecords();
 
         const overlay = this.background.setDepth(2);
         const title = this.titulo.setDepth(2);
@@ -398,7 +398,7 @@ class JogoPvP extends Phaser.Scene {
     }
 }
 
-function updateRecords() {
+/*function updateRecords() {
     verificaRecords(infoUser.user, infoUser.turma, infoUser.escola, score1, 0, this);
     gravaRecords(infoUser.user, infoUser.turma, infoUser.escola, score1, 0);
-}
+}*/
