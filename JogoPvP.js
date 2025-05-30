@@ -220,10 +220,11 @@ class JogoPvP extends Phaser.Scene {
         const product = selectedProduct;
 
         const isCorrect = (num1 * num2 === product);
-        const scoringPlayer = isCorrect ? this.currentPlayer.value : (this.currentPlayer.value === 1 ? 2 : 1);
-
-        this.markGridPosition(selectedProductPos.row, selectedProductPos.col, scoringPlayer);
-        this.updateScore(scoringPlayer);
+    if (isCorrect) {
+        // If correct, mark the grid position for the current player and update score
+        this.markGridPosition(selectedProductPos.row, selectedProductPos.col, this.currentPlayer.value);
+        this.updateScore(this.currentPlayer.value);
+    }
         this.quadradosNumeros.forEach(num => {
             num.sprite.setTexture('quadrado');
         });
