@@ -8,6 +8,7 @@ var timeText;
 var selectedProduct = null;
 var selectedNumbers = [];
 var selectedProductPos = null;
+var multText = "";
 
 // Make JogoPvP globally accessible
 class JogoPvP extends Phaser.Scene {
@@ -182,6 +183,8 @@ class JogoPvP extends Phaser.Scene {
             selectedProduct = null;
             selectedProductPos = null;  
         });
+
+        this.mult = this.add.text(0.54 * width, 0.66 * height, multText, { fontFamily: 'Arial', fontSize: '40px', fill: '#ffffff' }).setOrigin(0.5);
     }
 
     // Start a player's turn
@@ -242,6 +245,9 @@ class JogoPvP extends Phaser.Scene {
         this.quadradosNumeros.forEach(num => {
             num.sprite.setTexture('quadrado');
         });
+
+        multText = "";
+        this.mult.setText(multText);
 
         if (this.checkGameOver()) {
             this.endGame();
@@ -316,17 +322,6 @@ class JogoPvP extends Phaser.Scene {
             }
         ).setOrigin(0.5).setDepth(2);
 
-        const backendText = this.add.text(
-            width * 0.5,
-            height * 0.85,
-            please,
-            {
-                fontSize: '50px',
-                fontFamily: 'Arial',
-                color: '#FFFFFF',
-            }
-        ).setOrigin(0.5).setDepth(2);
-
         let newMenuButton = this.add.sprite(width * 0.5, height * 0.65, 'home').setScale(1.2).setInteractive({ useHandCursor: true }).setDepth(2);
 
         newMenuButton.on('pointerdown', () => {
@@ -381,10 +376,18 @@ class JogoPvP extends Phaser.Scene {
         
         if (selectedNumbers.length === 2 && selectedNumbers[1].value === selectedNumbers[0].value) {
             quadrado.sprite.setTexture('quadrado-roxo');
-            //this.currentPlayer.value === 1 ? quadrado.sprite.setTexture('quadrado-amarelo') : quadrado.sprite.setTexture('quadrado-verde');
         } else {
             this.currentPlayer.value === 1 ? quadrado.sprite.setTexture('quadrado-vermelho') : quadrado.sprite.setTexture('quadrado-azul');
         }
+
+        multText = multText + number;
+        if(selectedNumbers.length === 1) {
+            multText = multText + " X ";
+        }
+        else if(selectedNumbers.length === 2) {
+            multText = multText + " =";
+        }
+        this.mult.setText(multText);
         
         if (selectedProduct !== null && selectedNumbers.length === 2) {
             this.validateMultiplication();
@@ -408,5 +411,6 @@ class JogoPvP extends Phaser.Scene {
             this.turnTimer.value.remove();
             this.turnTimer.value = null;
         }
+        multText = "";
     }
 }

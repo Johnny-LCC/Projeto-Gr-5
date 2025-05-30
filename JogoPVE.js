@@ -9,6 +9,7 @@ var pointsPlayer = 0;
 var incPoints = 9000;
 var inicioTurno;
 var fimTurno;
+var multText = "";
 
 // Extend JogoPvE functionality
 class JogoPvE extends Phaser.Scene {
@@ -201,6 +202,8 @@ class JogoPvE extends Phaser.Scene {
             selectedProduct = null;
             selectedProductPos = null;  
         });
+
+        this.mult = this.add.text(0.54 * width, 0.66 * height, multText, { fontFamily: 'Arial', fontSize: '40px', fill: '#ffffff' }).setOrigin(0.5);
     }
 
     startTurn(isPlayer) {
@@ -273,13 +276,16 @@ class JogoPvE extends Phaser.Scene {
         const isCorrect = Math.random() < accuracy;
         //console.log(`Máquina escolheu ${value} e acertou: ${isCorrect}`);
 
-        if (isCorrect && factors.length >= 2 || unmarkedProducts.length === 1 && factors.length >= 2) {
+        if (isCorrect && factors.length === 2 || unmarkedProducts.length === 1 && factors.length === 2) {
             this.markGridPosition(row, col, false);
             this.updateScore(false);
-        } 
+        }
         this.quadradosNumeros.forEach(num => {
             num.sprite.setTexture('quadrado');
         });
+
+        multText = "";
+        this.mult.setText(multText);
 
         if (this.checkGameOver()) {
             this.endGame();
@@ -295,12 +301,16 @@ class JogoPvE extends Phaser.Scene {
                 if (this.numerosColuna[i] * this.numerosColuna[j] === product) {
                     factors.push(this.numerosColuna[i], this.numerosColuna[j]);
                     this.quadradosNumeros[i].sprite.setTexture('quadrado-azul');
+                    multText = multText + this.quadradosNumeros[i].value + " X ";
+                    this.mult.setText(multText);
                     await esperar(500);
                     if(this.numerosColuna[i] === this.numerosColuna[j]){
                         this.quadradosNumeros[j].sprite.setTexture('quadrado-roxo');
                     }else{
                         this.quadradosNumeros[j].sprite.setTexture('quadrado-azul');
                     }
+                    multText = multText + this.quadradosNumeros[j].value + " =";
+                    this.mult.setText(multText);
                     await esperar(1500);
                     return factors;
                 }
@@ -329,6 +339,9 @@ class JogoPvE extends Phaser.Scene {
         this.quadradosNumeros.forEach(num => {
             num.sprite.setTexture('quadrado');
         });
+
+        multText = "";
+        this.mult.setText(multText);
 
         if (this.checkGameOver()) {
             this.endGame();
@@ -460,6 +473,15 @@ class JogoPvE extends Phaser.Scene {
             quadrado.sprite.setTexture('quadrado-vermelho');
         }
 
+        multText = multText + number;
+        if(this.selectedNumbers.length === 1) {
+            multText = multText + " X ";
+        }
+        else if(this.selectedNumbers.length === 2) {
+            multText = multText + " =";
+        }
+        this.mult.setText(multText);
+
         if (this.selectedProduct !== null && this.selectedNumbers.length === 2) {
             this.validateMultiplication();
         }
@@ -487,6 +509,7 @@ class JogoPvE extends Phaser.Scene {
             this.turnTimer.remove(); 
             this.turnTimer = null;
         }
+        multText = "";
     }
 }
 
