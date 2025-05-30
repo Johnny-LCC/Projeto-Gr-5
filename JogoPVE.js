@@ -492,6 +492,6 @@ function shuffleArray(array) {
 
 function updateRecords(score, lvl, scene) {
     console.log("Score: "+score+"\nLevel: "+lvl);
-    verificaRecords(infoUser.user, infoUser.turma, infoUser.escola, score, lvl+1, scene);
-    gravaRecords(infoUser.user, infoUser.turma, infoUser.escola, score, lvl+1);
+    verificaRecords(infoUser.user, infoUser.turma, infoUser.escola, score, lvl, scene);
+    gravaRecords(infoUser.user, infoUser.turma, infoUser.escola, score, lvl);
 }
