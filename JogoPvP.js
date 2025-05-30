@@ -221,7 +221,6 @@ class JogoPvP extends Phaser.Scene {
 
         const isCorrect = (num1 * num2 === product);
     if (isCorrect) {
-        // If correct, mark the grid position for the current player and update score
         this.markGridPosition(selectedProductPos.row, selectedProductPos.col, this.currentPlayer.value);
         this.updateScore(this.currentPlayer.value);
     }

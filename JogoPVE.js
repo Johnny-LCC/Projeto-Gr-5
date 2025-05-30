@@ -111,7 +111,6 @@ class JogoPvE extends Phaser.Scene {
             }
         }
 
-        //Phaser.Utils.Array.Shuffle(produtos);
         shuffleArray(produtos);
         produtos = produtos.slice(0, 24);
 
@@ -225,7 +224,7 @@ class JogoPvE extends Phaser.Scene {
         });
 
         if (!isPlayer) {
-            this.time.delayedCall(2000*this.level, () => {
+            this.time.delayedCall(2000, () => {
                 this.machineTurn();
             });
         }
