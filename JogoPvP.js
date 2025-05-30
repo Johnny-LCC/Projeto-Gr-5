@@ -173,7 +173,7 @@ class JogoPvP extends Phaser.Scene {
         score2 = 0;
         scoreText = this.add.text(180, 290, `${score1} - ${score2}`, { fontSize: '64px', fill: '#049' });
         this.multText = "";
-        this.mult = this.add.text(0.54 * width, 0.66 * height, this.multText, { fontFamily: 'Arial', fontSize: '40px', fill: '#ffffff' }).setOrigin(0.5);
+        this.mult = this.add.text(0.545 * width, 0.95 * height, this.multText, { fontFamily: 'Arial', fontSize: '48px', fill: '#ffffff' }).setOrigin(0.5);
         this.lapis = this.add.sprite(0.3 * width, 0.68 * height, 'lapis').setScale(1.2);
         this.lapis.setInteractive({useHandCursor: true});
         this.lapis.on('pointerdown', () => {
