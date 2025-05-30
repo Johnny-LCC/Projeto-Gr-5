@@ -181,7 +181,9 @@ class JogoPvP extends Phaser.Scene {
             });
             selectedNumbers = [];
             selectedProduct = null;
-            selectedProductPos = null;  
+            selectedProductPos = null;
+            multText = "";
+            this.mult.setText(multText);
         });
 
         this.mult = this.add.text(0.54 * width, 0.66 * height, multText, { fontFamily: 'Arial', fontSize: '40px', fill: '#ffffff' }).setOrigin(0.5);
