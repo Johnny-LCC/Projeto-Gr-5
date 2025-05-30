@@ -26,6 +26,9 @@ class JogoPvP extends Phaser.Scene {
         this.load.image('ampTempo', 'assets/ampulhetaTempo.png');
         this.load.image('quadrado-azul', 'assets/quadrado-azul.png');
         this.load.image('quadrado-vermelho', 'assets/quadrado-vermelho.png');
+        this.load.image('quadrado-verde', 'assets/quadrado-verde.png');
+        this.load.image('quadrado-amarelo', 'assets/quadrado-amarelo.png');
+        this.load.image('quadrado-roxo', 'assets/quadrado-roxo.png');
         this.load.image('assinalaazul', 'assets/assinalaazul.png');
         this.load.image('assinalavermelho', 'assets/assinalavermelho.png');
    }
@@ -168,7 +171,17 @@ class JogoPvP extends Phaser.Scene {
         score1 = 0;
         score2 = 0;
         scoreText = this.add.text(180, 290, `${score1} - ${score2}`, { fontSize: '64px', fill: '#049' });
-        this.lapis = this.add.sprite(0.305 * width, 0.68 * height, 'lapis').setScale(1.2);
+        
+        this.lapis = this.add.sprite(0.3 * width, 0.68 * height, 'lapis').setScale(1.2);
+        this.lapis.setInteractive({useHandCursor: true});
+        this.lapis.on('pointerdown', () => {
+            this.quadradosNumeros.forEach(num => {
+                num.sprite.setTexture('quadrado');
+            });
+            selectedNumbers = [];
+            selectedProduct = null;
+            selectedProductPos = null;  
+        });
     }
 
     // Start a player's turn
@@ -179,7 +192,8 @@ class JogoPvP extends Phaser.Scene {
         timeText.setText(this.turnTime.value);
 
         selectedProduct = null;
-        selectedNumbers = [];        selectedProductPos = null;
+        selectedNumbers = [];        
+        selectedProductPos = null;
 
         if (this.turnTimer.value) {
             this.turnTimer.value.remove();
@@ -220,10 +234,11 @@ class JogoPvP extends Phaser.Scene {
         const product = selectedProduct;
 
         const isCorrect = (num1 * num2 === product);
-    if (isCorrect) {
-        this.markGridPosition(selectedProductPos.row, selectedProductPos.col, this.currentPlayer.value);
-        this.updateScore(this.currentPlayer.value);
-    }
+        if (isCorrect) {
+            this.markGridPosition(selectedProductPos.row, selectedProductPos.col, this.currentPlayer.value);
+            this.updateScore(this.currentPlayer.value);
+        }
+
         this.quadradosNumeros.forEach(num => {
             num.sprite.setTexture('quadrado');
         });
@@ -237,12 +252,6 @@ class JogoPvP extends Phaser.Scene {
 
     // Mark a grid position
     markGridPosition(row, col, player) {
-        const newBox = this.add.sprite(
-            this.quadradosGrid[row][col].sprite.x,
-            this.quadradosGrid[row][col].sprite.y,
-            'quadrado'
-        ).setScale(1.1).setDepth(1);
-
         const marker = this.add.sprite(
             this.quadradosGrid[row][col].sprite.x,
             this.quadradosGrid[row][col].sprite.y,
@@ -291,8 +300,6 @@ class JogoPvP extends Phaser.Scene {
             resultText = "Empate!";
         }
         
-        //updateRecords();
-
         const overlay = this.background.setDepth(2);
         const title = this.titulo.setDepth(2);
 
@@ -371,8 +378,13 @@ class JogoPvP extends Phaser.Scene {
             index,
             value: number
         });
-
-        this.currentPlayer.value === 1 ? quadrado.sprite.setTexture('quadrado-vermelho') : quadrado.sprite.setTexture('quadrado-azul');
+        
+        if (selectedNumbers.length === 2 && selectedNumbers[1].value === selectedNumbers[0].value) {
+            quadrado.sprite.setTexture('quadrado-roxo');
+            //this.currentPlayer.value === 1 ? quadrado.sprite.setTexture('quadrado-amarelo') : quadrado.sprite.setTexture('quadrado-verde');
+        } else {
+            this.currentPlayer.value === 1 ? quadrado.sprite.setTexture('quadrado-vermelho') : quadrado.sprite.setTexture('quadrado-azul');
+        }
         
         if (selectedProduct !== null && selectedNumbers.length === 2) {
             this.validateMultiplication();
@@ -391,14 +403,10 @@ class JogoPvP extends Phaser.Scene {
     cleanupGameObjects() {
         selectedProduct = null;
         selectedNumbers = [];
-        selectedProductPos = null;        if (this.turnTimer.value) {
+        selectedProductPos = null;        
+        if (this.turnTimer.value) {
             this.turnTimer.value.remove();
             this.turnTimer.value = null;
         }
     }
 }
-
-/*function updateRecords() {
-    verificaRecords(infoUser.user, infoUser.turma, infoUser.escola, score1, 0, this);
-    gravaRecords(infoUser.user, infoUser.turma, infoUser.escola, score1, 0);
-}*/

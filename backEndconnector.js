@@ -226,7 +226,6 @@ function verificaRecords(username, globalCodTurma, globalCodEscola, pontuacao, l
             data.push(parseFloat(response.split("vlMin3=")[1].split("&")[0])); //minimo da turma
             data.push(parseFloat(response.split("vlMin2=")[1].split("&")[0])); //minimo da escola
             data.push(parseFloat(response.split("vlMin1=")[1].split("&")[0])); //minimo global - TOP 100 
-            //pontuacao = parseFloat(pontuacao);
             if(pontuacao >= 0 ) {
                 if (infoUser.user != '') {
                     if (data[0] < pontuacao && pontuacao>0) {
