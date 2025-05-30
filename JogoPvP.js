@@ -8,7 +8,7 @@ var timeText;
 var selectedProduct = null;
 var selectedNumbers = [];
 var selectedProductPos = null;
-var multText = "";
+//var multText = "";
 
 // Make JogoPvP globally accessible
 class JogoPvP extends Phaser.Scene {
@@ -172,7 +172,8 @@ class JogoPvP extends Phaser.Scene {
         score1 = 0;
         score2 = 0;
         scoreText = this.add.text(180, 290, `${score1} - ${score2}`, { fontSize: '64px', fill: '#049' });
-        
+        this.multText = "";
+        this.mult = this.add.text(0.54 * width, 0.66 * height, this.multText, { fontFamily: 'Arial', fontSize: '40px', fill: '#ffffff' }).setOrigin(0.5);
         this.lapis = this.add.sprite(0.3 * width, 0.68 * height, 'lapis').setScale(1.2);
         this.lapis.setInteractive({useHandCursor: true});
         this.lapis.on('pointerdown', () => {
@@ -182,11 +183,9 @@ class JogoPvP extends Phaser.Scene {
             selectedNumbers = [];
             selectedProduct = null;
             selectedProductPos = null;
-            multText = "";
-            this.mult.setText(multText);
+            this.multText = "";
+            this.mult.setText(this.multText);
         });
-
-        this.mult = this.add.text(0.54 * width, 0.66 * height, multText, { fontFamily: 'Arial', fontSize: '40px', fill: '#ffffff' }).setOrigin(0.5);
     }
 
     // Start a player's turn
@@ -199,6 +198,8 @@ class JogoPvP extends Phaser.Scene {
         selectedProduct = null;
         selectedNumbers = [];        
         selectedProductPos = null;
+        this.multText = "";
+        this.mult.setText(this.multText);
 
         if (this.turnTimer.value) {
             this.turnTimer.value.remove();
@@ -248,8 +249,8 @@ class JogoPvP extends Phaser.Scene {
             num.sprite.setTexture('quadrado');
         });
 
-        multText = "";
-        this.mult.setText(multText);
+        this.multText = "";
+        this.mult.setText(this.multText);
 
         if (this.checkGameOver()) {
             this.endGame();
@@ -382,14 +383,14 @@ class JogoPvP extends Phaser.Scene {
             this.currentPlayer.value === 1 ? quadrado.sprite.setTexture('quadrado-vermelho') : quadrado.sprite.setTexture('quadrado-azul');
         }
 
-        multText = multText + number;
+        this.multText = this.multText + number;
         if(selectedNumbers.length === 1) {
-            multText = multText + " X ";
+            this.multText = this.multText + " X ";
         }
         else if(selectedNumbers.length === 2) {
-            multText = multText + " =";
+            this.multText = this.multText + " =";
         }
-        this.mult.setText(multText);
+        this.mult.setText(this.multText);
         
         if (selectedProduct !== null && selectedNumbers.length === 2) {
             this.validateMultiplication();
@@ -413,6 +414,6 @@ class JogoPvP extends Phaser.Scene {
             this.turnTimer.value.remove();
             this.turnTimer.value = null;
         }
-        multText = "";
+        this.multText = "";
     }
 }

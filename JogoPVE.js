@@ -9,7 +9,7 @@ var pointsPlayer = 0;
 var incPoints = 9000;
 var inicioTurno;
 var fimTurno;
-var multText = "";
+//var multText = "";
 
 // Extend JogoPvE functionality
 class JogoPvE extends Phaser.Scene {
@@ -190,6 +190,8 @@ class JogoPvE extends Phaser.Scene {
         this.score1 = 0;
         this.score2 = 0;
         this.scoreText = this.add.text(180, 290, `${this.score1} - ${this.score2}`, { fontSize: '64px', fill: '#049' }); 
+        this.multText = "";
+        this.mult = this.add.text(0.54 * width, 0.66 * height, this.multText, { fontFamily: 'Arial', fontSize: '40px', fill: '#ffffff' }).setOrigin(0.5);
         this.lapis = this.add.sprite(0.3 * this.width, 0.68 * this.height, 'lapis').setScale(1.2);
         this.lapis.setInteractive({useHandCursor: true});
         this.lapis.on('pointerdown', () => {
@@ -197,15 +199,13 @@ class JogoPvE extends Phaser.Scene {
                 this.quadradosNumeros.forEach(num => {
                     num.sprite.setTexture('quadrado');
                 });
-                selectedNumbers = [];
-                selectedProduct = null;
-                selectedProductPos = null;
-                multText = "";
-                this.mult.setText(multText);
+                this.selectedNumbers = [];
+                this.selectedProduct = null;
+                this.selectedProductPos = null;
+                this.multText = "";
+                this.mult.setText(this.multText);
             }
         });
-
-        this.mult = this.add.text(0.54 * width, 0.66 * height, multText, { fontFamily: 'Arial', fontSize: '40px', fill: '#ffffff' }).setOrigin(0.5);
     }
 
     startTurn(isPlayer) {
@@ -223,6 +223,8 @@ class JogoPvE extends Phaser.Scene {
         this.selectedProduct = null;
         this.selectedNumbers = [];
         this.selectedProductPos = null;
+        this.multText = "";
+        this.mult.setText(this.multText);
 
         if (this.turnTimer) {
             this.turnTimer.remove();
@@ -286,8 +288,8 @@ class JogoPvE extends Phaser.Scene {
             num.sprite.setTexture('quadrado');
         });
 
-        multText = "";
-        this.mult.setText(multText);
+        this.multText = "";
+        this.mult.setText(this.multText);
 
         if (this.checkGameOver()) {
             this.endGame();
@@ -303,16 +305,16 @@ class JogoPvE extends Phaser.Scene {
                 if (this.numerosColuna[i] * this.numerosColuna[j] === product) {
                     factors.push(this.numerosColuna[i], this.numerosColuna[j]);
                     this.quadradosNumeros[i].sprite.setTexture('quadrado-azul');
-                    multText = multText + this.quadradosNumeros[i].value + " X ";
-                    this.mult.setText(multText);
+                    this.multText = this.multText + this.quadradosNumeros[i].value + " X ";
+                    this.mult.setText(this.multText);
                     await esperar(500);
                     if(this.numerosColuna[i] === this.numerosColuna[j]){
                         this.quadradosNumeros[j].sprite.setTexture('quadrado-roxo');
                     }else{
                         this.quadradosNumeros[j].sprite.setTexture('quadrado-azul');
                     }
-                    multText = multText + this.quadradosNumeros[j].value + " =";
-                    this.mult.setText(multText);
+                    this.multText = this.multText + this.quadradosNumeros[j].value + " =";
+                    this.mult.setText(this.multText);
                     await esperar(1500);
                     return factors;
                 }
@@ -342,8 +344,8 @@ class JogoPvE extends Phaser.Scene {
             num.sprite.setTexture('quadrado');
         });
 
-        multText = "";
-        this.mult.setText(multText);
+        this.multText = "";
+        this.mult.setText(this.multText);
 
         if (this.checkGameOver()) {
             this.endGame();
@@ -475,14 +477,14 @@ class JogoPvE extends Phaser.Scene {
             quadrado.sprite.setTexture('quadrado-vermelho');
         }
 
-        multText = multText + number;
+        this.multText = this.multText + number;
         if(this.selectedNumbers.length === 1) {
-            multText = multText + " X ";
+            this.multText = this.multText + " X ";
         }
         else if(this.selectedNumbers.length === 2) {
-            multText = multText + " =";
+            this.multText = this.multText + " =";
         }
-        this.mult.setText(multText);
+        this.mult.setText(this.multText);
 
         if (this.selectedProduct !== null && this.selectedNumbers.length === 2) {
             this.validateMultiplication();
@@ -511,7 +513,7 @@ class JogoPvE extends Phaser.Scene {
             this.turnTimer.remove(); 
             this.turnTimer = null;
         }
-        multText = "";
+        this.multText = "";
     }
 }
 
