@@ -1,13 +1,15 @@
-
 // Global variables
 var width;
 var height;
-var score1 = 0;
-var score2 = 0;
 var selectedProduct = null;
 var selectedNumbers = [];
 var selectedProductPos = null;
 var level;
+var pointsPlayer = 0;
+var incPoints = 9000;
+var inicioTurno;
+var fimTurno;
+//var multText = "";
 
 // Extend JogoPvE functionality
 class JogoPvE extends Phaser.Scene {
@@ -41,6 +43,7 @@ class JogoPvE extends Phaser.Scene {
         this.load.image('lapis', 'assets/lapis.png');
         this.load.image('quadrado-azul', 'assets/quadrado-azul.png');
         this.load.image('quadrado-vermelho', 'assets/quadrado-vermelho.png');
+        this.load.image('quadrado-roxo', 'assets/quadrado-roxo.png');
         this.load.image('assinalaazul', 'assets/assinalaazul.png');
         this.load.image('assinalavermelho', 'assets/assinalavermelho.png');
     }
@@ -68,6 +71,8 @@ class JogoPvE extends Phaser.Scene {
             this.handleButtonClick(gameObject);
         });
     }
+
+    update() {}
 
     setupGameBoard() {
         // Background
@@ -185,7 +190,22 @@ class JogoPvE extends Phaser.Scene {
         this.score1 = 0;
         this.score2 = 0;
         this.scoreText = this.add.text(180, 290, `${this.score1} - ${this.score2}`, { fontSize: '64px', fill: '#049' }); 
-        this.lapis = this.add.sprite(0.305 * this.width, 0.68 * this.height, 'lapis').setScale(1.2);
+        this.multText = "";
+        this.mult = this.add.text(0.545 * width, 0.95 * height, this.multText, { fontFamily: 'Arial', fontSize: '48px', fill: '#ffffff' }).setOrigin(0.5);
+        this.lapis = this.add.sprite(0.3 * this.width, 0.68 * this.height, 'lapis').setScale(1.2);
+        this.lapis.setInteractive({useHandCursor: true});
+        this.lapis.on('pointerdown', () => {
+            if(this.isPlayerTurn){
+                this.quadradosNumeros.forEach(num => {
+                    num.sprite.setTexture('quadrado');
+                });
+                this.selectedNumbers = [];
+                this.selectedProduct = null;
+                this.selectedProductPos = null;
+                this.multText = "";
+                this.mult.setText(this.multText);
+            }
+        });
     }
 
     startTurn(isPlayer) {
@@ -203,6 +223,8 @@ class JogoPvE extends Phaser.Scene {
         this.selectedProduct = null;
         this.selectedNumbers = [];
         this.selectedProductPos = null;
+        this.multText = "";
+        this.mult.setText(this.multText);
 
         if (this.turnTimer) {
             this.turnTimer.remove();
@@ -224,9 +246,11 @@ class JogoPvE extends Phaser.Scene {
         });
 
         if (!isPlayer) {
-            this.time.delayedCall(2000, () => {
+            this.time.delayedCall(2000*this.level, () => {
                 this.machineTurn();
             });
+        }else{
+            inicioTurno = Date.now();
         }
     }
 
@@ -248,17 +272,20 @@ class JogoPvE extends Phaser.Scene {
         else if (this.level === 3) accuracy = 0.9;
 
         const factors = await this.findFactors(value);
-        console.log(`Fatores encontrados para ${value}: ${factors.join(', ')}`);     
+        //console.log(`Fatores encontrados para ${value}: ${factors.join(', ')}`);     
         const isCorrect = Math.random() < accuracy;
-        console.log(`Máquina escolheu ${value} e acertou: ${isCorrect}`);
+        //console.log(`Máquina escolheu ${value} e acertou: ${isCorrect}`);
 
-        if (isCorrect && factors.length >= 2 || unmarkedProducts.length === 1 && factors.length >= 2) {
+        if (isCorrect && factors.length === 2 || unmarkedProducts.length === 1 && factors.length === 2) {
             this.markGridPosition(row, col, false);
             this.updateScore(false);
-        } 
+        }
         this.quadradosNumeros.forEach(num => {
             num.sprite.setTexture('quadrado');
         });
+
+        this.multText = "";
+        this.mult.setText(this.multText);
 
         if (this.checkGameOver()) {
             this.endGame();
@@ -274,8 +301,16 @@ class JogoPvE extends Phaser.Scene {
                 if (this.numerosColuna[i] * this.numerosColuna[j] === product) {
                     factors.push(this.numerosColuna[i], this.numerosColuna[j]);
                     this.quadradosNumeros[i].sprite.setTexture('quadrado-azul');
+                    this.multText = this.multText + this.quadradosNumeros[i].value + " X ";
+                    this.mult.setText(this.multText);
                     await esperar(500);
-                    this.quadradosNumeros[j].sprite.setTexture('quadrado-azul');
+                    if(this.numerosColuna[i] === this.numerosColuna[j]){
+                        this.quadradosNumeros[j].sprite.setTexture('quadrado-roxo');
+                    }else{
+                        this.quadradosNumeros[j].sprite.setTexture('quadrado-azul');
+                    }
+                    this.multText = this.multText + this.quadradosNumeros[j].value + " =";
+                    this.mult.setText(this.multText);
                     await esperar(1500);
                     return factors;
                 }
@@ -297,16 +332,16 @@ class JogoPvE extends Phaser.Scene {
         if (isCorrect) {
             this.markGridPosition(this.selectedProductPos.row, this.selectedProductPos.col, true);
             this.updateScore(true);
-            this.quadradosNumeros.forEach(num => {
-                num.sprite.setTexture('quadrado');
-            });
-        } else {
-            //this.markGridPosition(this.selectedProductPos.row, this.selectedProductPos.col, false);
-            //this.updateScore(false);
-            this.quadradosNumeros.forEach(num => {
-                num.sprite.setTexture('quadrado');
-            });
+            fimTurno = Date.now();
+            pointsPlayer += incPoints - (fimTurno - inicioTurno);
         }
+
+        this.quadradosNumeros.forEach(num => {
+            num.sprite.setTexture('quadrado');
+        });
+
+        this.multText = "";
+        this.mult.setText(this.multText);
 
         if (this.checkGameOver()) {
             this.endGame();
@@ -325,12 +360,6 @@ class JogoPvE extends Phaser.Scene {
     }
 
     markGridPosition(row, col, isPlayer) {
-        const newBox = this.add.sprite(
-            this.quadradosGrid[row][col].sprite.x,
-            this.quadradosGrid[row][col].sprite.y,
-            'quadrado'
-        ).setScale(1.1).setDepth(1);
-
         const marker = this.add.sprite(
             this.quadradosGrid[row][col].sprite.x,
             this.quadradosGrid[row][col].sprite.y,
@@ -367,7 +396,8 @@ class JogoPvE extends Phaser.Scene {
             resultText = "Empate!";
         }
 
-        updateRecords();
+        pointsPlayer = Math.floor(pointsPlayer);
+        updateRecords(pointsPlayer, this.level, this);
 
         const overlay = this.background.setDepth(2);
         const title = this.titulo.setDepth(2);
@@ -388,7 +418,7 @@ class JogoPvE extends Phaser.Scene {
         const backendText = this.add.text(
             this.width * 0.5,
             this.height * 0.85,
-            please,
+            "\nPontuação final de " + pointsPlayer +" pontos!",
             {
                 fontSize: '50px',
                 fontFamily: 'Arial',
@@ -437,7 +467,20 @@ class JogoPvE extends Phaser.Scene {
             value: number
         });
 
-        quadrado.sprite.setTexture('quadrado-vermelho');
+        if (this.selectedNumbers.length === 2 && this.selectedNumbers[1].value === this.selectedNumbers[0].value) {
+            quadrado.sprite.setTexture('quadrado-roxo');
+        } else {
+            quadrado.sprite.setTexture('quadrado-vermelho');
+        }
+
+        this.multText = this.multText + number;
+        if(this.selectedNumbers.length === 1) {
+            this.multText = this.multText + " X ";
+        }
+        else if(this.selectedNumbers.length === 2) {
+            this.multText = this.multText + " =";
+        }
+        this.mult.setText(this.multText);
 
         if (this.selectedProduct !== null && this.selectedNumbers.length === 2) {
             this.validateMultiplication();
@@ -462,11 +505,11 @@ class JogoPvE extends Phaser.Scene {
         this.selectedProduct = null;
         this.selectedNumbers = [];
         this.selectedProductPos = null;
-
         if (this.turnTimer) {
             this.turnTimer.remove(); 
             this.turnTimer = null;
         }
+        this.multText = "";
     }
 }
 
@@ -485,7 +528,7 @@ function shuffleArray(array) {
     return array;
 }
 
-function updateRecords() {
-    verificaRecords(infoUser.user, infoUser.turma, infoUser.escola, score1, this.level, this);
-    gravaRecords(infoUser.user, infoUser.turma, infoUser.escola, score1, this.level);
+function updateRecords(score, lvl, scene) {
+    verificaRecords(infoUser.user, infoUser.turma, infoUser.escola, score, lvl, scene);
+    gravaRecords(infoUser.user, infoUser.turma, infoUser.escola, score, lvl);
 }
