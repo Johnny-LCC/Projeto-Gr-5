@@ -239,11 +239,7 @@ class JogoPvE extends Phaser.Scene {
                 }
             }
         }
-
-        if (unmarkedProducts.length === 0) {
-            this.endGame();
-            return;
-        }        
+      
         const randomProduct = Phaser.Utils.Array.GetRandom(unmarkedProducts);
         const { row, col, value } = randomProduct;
 
