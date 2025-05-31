@@ -241,14 +241,13 @@ class JogoPvP extends Phaser.Scene {
 
         const isCorrect = (num1 * num2 === product);
         if (isCorrect) {
-
-            this.multText = this.multText + " " + product;
+            // Format the complete equation with the correct product
+            this.multText = num1 + " X " + num2 + " = " + product;
             this.mult.setText(this.multText);
             
             this.markGridPosition(selectedProductPos.row, selectedProductPos.col, this.currentPlayer.value);
             this.updateScore(this.currentPlayer.value);
             
-
             this.time.delayedCall(1500, () => {
                 this.quadradosNumeros.forEach(num => {
                     num.sprite.setTexture('quadrado');
@@ -264,8 +263,8 @@ class JogoPvP extends Phaser.Scene {
                 }
             });
         } else {
-
-            this.multText = this.multText + " " + product;
+            // Format the complete equation with the incorrect product
+            this.multText = num1 + " X " + num2 + " = " + product;
             this.mult.setText(this.multText);
             
             this.time.delayedCall(1500, () => {
@@ -396,6 +395,9 @@ class JogoPvP extends Phaser.Scene {
             this.quadradosNumeros.forEach(num => {
                 num.sprite.setTexture('quadrado');
             });
+
+            this.multText = "";
+            this.mult.setText(this.multText);
         }
         
         selectedNumbers.push({
@@ -409,12 +411,10 @@ class JogoPvP extends Phaser.Scene {
             this.currentPlayer.value === 1 ? quadrado.sprite.setTexture('quadrado-vermelho') : quadrado.sprite.setTexture('quadrado-azul');
         }
 
-        this.multText = this.multText + number;
-        if(selectedNumbers.length === 1) {
-            this.multText = this.multText + " X ";
-        }
-        else if(selectedNumbers.length === 2) {
-            this.multText = this.multText + " =";
+        if (selectedNumbers.length === 1) {
+            this.multText = number + " X ";
+        } else if (selectedNumbers.length === 2) {
+            this.multText = selectedNumbers[0].value + " X " + number + " =";
         }
         this.mult.setText(this.multText);
         

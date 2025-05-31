@@ -308,19 +308,25 @@ class JogoPvE extends Phaser.Scene {
         }
     }    async findFactors(product) {
         let factors = [];
+        this.multText = "";
+        this.mult.setText(this.multText);
         for (let i = 0; i < this.numerosColuna.length; i++) {
-            for (let j = 0; j < this.numerosColuna.length; j++) {
-                if (this.numerosColuna[i] * this.numerosColuna[j] === product) {
-                    factors.push(this.numerosColuna[i], this.numerosColuna[j]);
-                    this.quadradosNumeros[i].sprite.setTexture('quadrado-azul');
-                    this.multText = this.multText + this.numerosColuna[i] + " X ";
-                    this.mult.setText(this.multText);
-                    await esperar(500);
-                    if(this.numerosColuna[i] === this.numerosColuna[j]){
-                        this.quadradosNumeros[j].sprite.setTexture('quadrado-roxo');
-                    }else{
-                        this.quadradosNumeros[j].sprite.setTexture('quadrado-azul');
-                    }
+        for (let j = 0; j < this.numerosColuna.length; j++) {
+            if (this.numerosColuna[i] * this.numerosColuna[j] === product) {
+                factors.push(this.numerosColuna[i], this.numerosColuna[j]);
+                
+                // First factor
+                this.quadradosNumeros[i].sprite.setTexture('quadrado-azul');
+                this.multText = this.numerosColuna[i] + " X ";
+                this.mult.setText(this.multText);
+                await esperar(500);
+                
+                // Second factor
+                if(this.numerosColuna[i] === this.numerosColuna[j]) {
+                    this.quadradosNumeros[j].sprite.setTexture('quadrado-roxo');
+                } else {
+                    this.quadradosNumeros[j].sprite.setTexture('quadrado-azul');
+                }
                     this.multText = this.multText + this.numerosColuna[j];
                     this.mult.setText(this.multText);
                     await esperar(1000);
@@ -494,6 +500,9 @@ class JogoPvE extends Phaser.Scene {
             this.quadradosNumeros.forEach(num => {
                 num.sprite.setTexture('quadrado');
             });
+        this.multText = "";
+        this.mult.setText(this.multText);
+
         }
 
         this.selectedNumbers.push({
