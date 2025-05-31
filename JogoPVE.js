@@ -252,9 +252,7 @@ class JogoPvE extends Phaser.Scene {
         }else{
             inicioTurno = Date.now();
         }
-    }
-
-    async machineTurn() {
+    }    async machineTurn() {
         const unmarkedProducts = [];
         for (let i = 0; i < 5; i++) {
             for (let j = 0; j < 5; j++) {
@@ -272,14 +270,30 @@ class JogoPvE extends Phaser.Scene {
         else if (this.level === 3) accuracy = 0.9;
 
         const factors = await this.findFactors(value);
-        //console.log(`Fatores encontrados para ${value}: ${factors.join(', ')}`);     
-        const isCorrect = Math.random() < accuracy;
-        //console.log(`Máquina escolheu ${value} e acertou: ${isCorrect}`);
+        
 
-        if (isCorrect && factors.length === 2 || unmarkedProducts.length === 1 && factors.length === 2) {
+        const isCorrect = unmarkedProducts.length === 1 ? true : Math.random() < accuracy;
+        
+        if (isCorrect && factors.length >= 2) {
+            this.multText = this.multText + " = " + value;
+            this.mult.setText(this.multText);
+            await esperar(1500);
+            
             this.markGridPosition(row, col, false);
             this.updateScore(false);
+        } else if (factors.length >= 2) {
+            const incorrectProducts = unmarkedProducts.filter(p => p.value !== value);
+            
+            if (incorrectProducts.length > 0) {
+                const incorrectProduct = Phaser.Utils.Array.GetRandom(incorrectProducts);
+                
+                this.multText = this.multText + " = " + incorrectProduct.value;
+                this.mult.setText(this.multText);
+                await esperar(1500);
+            }
         }
+        
+        // Reset the UI
         this.quadradosNumeros.forEach(num => {
             num.sprite.setTexture('quadrado');
         });
@@ -292,16 +306,14 @@ class JogoPvE extends Phaser.Scene {
         } else {
             this.startTurn(true);
         }
-    }
-
-    async findFactors(product) {
+    }    async findFactors(product) {
         let factors = [];
         for (let i = 0; i < this.numerosColuna.length; i++) {
             for (let j = 0; j < this.numerosColuna.length; j++) {
                 if (this.numerosColuna[i] * this.numerosColuna[j] === product) {
                     factors.push(this.numerosColuna[i], this.numerosColuna[j]);
                     this.quadradosNumeros[i].sprite.setTexture('quadrado-azul');
-                    this.multText = this.multText + this.quadradosNumeros[i].value + " X ";
+                    this.multText = this.multText + this.numerosColuna[i] + " X ";
                     this.mult.setText(this.multText);
                     await esperar(500);
                     if(this.numerosColuna[i] === this.numerosColuna[j]){
@@ -309,17 +321,15 @@ class JogoPvE extends Phaser.Scene {
                     }else{
                         this.quadradosNumeros[j].sprite.setTexture('quadrado-azul');
                     }
-                    this.multText = this.multText + this.quadradosNumeros[j].value + " =";
+                    this.multText = this.multText + this.numerosColuna[j];
                     this.mult.setText(this.multText);
-                    await esperar(1500);
+                    await esperar(1000);
                     return factors;
                 }
             }
         }
         return factors;
-    }
-
-    validateMultiplication() {
+    }    validateMultiplication() {
         if (this.selectedProduct === null || this.selectedNumbers.length !== 2) {
             return;
         }
@@ -330,23 +340,47 @@ class JogoPvE extends Phaser.Scene {
 
         const isCorrect = (num1 * num2 === product);
         if (isCorrect) {
+
+            this.multText = this.multText + " " + product;
+            this.mult.setText(this.multText);
+            
             this.markGridPosition(this.selectedProductPos.row, this.selectedProductPos.col, true);
             this.updateScore(true);
             fimTurno = Date.now();
             pointsPlayer += incPoints - (fimTurno - inicioTurno);
-        }
+            
+            this.time.delayedCall(1500, () => {
+                this.quadradosNumeros.forEach(num => {
+                    num.sprite.setTexture('quadrado');
+                });
 
-        this.quadradosNumeros.forEach(num => {
-            num.sprite.setTexture('quadrado');
-        });
+                this.multText = "";
+                this.mult.setText(this.multText);
 
-        this.multText = "";
-        this.mult.setText(this.multText);
-
-        if (this.checkGameOver()) {
-            this.endGame();
+                if (this.checkGameOver()) {
+                    this.endGame();
+                } else {
+                    this.startTurn(false);
+                }
+            });
         } else {
-            this.startTurn(false);
+            this.multText = this.multText + " " + product;
+            this.mult.setText(this.multText);
+            
+            this.time.delayedCall(1500, () => {
+                this.quadradosNumeros.forEach(num => {
+                    num.sprite.setTexture('quadrado');
+                });
+
+                this.multText = "";
+                this.mult.setText(this.multText);
+
+                if (this.checkGameOver()) {
+                    this.endGame();
+                } else {
+                    this.startTurn(false);
+                }
+            });
         }
     }
 

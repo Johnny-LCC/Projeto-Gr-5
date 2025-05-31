@@ -241,21 +241,47 @@ class JogoPvP extends Phaser.Scene {
 
         const isCorrect = (num1 * num2 === product);
         if (isCorrect) {
+
+            this.multText = this.multText + " " + product;
+            this.mult.setText(this.multText);
+            
             this.markGridPosition(selectedProductPos.row, selectedProductPos.col, this.currentPlayer.value);
             this.updateScore(this.currentPlayer.value);
-        }
+            
 
-        this.quadradosNumeros.forEach(num => {
-            num.sprite.setTexture('quadrado');
-        });
+            this.time.delayedCall(1500, () => {
+                this.quadradosNumeros.forEach(num => {
+                    num.sprite.setTexture('quadrado');
+                });
 
-        this.multText = "";
-        this.mult.setText(this.multText);
+                this.multText = "";
+                this.mult.setText(this.multText);
 
-        if (this.checkGameOver()) {
-            this.endGame();
+                if (this.checkGameOver()) {
+                    this.endGame();
+                } else {
+                    this.switchPlayer();
+                }
+            });
         } else {
-            this.switchPlayer();
+
+            this.multText = this.multText + " " + product;
+            this.mult.setText(this.multText);
+            
+            this.time.delayedCall(1500, () => {
+                this.quadradosNumeros.forEach(num => {
+                    num.sprite.setTexture('quadrado');
+                });
+
+                this.multText = "";
+                this.mult.setText(this.multText);
+
+                if (this.checkGameOver()) {
+                    this.endGame();
+                } else {
+                    this.switchPlayer();
+                }
+            });
         }
     }
 
